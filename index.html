@@ -655,8 +655,8 @@
         // --- FETCH REMOTE STATUS ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Tenta carregar o status.json
-                const response = await fetch('./status.json');
+                const urlControle = 'https://www.npoint.io/docs/9b7175027df59414e819'
+                const response = await fetch('urlControle');
                 const data = await response.json();
                 
                 globalStoreStatus = data.loja_aberta;
