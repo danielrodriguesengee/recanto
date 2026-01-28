@@ -4,14 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recanto do Strogonoff | Pedido Online</title>
-
-    <!-- CONFIGURAÇÃO PWA (ADICIONADO) -->
+    
+    <!-- CONFIGURAÇÃO PWA -->
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
     <link rel="manifest" href="./manifest.json">
     <link rel="apple-touch-icon" href="image/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) COM PROTEÇÃO DE ERRO -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        // Verifica o domínio atual para evitar erro de "Origem Inválida" em ambientes de teste
+        const currentHost = window.location.hostname;
+        const allowedHosts = ['recantodostrogonoff.netlify.app', 'localhost', '127.0.0.1'];
+        
+        // Só inicializa se for produção ou localhost
+        if (allowedHosts.includes(currentHost)) {
+            await OneSignal.init({
+              appId: "acb89e44-781e-4ea6-b349-cd1ead5999c3",
+              safari_web_id: "web.onesignal.auto.2cb21d9d-922f-420a-8137-99f511b7fc1b",
+              notifyButton: {
+                enable: true,
+              },
+              allowLocalhostAsSecureOrigin: true,
+            });
+        } else {
+            console.log("OneSignal em modo de espera (Ambiente de teste detectado).");
+        }
+      });
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -191,7 +216,7 @@
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000')] bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-40 md:h-52 object-contain mb-1 drop-shadow-xl animate-bounce-in">
+            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-48 md:h-64 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm">
@@ -630,11 +655,13 @@
         // --- FETCH REMOTE STATUS ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
+                // Tenta carregar o status.json
                 const response = await fetch('./status.json');
                 const data = await response.json();
                 
                 globalStoreStatus = data.loja_aberta;
                 
+                // Atualiza UI
                 const statusText = document.getElementById('status-text');
                 const statusIcon = document.getElementById('status-icon');
                 
@@ -644,11 +671,13 @@
                 } else {
                     statusText.innerText = data.mensagem_fechado || 'Fechado no momento';
                     statusIcon.className = 'far fa-clock text-gray-500';
+                    // Opcional: Desabilitar botões visualmente
                 }
             } catch (e) {
                 console.log('Usando status padrão');
             }
             
+            // Inicia Carrossel
             startComboCarousel();
         });
 

@@ -1,3 +1,7 @@
+// 1. Importa o motor de notificações do OneSignal
+importScripts('OneSignalSDKWorker.js');
+
+// 2. Configuração do Cache (PWA e Offline)
 const CACHE_NAME = 'recanto-app-v1';
 const ASSETS_TO_CACHE = [
   './index.html',
@@ -34,6 +38,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Ignora requisições do OneSignal para não quebrar o push
+  if (event.request.url.includes('onesignal.com')) {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
