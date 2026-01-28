@@ -636,8 +636,10 @@
         // --- FETCH REMOTE STATUS ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Tenta carregar o status do nPoint
-                const urlControle = 'https://api.npoint.io/9b7175027df59414e819';
+                // Tenta carregar o status do nPoint com Cache Busting (?t=timestamp)
+                // Isso força o navegador a baixar a versão mais recente sempre
+                const urlControle = `https://api.npoint.io/9b7175027df59414e819?t=${new Date().getTime()}`;
+                
                 const response = await fetch(urlControle);
                 const data = await response.json();
                 
