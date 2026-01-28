@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) COM PROTEÇÃO DE ERRO -->
+    <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -22,8 +22,7 @@
         const currentHost = window.location.hostname;
         const allowedHosts = ['recantodostrogonoff.netlify.app', 'localhost', '127.0.0.1'];
         
-        // Só inicializa se for produção ou localhost
-        if (allowedHosts.includes(currentHost)) {
+        if (allowedHosts.some(host => currentHost.includes(host))) {
             await OneSignal.init({
               appId: "acb89e44-781e-4ea6-b349-cd1ead5999c3",
               safari_web_id: "web.onesignal.auto.2cb21d9d-922f-420a-8137-99f511b7fc1b",
@@ -32,8 +31,6 @@
               },
               allowLocalhostAsSecureOrigin: true,
             });
-        } else {
-            console.log("OneSignal em modo de espera (Ambiente de teste detectado).");
         }
       });
     </script>
@@ -186,22 +183,6 @@
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px var(--shadow-color)',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body class="pb-32"> 
 
@@ -655,8 +636,9 @@
         // --- FETCH REMOTE STATUS ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                const urlControle = 'https://api.npoint.io/9b7175027df59414e819'
-                const response = await fetch('urlControle');
+                // Tenta carregar o status do nPoint
+                const urlControle = 'https://api.npoint.io/9b7175027df59414e819';
+                const response = await fetch(urlControle);
                 const data = await response.json();
                 
                 globalStoreStatus = data.loja_aberta;
@@ -664,6 +646,7 @@
                 // Atualiza UI
                 const statusText = document.getElementById('status-text');
                 const statusIcon = document.getElementById('status-icon');
+                const statusContainer = document.getElementById('store-status-container');
                 
                 if(data.loja_aberta) {
                     statusText.innerText = `${data.mensagem_aberto || 'Aberto agora'} • ${data.tempo_entrega || '30-45 min'}`;
@@ -671,10 +654,10 @@
                 } else {
                     statusText.innerText = data.mensagem_fechado || 'Fechado no momento';
                     statusIcon.className = 'far fa-clock text-gray-500';
-                    // Opcional: Desabilitar botões visualmente
+                    statusContainer.classList.add('opacity-70');
                 }
             } catch (e) {
-                console.log('Usando status padrão');
+                console.log('Erro ao carregar status, usando padrão (Aberto)');
             }
             
             // Inicia Carrossel
@@ -896,6 +879,12 @@
         }
 
         function openCheckoutModal() {
+            // Verifica status da loja antes de abrir
+            if (!globalStoreStatus) {
+                showToast("Estamos fechados no momento! 🌙", true);
+                return;
+            }
+
             const total = cart.reduce((acc, i) => acc + i.price, 0);
             if (total < MIN_ORDER_VALUE) {
                 showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
@@ -934,6 +923,7 @@
         }
 
         function finalizeOrder() {
+            // Dupla verificação de status
             if (!globalStoreStatus) {
                 showToast("Estamos fechados no momento! 🌙", true);
                 return;
