@@ -1,0 +1,21 @@
+{
+  "name": "Recanto do Strogonoff",
+  "short_name": "Recanto",
+  "description": "O melhor strogonoff da cidade. Peça agora!",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fdfbf7",
+  "theme_color": "#63121a",
+  "icons": [
+    {
+      "src": "image/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "image/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

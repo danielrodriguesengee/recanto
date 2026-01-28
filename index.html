@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Recanto do Strogonoff | Pedido Online</title>
-    <!-- Links corrigidos (sem formatação markdown) -->
+    
+    <!-- PWA CONFIGURATION -->
+    <title>Recanto do Strogonoff</title>
+    <meta name="description" content="O melhor strogonoff da cidade. Peça agora!">
+    <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
+    
+    <!-- Link para o Manifesto (Carteira de Identidade do App) -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Ícone para iPhone (iOS) -->
+    <link rel="apple-touch-icon" href="image/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Links de Estilo -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -153,22 +167,6 @@
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px var(--shadow-color)',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body class="pb-32"> 
 
@@ -186,7 +184,6 @@
             <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-48 md:h-64 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
-            <!-- STATUS DA LOJA (CONTROLADO VIA JSON) -->
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm">
                 <i id="status-icon" class="far fa-clock theme-brand-red"></i> 
                 <span id="status-text">Aberto agora • 30-45 min</span>
@@ -648,6 +645,19 @@
             // Inicia Carrossel
             startComboCarousel();
         });
+
+        // --- PWA SERVICE WORKER REGISTRATION ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
 
         // --- TEMA ---
         function toggleTheme() {
