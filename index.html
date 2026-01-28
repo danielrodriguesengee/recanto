@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- PWA CONFIGURATION -->
-    <title>Recanto do Strogonoff</title>
-    <meta name="description" content="O melhor strogonoff da cidade. Peça agora!">
+    <title>Recanto do Strogonoff | Pedido Online</title>
+
+    <!-- CONFIGURAÇÃO PWA (ADICIONADO) -->
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
-    
-    <!-- Link para o Manifesto (Carteira de Identidade do App) -->
     <link rel="manifest" href="./manifest.json">
-    
-    <!-- Ícone para iPhone (iOS) -->
     <link rel="apple-touch-icon" href="image/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- Links de Estilo -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -167,6 +161,22 @@
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px var(--shadow-color)',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="pb-32"> 
 
@@ -181,7 +191,7 @@
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000')] bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-48 md:h-64 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
+            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-40 md:h-52 object-contain mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm">
@@ -220,7 +230,7 @@
                     </div>
                     
                     <div class="p-5 relative z-20">
-                        <h2 class="font-serif text-2xl font-bold theme-text-primary mb-2 text-[#63121a]">Super Combo</h2>
+                        <h2 class="font-serif text-2xl font-bold theme-text-primary mb-2 text-[#63121a]">SUPER COMBO: 1 ADICIONAL + 1 BEBIDA GRÁTIS </h2>
                         <p class="theme-text-secondary text-sm leading-relaxed mb-4">
                             Strogonoff tradicional + 1 adicional (Bacon ou Catupiry) + bebida grátis. Acompanha salada e batata palha crocante da casa.
                         </p>
@@ -245,18 +255,18 @@
         <section id="pratos" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
-                Pratos Principais
+                STROGONOFF
             </h2>
             
             <div class="space-y-4">
                 <!-- Strogonoff -->
-                <div onclick="addToCart('Strogonoff Tradicional', 30, '', 'main')" class="min-card p-3 rounded-xl flex gap-4 cursor-pointer group hover:border-[#63121a]/30">
+                <div onclick="addToCart('TRADICIONAL (FRANGO)', 30, '', 'main')" class="min-card p-3 rounded-xl flex gap-4 cursor-pointer group hover:border-[#63121a]/30">
                     <div class="w-24 h-24 rounded-lg overflow-hidden theme-border border flex-shrink-0 bg-gray-100">
                         <img src="image/strogonoff.png" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <div class="flex-1 flex flex-col justify-between py-1">
                         <div>
-                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">Strogonoff Tradicional</h3>
+                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">TRADICIONAL (FRANGO)</h3>
                             <p class="text-xs theme-text-secondary mt-1 line-clamp-3">Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.</p>
                         </div>
                         <div class="flex justify-between items-end mt-2">
@@ -269,13 +279,13 @@
                 </div>
 
                 <!-- Batata -->
-                <div onclick="addToCart('Batata Recheada', 35, '', 'main')" class="min-card p-3 rounded-xl flex gap-4 cursor-pointer group hover:border-[#63121a]/30">
+                <div onclick="addToCart('BATATA RECHEADA', 35, '', 'main')" class="min-card p-3 rounded-xl flex gap-4 cursor-pointer group hover:border-[#63121a]/30">
                     <div class="w-24 h-24 rounded-lg overflow-hidden theme-border border flex-shrink-0 bg-gray-100">
                         <img src="image/batata.png" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <div class="flex-1 flex flex-col justify-between py-1">
                         <div>
-                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">Batata Recheada</h3>
+                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">BATATA RECHEADA</h3>
                             <p class="text-xs theme-text-secondary mt-1 line-clamp-3">Batata assada e recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.</p>
                         </div>
                         <div class="flex justify-between items-end mt-2">
@@ -293,7 +303,7 @@
         <section id="adicionais" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
-                Adicionais
+                TURBINE SEU STROGONOFF
             </h2>
             
             <div class="grid grid-cols-2 gap-3">
@@ -620,13 +630,11 @@
         // --- FETCH REMOTE STATUS ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Tenta carregar o status.json
                 const response = await fetch('./status.json');
                 const data = await response.json();
                 
                 globalStoreStatus = data.loja_aberta;
                 
-                // Atualiza UI
                 const statusText = document.getElementById('status-text');
                 const statusIcon = document.getElementById('status-icon');
                 
@@ -636,17 +644,15 @@
                 } else {
                     statusText.innerText = data.mensagem_fechado || 'Fechado no momento';
                     statusIcon.className = 'far fa-clock text-gray-500';
-                    // Opcional: Desabilitar botões visualmente
                 }
             } catch (e) {
                 console.log('Usando status padrão');
             }
             
-            // Inicia Carrossel
             startComboCarousel();
         });
 
-        // --- PWA SERVICE WORKER REGISTRATION ---
+        // --- PWA SERVICE WORKER REGISTRATION (ADICIONADO) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
@@ -899,7 +905,6 @@
         }
 
         function finalizeOrder() {
-            // TRAVA DE SEGURANÇA (STATUS)
             if (!globalStoreStatus) {
                 showToast("Estamos fechados no momento! 🌙", true);
                 return;
@@ -919,7 +924,7 @@
 
             const formattedPhone = formatPhoneNumber(phone);
 
-            // Unicode Escapes para Emojis (Segurança contra Encoding)
+            // Emojis (Unicode)
             const emojiStar = String.fromCodePoint(0x2B50); 
             const emojiPlate = String.fromCodePoint(0x1F37D);
             const emojiUser = String.fromCodePoint(0x1F464);
@@ -931,9 +936,9 @@
             const emojiMoney = String.fromCodePoint(0x1F4B0);
             const emojiCard = String.fromCodePoint(0x1F4B3);
 
-            let text = `--------------------------------\n`;
+            let text = `------------------------------------------\n`;
             text += `${emojiStar} *PEDIDO RECANTO* ${emojiPlate}\n`;
-            text += `--------------------------------\n\n`;
+            text += `------------------------------------------\n\n`;
 
             text += `*DADOS DO CLIENTE:*\n`;
             text += `${emojiUser} *${name}*\n`;
@@ -947,9 +952,9 @@
             cart.forEach(item => {
                 text += `${emojiCheck} *${item.name}*\n`; 
                 if (item.details) {
-                    text += `   ${emojiArrow} _${item.details}_\n`;
+                    text += `   ${emojiArrow} _${item.details}_\n`;
                 }
-                text += `   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
+                text += `   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
             });
 
             if(obs) {
@@ -960,7 +965,7 @@
             const totalFormatted = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
             
             text += `${emojiMoney} *TOTAL: R$ ${totalFormatted}*\n`;
-            text += `${emojiCard}*PAGAMENTO:* ${payment}`;
+            text += `${emojiCard} *PAGAMENTO:* ${payment}`;
             
             if (change) {
                 text += ` (Troco p/ ${change})`;
@@ -972,6 +977,7 @@
             
             window.open(url, '_blank');
             
+            // Logic to clear and show success modal
             cart = [];
             updateCartUI();
             closeCheckoutModal();

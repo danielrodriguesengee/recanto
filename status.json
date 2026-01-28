@@ -1,5 +1,5 @@
 {
-  "loja_aberta": true,
+  "loja_aberta": 0,
   "mensagem_aberto": "Aberto agora",
   "mensagem_fechado": "Fechado no momento",
   "tempo_entrega": "30-45 min"

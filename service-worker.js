@@ -5,13 +5,12 @@ const ASSETS_TO_CACHE = [
   './status.json',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  // Imagens (adicione outras se necessário)
+  // Imagens essenciais
   './image/logo.png',
   './image/icon-192.png',
   './image/icon-512.png'
 ];
 
-// Instalação do Service Worker
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -20,7 +19,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Ativação e limpeza de cache antigo
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -35,12 +33,10 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Estratégia de Cache: Network First (Tenta internet, se falhar usa cache)
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Se a resposta for válida, clona e atualiza o cache
         if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
         }
@@ -51,7 +47,6 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => {
-        // Se falhar (offline), tenta pegar do cache
         return caches.match(event.request);
       })
   );
