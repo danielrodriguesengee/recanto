@@ -1,3 +1,11 @@
 git add .
 git commit -m "atualiza site"
 git push
+
+
+{
+  "loja_aberta": false,
+  "mensagem_aberto": "Aberto agora",
+  "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴",
+  "tempo_entrega": "Estimativa de entrega em 30-45 min"
+}

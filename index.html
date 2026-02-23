@@ -18,7 +18,6 @@
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
-        // Verifica o domínio atual para evitar erro de "Origem Inválida" em ambientes de teste
         const currentHost = window.location.hostname;
         const allowedHosts = ['recantodostrogonoff.netlify.app', 'localhost', '127.0.0.1'];
         
@@ -26,9 +25,7 @@
             await OneSignal.init({
               appId: "acb89e44-781e-4ea6-b349-cd1ead5999c3",
               safari_web_id: "web.onesignal.auto.2cb21d9d-922f-420a-8137-99f511b7fc1b",
-              notifyButton: {
-                enable: true,
-              },
+              notifyButton: { enable: true },
               allowLocalhostAsSecureOrigin: true,
             });
         }
@@ -42,7 +39,6 @@
     <style>
         /* VARIÁVEIS DE TEMA */
         :root {
-            /* Light Mode */
             --bg-body: #fdfbf7;
             --bg-card: #ffffff;
             --bg-nav: rgba(253, 251, 247, 0.95);
@@ -55,8 +51,6 @@
             --input-bg: #f4f4f5;
             --input-border: #d4d4d8;
             --shadow-color: rgba(99, 18, 26, 0.08);
-            
-            /* Preços e Botões */
             --price-color: #63121a;
             --btn-add-text: #63121a;
             --btn-add-border: #63121a;
@@ -64,7 +58,6 @@
             --btn-add-text-hover: #ffffff;
         }
 
-        /* Dark Mode */
         body.dark-mode {
             --bg-body: #0f0f0f;
             --bg-card: #161616;
@@ -77,8 +70,6 @@
             --input-bg: transparent;
             --input-border: #333;
             --shadow-color: rgba(0, 0, 0, 0.5);
-
-            /* Preços e Botões */
             --price-color: #f2ead5;
             --btn-add-text: #f2ead5;
             --btn-add-border: #f2ead5;
@@ -93,7 +84,6 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Classes Utilitárias */
         .theme-bg-body { background-color: var(--bg-body); }
         .theme-bg-card { background-color: var(--bg-card); }
         .theme-bg-nav { background-color: var(--bg-nav); }
@@ -104,7 +94,6 @@
         .theme-bg-red { background-color: var(--brand-red); }
         .theme-border-red { border-color: var(--brand-red); }
         .theme-bg-header { background-color: var(--bg-header-section); }
-        
         .theme-price { color: var(--price-color); }
 
         .btn-add-theme {
@@ -155,7 +144,6 @@
         }
         .theme-toggle:active { transform: scale(0.9); }
 
-        /* Estilos para o Menu Ativo */
         .nav-link.active {
             background-color: var(--brand-red);
             color: #ffffff;
@@ -170,11 +158,8 @@
             color: var(--text-secondary);
             font-weight: 500;
         }
-        .nav-link.inactive:hover {
-            opacity: 0.8;
-        }
+        .nav-link.inactive:hover { opacity: 0.8; }
 
-        /* Animação do Modal de Sucesso */
         @keyframes popIn {
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
@@ -186,12 +171,10 @@
 </head>
 <body class="pb-32"> 
 
-    <!-- THEME TOGGLE -->
     <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
 
-    <!-- HERO HEADER -->
     <header class="relative h-56 md:h-72 overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-body)] via-transparent to-black/20 transition-colors duration-300 z-10"></div>
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000')] bg-cover bg-center opacity-10"></div>
@@ -200,14 +183,13 @@
             <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
-            <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm">
+            <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm transition-opacity duration-300">
                 <i id="status-icon" class="far fa-clock theme-brand-red"></i> 
-                <span id="status-text">Aberto agora • 30-45 min</span>
+                <span id="status-text">Carregando...</span>
             </div>
         </div>
     </header>
 
-    <!-- NAVEGAÇÃO -->
     <nav class="sticky top-0 z-30 theme-bg-nav backdrop-blur-sm border-b theme-border py-3 transition-colors duration-300 shadow-sm">
         <div class="flex justify-start md:justify-center overflow-x-auto no-scrollbar gap-2 px-4 whitespace-nowrap" id="nav-container">
             <a href="#destaque" onclick="setActiveNav(this)" class="nav-link active px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Destaques</a>
@@ -218,247 +200,37 @@
     </nav>
 
     <main class="max-w-3xl mx-auto px-4 py-6 space-y-10">
-
-        <!-- DESTAQUE (COMBO) - CARROSSEL -->
-        <section id="destaque" class="scroll-mt-24 section-spy">
-            <div class="theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300">
-                <div class="absolute top-3 left-3 theme-bg-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">
-                    Mais Pedido
-                </div>
-                
-                <div onclick="openComboModal()" class="cursor-pointer">
-                    <div class="h-56 overflow-hidden relative bg-gray-100" id="combo-carousel">
-                        <img src="image/combo1.png" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out opacity-100" alt="Super Combo 1">
-                        <img src="image/combo2.png" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0" alt="Super Combo 2">
-                        <img src="image/combo3.png" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0" alt="Super Combo 3">
-                        <img src="image/combo4.png" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0" alt="Super Combo 4">
-                        <img src="image/combo5.png" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0" alt="Super Combo 5">
-                    </div>
-                    
-                    <div class="p-5 relative z-20">
-                        <h2 class="font-serif text-2xl font-bold theme-text-primary mb-2 text-[#63121a]">SUPER COMBO: 1 ADICIONAL + 1 BEBIDA GRÁTIS </h2>
-                        <p class="theme-text-secondary text-sm leading-relaxed mb-4">
-                            Strogonoff tradicional + 1 adicional (Bacon ou Catupiry) + bebida grátis. Acompanha salada e batata palha crocante da casa.
-                        </p>
-                        
-                        <div class="flex justify-between items-end pt-4 border-t theme-border border-dashed">
-                            <div class="flex flex-col">
-                                <span class="text-xs theme-text-secondary line-through opacity-60"><span class="text-[10px]">R$</span> 46,00</span>
-                                <span class="text-2xl font-bold theme-price flex items-baseline gap-1">
-                                    <span class="text-sm font-bold">R$</span> 39,90
-                                </span>
-                            </div>
-                            <button class="btn-add-theme text-xs font-bold uppercase px-4 py-2 rounded transition flex items-center gap-2">
-                                <i class="fas fa-plus text-[10px]"></i> Adicionar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PRATOS PRINCIPAIS -->
+        <!-- CONTAINERS DINÂMICOS (O JavaScript preencherá estes espaços) -->
+        <section id="destaque" class="scroll-mt-24 section-spy"></section>
+        
         <section id="pratos" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
                 STROGONOFF
             </h2>
-            
-            <div class="space-y-4">
-                <!-- Strogonoff -->
-                <div onclick="addToCart('TRADICIONAL (FRANGO)', 30, '', 'main')" class="min-card p-3 rounded-xl flex gap-4 cursor-pointer group hover:border-[#63121a]/30">
-                    <div class="w-24 h-24 rounded-lg overflow-hidden theme-border border flex-shrink-0 bg-gray-100">
-                        <img src="image/strogonoff.png" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">TRADICIONAL (FRANGO)</h3>
-                            <p class="text-xs theme-text-secondary mt-1 line-clamp-3">Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.</p>
-                        </div>
-                        <div class="flex justify-between items-end mt-2">
-                            <span class="font-bold theme-price text-lg flex items-baseline gap-1">
-                                <span class="text-xs font-bold">R$</span> 30
-                            </span>
-                            <span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition">+</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Batata -->
-                <div onclick="addToCart('BATATA RECHEADA', 35, '', 'main')" class="min-card p-3 rounded-xl flex gap-4 cursor-pointer group hover:border-[#63121a]/30">
-                    <div class="w-24 h-24 rounded-lg overflow-hidden theme-border border flex-shrink-0 bg-gray-100">
-                        <img src="image/batata.png" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">BATATA RECHEADA</h3>
-                            <p class="text-xs theme-text-secondary mt-1 line-clamp-3">Batata assada e recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.</p>
-                        </div>
-                        <div class="flex justify-between items-end mt-2">
-                            <span class="font-bold theme-price text-lg flex items-baseline gap-1">
-                                <span class="text-xs font-bold">R$</span> 35
-                            </span>
-                            <span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition">+</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="lista-pratos" class="space-y-4"></div>
         </section>
 
-        <!-- ADICIONAIS -->
         <section id="adicionais" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
                 TURBINE SEU STROGONOFF
             </h2>
-            
-            <div class="grid grid-cols-2 gap-3">
-                <!-- Bacon -->
-                <div onclick="addToCart('Chuva de Bacon', 8, '', 'extra')" class="min-card p-3 rounded-xl flex items-center gap-3 cursor-pointer hover:border-[#63121a]/50 transition">
-                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 flex-shrink-0">
-                        <img src="image/bacon.png" class="w-full h-full object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/7293/7293557.png'">
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="font-bold text-xs theme-text-primary">Bacon Crispy</h3>
-                        <span class="text-[10px] theme-text-secondary block">Chuva de Bacon</span>
-                        <span class="font-bold theme-price text-sm mt-1 flex items-baseline gap-1">
-                            <span class="text-[10px]">R$</span> 8
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Catupiry -->
-                <div onclick="addToCart('Catupiry Original', 10, '', 'extra')" class="min-card p-3 rounded-xl flex items-center gap-3 cursor-pointer hover:border-[#63121a]/50 transition">
-                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 flex-shrink-0">
-                        <img src="image/catupiry.png" class="w-full h-full object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/11548/11548232.png'">
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="font-bold text-xs theme-text-primary">Catupiry</h3>
-                        <span class="text-[10px] theme-text-secondary block">Talagada</span>
-                        <span class="font-bold theme-price text-sm mt-1 flex items-baseline gap-1">
-                            <span class="text-[10px]">R$</span> 10
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <div id="lista-adicionais" class="grid grid-cols-2 gap-3"></div>
         </section>
 
-        <!-- BEBIDAS -->
         <section id="bebidas" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
                 Bebidas
             </h2>
-            
             <div class="theme-bg-card border theme-border rounded-xl divide-y theme-border divide-opacity-10 overflow-hidden shadow-soft">
                 <div class="p-3 theme-bg-header text-xs font-bold uppercase tracking-wider theme-text-secondary transition-colors duration-300">
                     Refrigerantes, Sucos & Água
                 </div>
-
-                <!-- Refrigerantes -->
-                <div onclick="addToCart('Coca-Cola Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/coca.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Coca-Cola Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <div onclick="addToCart('Coca-Cola Zero Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/cocazero.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Coca-Cola Zero Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <div onclick="addToCart('Guaraná Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/guarana.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Guaraná Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <div onclick="addToCart('Fanta Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/fanta.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Fanta Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <div onclick="addToCart('Sprite Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/sprit.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Sprite Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <!-- Sucos -->
-                <div onclick="addToCart('Del Valle Uva Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/delvalleuva.png" class="w-10 h-10 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/9921/9921060.png'">
-                        <span class="font-medium theme-text-primary">Del Valle Uva Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <div onclick="addToCart('Del Valle Pêssego Lata', 6, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/delvallepessego.png" class="w-10 h-10 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/9921/9921060.png'">
-                        <span class="font-medium theme-text-primary">Del Valle Pêssego Lata</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 6</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-                 
-                 <!-- Águas -->
-                 <div onclick="addToCart('Água com Gás', 4, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/aguagas.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Água com Gás</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 4</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
-
-                <div onclick="addToCart('Água sem Gás', 4, '', 'drink')" class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition">
-                    <div class="flex items-center gap-4">
-                        <img src="image/agua.png" class="w-10 h-10 object-contain">
-                        <span class="font-medium theme-text-primary">Água sem Gás</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> 4</span>
-                        <i class="fas fa-plus-circle theme-brand-red text-lg"></i>
-                    </div>
-                </div>
+                <div id="lista-bebidas"></div>
             </div>
         </section>
-
     </main>
 
     <!-- BARRA DE SACOLA -->
@@ -486,11 +258,7 @@
                 <i class="fas fa-times text-lg"></i>
             </button>
         </div>
-
-        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
-            <!-- Items JS -->
-        </div>
-
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
         <div class="p-6 border-t theme-border theme-bg-card">
             <div class="flex justify-between items-center mb-6">
                 <span class="theme-text-secondary">Subtotal</span>
@@ -506,7 +274,7 @@
     <!-- OVERLAY -->
     <div id="overlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/80 z-[55] hidden modal-overlay transition-opacity"></div>
 
-    <!-- MODAL COMBO -->
+    <!-- MODAL COMBO (Gerado Dinamicamente) -->
     <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors">
@@ -517,40 +285,18 @@
                     <p class="theme-text-secondary text-xs mt-1">Strogonoff + Adicional + Bebida</p>
                 </div>
                 <div class="text-right">
-                    <span class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 39,90</span>
+                    <span id="modal-combo-preco" class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 0,00</span>
                 </div>
             </div>
 
             <div class="space-y-6 overflow-y-auto max-h-[60vh] custom-scrollbar">
-                <!-- Adicional -->
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Escolha o Adicional</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="selectComboOption('extra', 'Bacon Crispy')" id="combo-extra-Bacon-Crispy" class="combo-opt text-left p-3 rounded-lg border theme-border hover:bg-black/5 transition flex items-center gap-3">
-                            <span class="text-xl">🥓</span>
-                            <span class="text-sm font-medium theme-text-primary">Bacon</span>
-                        </button>
-                        <button onclick="selectComboOption('extra', 'Catupiry')" id="combo-extra-Catupiry" class="combo-opt text-left p-3 rounded-lg border theme-border hover:bg-black/5 transition flex items-center gap-3">
-                            <span class="text-xl">🧀</span>
-                            <span class="text-sm font-medium theme-text-primary">Catupiry</span>
-                        </button>
-                    </div>
+                    <div id="modal-combo-extras" class="grid grid-cols-2 gap-3"></div>
                 </div>
-
-                <!-- Bebida -->
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">2. Bebida Grátis</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="selectComboOption('drink', 'Coca-Cola')" id="combo-drink-Coca-Cola" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Coca-Cola</button>
-                        <button onclick="selectComboOption('drink', 'Coca-Cola Zero')" id="combo-drink-Coca-Cola-Zero" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Coca-Cola Zero</button>
-                        <button onclick="selectComboOption('drink', 'Guaraná')" id="combo-drink-Guaraná" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Guaraná</button>
-                        <button onclick="selectComboOption('drink', 'Fanta')" id="combo-drink-Fanta" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Fanta</button>
-                        <button onclick="selectComboOption('drink', 'Sprite')" id="combo-drink-Sprite" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Sprite</button>
-                        <button onclick="selectComboOption('drink', 'Del Valle Uva')" id="combo-drink-Del-Valle-Uva" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Del Valle Uva</button>
-                        <button onclick="selectComboOption('drink', 'Del Valle Pêssego')" id="combo-drink-Del-Valle-Pêssego" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Del Valle Pêssego</button>
-                        <button onclick="selectComboOption('drink', 'Água com Gás')" id="combo-drink-Água-com-Gás" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Água com Gás</button>
-                        <button onclick="selectComboOption('drink', 'Água sem Gás')" id="combo-drink-Água-sem-Gás" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition">Água sem Gás</button>
-                    </div>
+                    <div id="modal-combo-bebidas" class="grid grid-cols-2 gap-2"></div>
                 </div>
             </div>
 
@@ -567,22 +313,12 @@
             <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary p-2">
                 <i class="fas fa-times"></i>
             </button>
-            
             <h3 class="text-xl font-serif font-bold mb-8 theme-text-primary text-center">Finalizar Pedido</h3>
-
             <form id="checkout-form" onsubmit="event.preventDefault(); finalizeOrder();" class="space-y-4">
-                <div>
-                    <input type="text" id="client-name" required class="input-min" placeholder="Seu Nome *">
-                </div>
-                <div>
-                    <input type="tel" id="client-phone" required class="input-min" placeholder="Seu WhatsApp (DDD) *">
-                </div>
-                <div>
-                    <textarea id="client-address" required rows="1" class="input-min resize-none" placeholder="Endereço de Entrega *"></textarea>
-                </div>
-                <div>
-                    <textarea id="client-obs" rows="2" class="input-min resize-none" placeholder="Observações (Ex: Sem cebola, capricha no molho...)"></textarea>
-                </div>
+                <div><input type="text" id="client-name" required class="input-min" placeholder="Seu Nome *"></div>
+                <div><input type="tel" id="client-phone" required class="input-min" placeholder="Seu WhatsApp (DDD) *"></div>
+                <div><textarea id="client-address" required rows="1" class="input-min resize-none" placeholder="Endereço de Entrega *"></textarea></div>
+                <div><textarea id="client-obs" rows="2" class="input-min resize-none" placeholder="Observações (Ex: Sem cebola, capricha no molho...)"></textarea></div>
                 <div>
                     <select id="payment-method" onchange="toggleChangeInput()" class="input-min">
                         <option value="" disabled selected>Forma de Pagamento *</option>
@@ -595,7 +331,6 @@
                     <input type="text" id="change-for" class="input-min" placeholder="Troco para quanto?">
                 </div>
             </form>
-
             <button onclick="finalizeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg flex items-center justify-center gap-2 transition text-center">
                 <span>Enviar no WhatsApp</span>
                 <i class="fab fa-whatsapp"></i>
@@ -611,12 +346,8 @@
                 <i class="fas fa-check text-3xl"></i>
             </div>
             <h3 class="text-xl font-serif font-bold theme-text-primary mb-2">Pedido Gerado!</h3>
-            <p class="theme-text-secondary text-sm mb-6">
-                Você será redirecionado para o WhatsApp. Por favor, <strong>envie a mensagem</strong> para confirmar seu pedido.
-            </p>
-            <button onclick="closeSuccessModal()" class="w-full theme-bg-red text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transition">
-                Entendi
-            </button>
+            <p class="theme-text-secondary text-sm mb-6">Você será redirecionado para o WhatsApp. Por favor, <strong>envie a mensagem</strong> para confirmar seu pedido.</p>
+            <button onclick="closeSuccessModal()" class="w-full theme-bg-red text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transition">Entendi</button>
         </div>
     </div>
 
@@ -631,71 +362,194 @@
     <script>
         // --- CONFIGURAÇÕES ---
         const MIN_ORDER_VALUE = 25.00;
-        let globalStoreStatus = true; // Default open, overwritten by JSON
+        let globalStoreStatus = true;
+        let comboGlobalData = null; // Armazena dados do combo
+        
+        // Substitua esta URL pela URL do seu novo JSON gerado
+        const DATA_URL = `./dados.json`; 
+        
+        let lastDataHash = "";
+        let carouselInterval = null;
 
-        // --- FETCH REMOTE STATUS ---
-        document.addEventListener('DOMContentLoaded', async () => {
+        // --- FETCH DADOS E POLLING ---
+        async function carregarDadosDoBanco() {
             try {
-                // Tenta carregar o status do nPoint com Cache Busting (?t=timestamp)
-                // Isso força o navegador a baixar a versão mais recente sempre
-                const urlControle = `https://api.npoint.io/9b7175027df59414e819?t=${new Date().getTime()}`;
-                
-                const response = await fetch(urlControle);
+                const response = await fetch(`${DATA_URL}?t=${new Date().getTime()}`);
                 const data = await response.json();
                 
-                globalStoreStatus = data.loja_aberta;
-                
-                // Atualiza UI
-                const statusText = document.getElementById('status-text');
-                const statusIcon = document.getElementById('status-icon');
-                const statusContainer = document.getElementById('store-status-container');
-                
-                if(data.loja_aberta) {
-                    statusText.innerText = `${data.mensagem_aberto || 'Aberto agora'} • ${data.tempo_entrega || '30-45 min'}`;
-                    statusIcon.className = 'far fa-clock theme-brand-red';
-                } else {
-                    statusText.innerText = data.mensagem_fechado || 'Fechado no momento';
-                    statusIcon.className = 'far fa-clock text-gray-500';
-                    statusContainer.classList.add('opacity-70');
+                const currentDataHash = JSON.stringify(data);
+                if (currentDataHash !== lastDataHash) {
+                    renderizarInterface(data);
+                    lastDataHash = currentDataHash;
                 }
             } catch (e) {
-                console.log('Erro ao carregar status, usando padrão (Aberto)');
+                console.error('Erro ao buscar dados do cardápio:', e);
             }
-            
-            // Inicia Carrossel
-            startComboCarousel();
-        });
-
-        // --- PWA SERVICE WORKER REGISTRATION (ADICIONADO) ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('ServiceWorker registration failed:', error);
-                    });
-            });
         }
 
-        // --- TEMA ---
+        // --- RENDERIZAÇÃO DINÂMICA (SEM F5) ---
+        function renderizarInterface(data) {
+            // 1. Status da Loja
+            globalStoreStatus = data.configuracoes.loja_aberta;
+            const statusContainer = document.getElementById('store-status-container');
+            const statusIcon = document.getElementById('status-icon');
+            const statusText = document.getElementById('status-text');
+
+            if (globalStoreStatus) {
+                statusText.innerText = `${data.configuracoes.mensagem_aberto || 'Aberto agora'} • ${data.configuracoes.tempo_entrega || '30-45 min'}`;
+                statusIcon.className = 'far fa-clock theme-brand-red';
+                statusContainer.classList.remove('opacity-70');
+            } else {
+                statusText.innerText = data.configuracoes.mensagem_fechado || 'Fechado no momento';
+                statusIcon.className = 'far fa-clock text-gray-500';
+                statusContainer.classList.add('opacity-70');
+            }
+
+            // 2. Renderizar Combo
+            comboGlobalData = data.combo;
+            const destaqueSection = document.getElementById('destaque');
+            if (data.combo.disponivel) {
+                const imagensCombo = data.combo.imagens.map((img, i) => 
+                    `<img src="${img}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" alt="Combo Image ${i+1}">`
+                ).join('');
+
+                destaqueSection.innerHTML = `
+                    <div class="theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300">
+                        <div class="absolute top-3 left-3 theme-bg-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">Mais Pedido</div>
+                        <div onclick="openComboModal()" class="cursor-pointer">
+                            <div class="h-56 overflow-hidden relative bg-gray-100" id="combo-carousel">
+                                ${imagensCombo}
+                            </div>
+                            <div class="p-5 relative z-20">
+                                <h2 class="font-serif text-2xl font-bold theme-text-primary mb-2 text-[#63121a]">${data.combo.titulo}</h2>
+                                <p class="theme-text-secondary text-sm leading-relaxed mb-4">${data.combo.descricao}</p>
+                                <div class="flex justify-between items-end pt-4 border-t theme-border border-dashed">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs theme-text-secondary line-through opacity-60"><span class="text-[10px]">R$</span> ${formatPrice(data.combo.preco_de)}</span>
+                                        <span class="text-2xl font-bold theme-price flex items-baseline gap-1">
+                                            <span class="text-sm font-bold">R$</span> ${formatPrice(data.combo.preco_por)}
+                                        </span>
+                                    </div>
+                                    <button class="btn-add-theme text-xs font-bold uppercase px-4 py-2 rounded transition flex items-center gap-2">
+                                        <i class="fas fa-plus text-[10px]"></i> Adicionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                startComboCarousel();
+                document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(data.combo.preco_por)}`;
+            } else {
+                destaqueSection.innerHTML = '';
+            }
+
+            // 3. Renderizar Pratos Principais
+            const listaPratos = document.getElementById('lista-pratos');
+            listaPratos.innerHTML = data.pratos.map(prato => {
+                const disponivelAttr = prato.disponivel ? `onclick="addToCart('${prato.nome}', ${prato.preco}, '', '${prato.tipo}')"` : '';
+                const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
+                
+                return `
+                <div ${disponivelAttr} class="min-card p-3 rounded-xl flex gap-4 group ${indisponivelClass} relative overflow-hidden">
+                    ${!prato.disponivel ? '<div class="absolute inset-0 bg-white/40 backdrop-blur-[1px] z-10 flex items-center justify-center"><span class="bg-black/80 text-white text-xs font-bold px-3 py-1 rounded shadow-lg uppercase tracking-wider">Esgotado</span></div>' : ''}
+                    <div class="w-24 h-24 rounded-lg overflow-hidden theme-border border flex-shrink-0 bg-gray-100">
+                        <img src="${prato.imagem}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between py-1">
+                        <div>
+                            <h3 class="font-bold theme-text-primary text-base text-[#63121a]">${prato.nome}</h3>
+                            <p class="text-xs theme-text-secondary mt-1 line-clamp-3">${prato.descricao}</p>
+                        </div>
+                        <div class="flex justify-between items-end mt-2">
+                            <span class="font-bold theme-price text-lg flex items-baseline gap-1">
+                                <span class="text-xs font-bold">R$</span> ${formatPrice(prato.preco)}
+                            </span>
+                            ${prato.disponivel ? '<span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition">+</span>' : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // 4. Renderizar Adicionais
+            const listaAdicionais = document.getElementById('lista-adicionais');
+            const extrasDisponiveis = data.adicionais.filter(a => a.disponivel);
+            
+            listaAdicionais.innerHTML = data.adicionais.map(adc => {
+                const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')"` : '';
+                const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
+                
+                return `
+                <div ${disponivelAttr} class="min-card p-3 rounded-xl flex items-center gap-3 transition ${indisponivelClass} relative">
+                    ${!adc.disponivel ? '<div class="absolute right-2 top-2"><span class="bg-red-600/10 text-red-600 border border-red-600/20 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou</span></div>' : ''}
+                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 flex-shrink-0">
+                        <img src="${adc.imagem}" class="w-full h-full object-contain" onerror="this.src='${adc.fallback || ''}'">
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-xs theme-text-primary">${adc.display}</h3>
+                        <span class="text-[10px] theme-text-secondary block">${adc.subtitulo}</span>
+                        <span class="font-bold theme-price text-sm mt-1 flex items-baseline gap-1">
+                            <span class="text-[10px]">R$</span> ${formatPrice(adc.preco)}
+                        </span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Preencher Modal de Combo (Adicionais) - Apenas disponíveis
+            document.getElementById('modal-combo-extras').innerHTML = extrasDisponiveis.map(adc => `
+                <button onclick="selectComboOption('extra', '${adc.display}')" id="combo-extra-${adc.display.replace(/\s+/g, '-')}" class="combo-opt text-left p-3 rounded-lg border theme-border hover:bg-black/5 transition flex items-center gap-3">
+                    <span class="text-xl">${adc.icone || '➕'}</span>
+                    <span class="text-sm font-medium theme-text-primary">${adc.display}</span>
+                </button>
+            `).join('');
+
+            // 5. Renderizar Bebidas
+            const listaBebidas = document.getElementById('lista-bebidas');
+            const bebidasDisponiveis = data.bebidas.filter(b => b.disponivel);
+
+            listaBebidas.innerHTML = data.bebidas.map(bebida => {
+                const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')"` : '';
+                const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
+
+                return `
+                <div ${disponivelAttr} class="flex items-center justify-between p-4 transition ${indisponivelClass}">
+                    <div class="flex items-center gap-4">
+                        <img src="${bebida.imagem}" class="w-10 h-10 object-contain" onerror="this.src='${bebida.fallback || ''}'">
+                        <span class="font-medium theme-text-primary flex items-center gap-2">
+                            ${bebida.nome}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Esgotado</span>' : ''}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> ${formatPrice(bebida.preco)}</span>
+                        ${bebida.disponivel ? '<i class="fas fa-plus-circle theme-brand-red text-lg"></i>' : ''}
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Preencher Modal de Combo (Bebidas) - Apenas disponíveis
+            document.getElementById('modal-combo-bebidas').innerHTML = bebidasDisponiveis.map(bebida => `
+                <button onclick="selectComboOption('drink', '${bebida.nome}')" id="combo-drink-${bebida.nome.replace(/\s+/g, '-')}" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition line-clamp-1">${bebida.nome}</button>
+            `).join('');
+        }
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarDadosDoBanco();
+            setInterval(carregarDadosDoBanco, 30000); // Polling: Atualiza a cada 30 segundos
+        });
+
+        // --- FUNCIONALIDADES ORIGINAIS MANTIDAS ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
+        }
+
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('theme-icon');
-            
             body.classList.toggle('dark-mode'); 
-            
-            if (body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
+            icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
         }
 
-        // --- NAVEGAÇÃO INTERATIVA ---
         function setActiveNav(element) {
             document.querySelectorAll('.nav-link').forEach(el => {
                 el.classList.remove('active');
@@ -709,60 +563,40 @@
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');
             let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= (sectionTop - 150)) {
-                    current = section.getAttribute('id');
-                }
-            });
+            sections.forEach(s => { if (pageYOffset >= (s.offsetTop - 150)) current = s.getAttribute('id'); });
             navLinks.forEach(link => {
-                link.classList.remove('active');
-                link.classList.add('inactive');
+                link.classList.remove('active'); link.classList.add('inactive');
                 if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                    link.classList.remove('inactive');
+                    link.classList.add('active'); link.classList.remove('inactive');
                 }
             });
         });
 
-        // --- ESTADO ---
         let cart = [];
         let comboSelection = { extra: null, drink: null };
         let currentSlide = 0;
-        const totalSlides = 5;
 
-        // --- CARROSSEL ---
         function startComboCarousel() {
+            if (carouselInterval) clearInterval(carouselInterval);
+            currentSlide = 0;
             const slides = document.querySelectorAll('#combo-carousel img');
             if (slides.length === 0) return;
-
-            setInterval(() => {
+            carouselInterval = setInterval(() => {
                 slides[currentSlide].classList.remove('opacity-100');
                 slides[currentSlide].classList.add('opacity-0');
-                
-                currentSlide = (currentSlide + 1) % totalSlides;
-                
+                currentSlide = (currentSlide + 1) % slides.length;
                 slides[currentSlide].classList.remove('opacity-0');
                 slides[currentSlide].classList.add('opacity-100');
             }, 3000); 
         }
 
-        // --- HELPER PRICE FORMAT ---
         function formatPrice(value) {
-            if (value % 1 === 0) {
-                return value.toString();
-            }
-            return value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            return value % 1 === 0 ? value.toString() : value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         }
 
-        // --- LÓGICA CARRINHO ---
         function addToCart(name, price, details = '', type = 'other') {
-            if (type === 'extra') {
-                const hasMainDish = cart.some(item => item.type === 'main' || item.name === 'Super Combo');
-                if (!hasMainDish) {
-                    showToast('Ops! Adicione um prato antes do adicional 🥓', true);
-                    return;
-                }
+            if (type === 'extra' && !cart.some(i => i.type === 'main' || i.name === comboGlobalData?.nome)) {
+                return showToast('Ops! Adicione um prato antes do adicional 🥓', true);
             }
             cart.push({ name, price, details, type });
             updateCartUI();
@@ -770,37 +604,22 @@
             if (navigator.vibrate) navigator.vibrate(30);
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
         function updateCartUI() {
             const bar = document.getElementById('cart-bar');
-            const totalEl = document.getElementById('cart-total');
-            const barTotalEl = document.getElementById('cart-bar-total');
-            const barCountEl = document.getElementById('cart-bar-count');
             const container = document.getElementById('cart-items-container');
-
-            if (cart.length > 0) {
-                bar.classList.remove('translate-y-full');
-            } else {
-                bar.classList.add('translate-y-full');
-                closeCartDrawer(); 
-            }
+            if (cart.length > 0) bar.classList.remove('translate-y-full');
+            else { bar.classList.add('translate-y-full'); closeCartDrawer(); }
 
             const total = cart.reduce((acc, item) => acc + item.price, 0);
             const formattedTotal = formatPrice(total);
-            const priceHTML = `<span class="text-sm font-bold">R$</span> ${formattedTotal}`;
-            
-            totalEl.innerHTML = priceHTML;
-            barTotalEl.innerHTML = `<span class="text-xs font-bold">R$</span> ${formattedTotal}`;
-            barCountEl.textContent = `${cart.length} item${cart.length !== 1 ? 's' : ''}`;
+            document.getElementById('cart-total').innerHTML = `<span class="text-sm font-bold">R$</span> ${formattedTotal}`;
+            document.getElementById('cart-bar-total').innerHTML = `<span class="text-xs font-bold">R$</span> ${formattedTotal}`;
+            document.getElementById('cart-bar-count').textContent = `${cart.length} item${cart.length !== 1 ? 's' : ''}`;
 
-            if (cart.length === 0) {
-                container.innerHTML = `<div class="text-center theme-text-secondary py-10 opacity-50">Sacola vazia</div>`;
-            } else {
-                container.innerHTML = cart.map((item, index) => `
+            container.innerHTML = cart.length === 0 ? `<div class="text-center theme-text-secondary py-10 opacity-50">Sacola vazia</div>` : 
+                cart.map((item, index) => `
                     <div class="flex justify-between items-start py-2 border-b theme-border border-opacity-10 last:border-0">
                         <div>
                             <div class="theme-text-primary font-medium text-sm">${item.name}</div>
@@ -809,59 +628,41 @@
                                 <span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}
                             </div>
                         </div>
-                        <button onclick="removeFromCart(${index})" class="theme-text-secondary hover:text-red-500 p-2">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
+                        <button onclick="removeFromCart(${index})" class="theme-text-secondary hover:text-red-500 p-2"><i class="fas fa-trash-alt"></i></button>
+                    </div>`).join('');
         }
 
         function openCartDrawer() {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('overlay');
-            drawer.classList.remove('translate-x-full');
-            overlay.classList.remove('hidden');
+            document.getElementById('cart-drawer').classList.remove('translate-x-full');
+            document.getElementById('overlay').classList.remove('hidden');
         }
-
         function closeCartDrawer() {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('overlay');
-            drawer.classList.add('translate-x-full');
-            overlay.classList.add('hidden');
+            document.getElementById('cart-drawer').classList.add('translate-x-full');
+            document.getElementById('overlay').classList.add('hidden');
         }
 
         function openComboModal() {
             comboSelection = { extra: null, drink: null };
-            document.querySelectorAll('.combo-opt').forEach(el => {
-                el.classList.remove('theme-border-red', 'bg-red-500/10', 'theme-brand-red');
-                el.classList.add('theme-border', 'theme-text-primary');
-                el.style.backgroundColor = '';
-                el.style.borderColor = '';
-                el.style.color = '';
-            });
-            document.getElementById('combo-modal').classList.remove('hidden');
-            document.getElementById('combo-modal').classList.add('flex');
+            document.querySelectorAll('.combo-opt').forEach(el => resetComboButtonStyle(el));
+            const modal = document.getElementById('combo-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+        function closeComboModal() {
+            const modal = document.getElementById('combo-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
         }
 
-        function closeComboModal() {
-            document.getElementById('combo-modal').classList.add('hidden');
-            document.getElementById('combo-modal').classList.remove('flex');
+        function resetComboButtonStyle(btn) {
+            btn.classList.remove('theme-border-red', 'bg-red-500/10', 'theme-brand-red', 'text-white');
+            btn.classList.add('theme-border', 'theme-text-primary');
+            btn.style.backgroundColor = ''; btn.style.borderColor = ''; btn.style.color = '';
         }
 
         function selectComboOption(type, value) {
             comboSelection[type] = value;
-            const container = document.getElementById(type === 'extra' ? 'combo-extra-Bacon-Crispy' : 'combo-drink-Coca-Cola').parentNode;
-            container.querySelectorAll('button').forEach(btn => {
-                btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
-                btn.classList.add('theme-border', 'theme-text-primary');
-                btn.style.backgroundColor = '';
-                btn.style.borderColor = '';
-                btn.style.color = '';
-            });
-            
-            const btnId = `combo-${type}-${value.replace(/\s+/g, '-')}`;
-            const btn = document.getElementById(btnId);
+            const container = document.getElementById(`modal-combo-${type === 'extra' ? 'extras' : 'bebidas'}`);
+            container.querySelectorAll('button').forEach(resetComboButtonStyle);
+            const btn = document.getElementById(`combo-${type}-${value.replace(/\s+/g, '-')}`);
             if(btn) {
                 btn.classList.remove('theme-border', 'theme-text-primary');
                 btn.classList.add('theme-border-red');
@@ -872,167 +673,56 @@
         }
 
         function confirmCombo() {
-            if(!comboSelection.extra || !comboSelection.drink) {
-                showToast('Selecione os itens!');
-                return;
-            }
-            addToCart('Super Combo', 39.90, `${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
+            if(!comboSelection.extra || !comboSelection.drink) return showToast('Selecione os itens!');
+            addToCart(comboGlobalData.nome, comboGlobalData.preco_por, `${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
             closeComboModal();
         }
 
         function openCheckoutModal() {
-            // Verifica status da loja antes de abrir
-            if (!globalStoreStatus) {
-                showToast("Estamos fechados no momento! 🌙", true);
-                return;
-            }
-
-            const total = cart.reduce((acc, i) => acc + i.price, 0);
-            if (total < MIN_ORDER_VALUE) {
-                showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
-                return;
-            }
-            const drawer = document.getElementById('cart-drawer');
-            if(!drawer.classList.contains('translate-x-full')) {
-                closeCartDrawer();
-            }
-            document.getElementById('checkout-modal').classList.remove('hidden');
-            document.getElementById('checkout-modal').classList.add('flex');
+            if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
+            if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
+            closeCartDrawer();
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
-
         function closeCheckoutModal() {
-            document.getElementById('checkout-modal').classList.add('hidden');
-            document.getElementById('checkout-modal').classList.remove('flex');
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
         }
 
         function toggleChangeInput() {
-            const method = document.getElementById('payment-method').value;
-            document.getElementById('change-input-group').classList.toggle('hidden', method !== 'Dinheiro');
+            document.getElementById('change-input-group').classList.toggle('hidden', document.getElementById('payment-method').value !== 'Dinheiro');
         }
 
-        // === Formatação de Telefone ===
         function formatPhoneNumber(phone) {
             const cleaned = ('' + phone).replace(/\D/g, '');
-            const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
-            if (match) {
-                return `(${match[1]}) ${match[2]}-${match[3]}`;
-            }
-            const matchOld = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
-            if (matchOld) {
-                return `(${matchOld[1]}) ${matchOld[2]}-${matchOld[3]}`;
-            }
-            return phone;
+            const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/) || cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+            return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
         }
 
         function finalizeOrder() {
-            // Dupla verificação de status
-            if (!globalStoreStatus) {
-                showToast("Estamos fechados no momento! 🌙", true);
-                return;
-            }
+            if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
+            const name = document.getElementById('client-name').value, phone = document.getElementById('client-phone').value, address = document.getElementById('client-address').value, obs = document.getElementById('client-obs').value, payment = document.getElementById('payment-method').value, change = document.getElementById('change-for').value;
+            if(!name || !phone || !address || !payment) return showToast('Por favor, preencha os campos obrigatórios (*) para finalizar seu pedido! 😊', true);
 
-            const name = document.getElementById('client-name').value;
-            const phone = document.getElementById('client-phone').value;
-            const address = document.getElementById('client-address').value;
-            const obs = document.getElementById('client-obs').value;
-            const payment = document.getElementById('payment-method').value;
-            const change = document.getElementById('change-for').value;
-
-            if(!name || !phone || !address || !payment) {
-                showToast('Por favor, preencha os campos obrigatórios (*) para finalizar seu pedido! 😊', true);
-                return;
-            }
-
-            const formattedPhone = formatPhoneNumber(phone);
-
-            // Emojis (Unicode)
-            const emojiStar = String.fromCodePoint(0x2B50); 
-            const emojiPlate = String.fromCodePoint(0x1F37D);
-            const emojiUser = String.fromCodePoint(0x1F464);
-            const emojiPhone = String.fromCodePoint(0x1F4F1);
-            const emojiPin = String.fromCodePoint(0x1F4CD);
-            const emojiMemo = String.fromCodePoint(0x1F4DD);
-            const emojiCheck = String.fromCodePoint(0x2705);
-            const emojiArrow = String.fromCodePoint(0x21B3);
-            const emojiMoney = String.fromCodePoint(0x1F4B0);
-            const emojiCard = String.fromCodePoint(0x1F4B3);
-
-            let text = `------------------------------------------\n`;
-            text += `${emojiStar} *PEDIDO RECANTO* ${emojiPlate}\n`;
-            text += `------------------------------------------\n\n`;
-
-            text += `*DADOS DO CLIENTE:*\n`;
-            text += `${emojiUser} *${name}*\n`;
-            text += `${emojiPhone} *${formattedPhone}*\n\n`;
-
-            text += `*DADOS DE ENTREGA:*\n`;
-            text += `${emojiPin} ${address}\n\n`;
-
-            text += `*RESUMO DO PEDIDO:*\n`;
+            let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n*RESUMO DO PEDIDO:*\n`;
+            cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
+            if(obs) text += `📝 *OBSERVAÇÕES:*\n${obs}\n\n`;
             
-            cart.forEach(item => {
-                text += `${emojiCheck} *${item.name}*\n`; 
-                if (item.details) {
-                    text += `   ${emojiArrow} _${item.details}_\n`;
-                }
-                text += `   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
-            });
+            text += `💰 *TOTAL: R$ ${cart.reduce((acc, i) => acc + i.price, 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}*\n💳 *PAGAMENTO:* ${payment}${change ? ` (Troco p/ ${change})` : ''}`;
 
-            if(obs) {
-                text += `${emojiMemo} *OBSERVAÇÕES:*\n${obs}\n\n`;
-            }
-
-            const total = cart.reduce((acc, i) => acc + i.price, 0);
-            const totalFormatted = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            
-            text += `${emojiMoney} *TOTAL: R$ ${totalFormatted}*\n`;
-            text += `${emojiCard} *PAGAMENTO:* ${payment}`;
-            
-            if (change) {
-                text += ` (Troco p/ ${change})`;
-            }
-
-            const storePhone = "5537984243487";
-            const textEncoded = encodeURIComponent(text);
-            const url = `https://api.whatsapp.com/send?phone=${storePhone}&text=${textEncoded}`;
-            
-            window.open(url, '_blank');
-            
-            // Logic to clear and show success modal
-            cart = [];
-            updateCartUI();
-            closeCheckoutModal();
-            openSuccessModal();
+            window.open(`https://api.whatsapp.com/send?phone=5537984243487&text=${encodeURIComponent(text)}`, '_blank');
+            cart = []; updateCartUI(); closeCheckoutModal();
+            document.getElementById('success-modal').classList.remove('hidden'); document.getElementById('success-modal').classList.add('flex');
         }
-
-        function openSuccessModal() {
-            const modal = document.getElementById('success-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeSuccessModal() {
-            const modal = document.getElementById('success-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
+        
+        function closeSuccessModal() { document.getElementById('success-modal').classList.add('hidden'); document.getElementById('success-modal').classList.remove('flex'); }
 
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
-            const msgEl = document.getElementById('toast-msg');
-            const iconEl = toast.querySelector('i');
-            msgEl.innerText = msg;
-            
-            if (isError) {
-                toast.querySelector('div').classList.remove('theme-bg-red');
-                toast.querySelector('div').classList.add('bg-red-600');
-                iconEl.className = 'fas fa-exclamation-circle text-white';
-            } else {
-                toast.querySelector('div').classList.add('theme-bg-red');
-                toast.querySelector('div').classList.remove('bg-red-600');
-                iconEl.className = 'fas fa-check-circle text-white';
-            }
-
+            document.getElementById('toast-msg').innerText = msg;
+            toast.querySelector('div').className = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 ${isError ? 'bg-red-600' : 'theme-bg-red'}`;
+            toast.querySelector('i').className = `text-white fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}`;
             toast.classList.remove('translate-y-[-200%]');
             setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
         }

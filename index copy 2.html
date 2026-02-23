@@ -4,6 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recanto do Strogonoff | Pedido Online</title>
+    
+    <!-- CONFIGURAÇÃO PWA -->
+    <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="image/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        // Verifica o domínio atual para evitar erro de "Origem Inválida" em ambientes de teste
+        const currentHost = window.location.hostname;
+        const allowedHosts = ['recantodostrogonoff.netlify.app', 'localhost', '127.0.0.1'];
+        
+        if (allowedHosts.some(host => currentHost.includes(host))) {
+            await OneSignal.init({
+              appId: "acb89e44-781e-4ea6-b349-cd1ead5999c3",
+              safari_web_id: "web.onesignal.auto.2cb21d9d-922f-420a-8137-99f511b7fc1b",
+              notifyButton: {
+                enable: true,
+              },
+              allowLocalhostAsSecureOrigin: true,
+            });
+        }
+      });
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -152,22 +183,6 @@
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px var(--shadow-color)',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body class="pb-32"> 
 
@@ -182,10 +197,12 @@
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000')] bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-40 md:h-52 object-contain mb-1 drop-shadow-xl animate-bounce-in">
+            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
-            <div class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm">
-                <i class="far fa-clock theme-brand-red"></i> <span>Aberto agora • 30-45 min</span>
+            
+            <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm">
+                <i id="status-icon" class="far fa-clock theme-brand-red"></i> 
+                <span id="status-text">Aberto agora • 30-45 min</span>
             </div>
         </div>
     </header>
@@ -614,6 +631,53 @@
     <script>
         // --- CONFIGURAÇÕES ---
         const MIN_ORDER_VALUE = 25.00;
+        let globalStoreStatus = true; // Default open, overwritten by JSON
+
+        // --- FETCH REMOTE STATUS ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Tenta carregar o status do nPoint com Cache Busting (?t=timestamp)
+                // Isso força o navegador a baixar a versão mais recente sempre
+                const urlControle = `https://api.npoint.io/9b7175027df59414e819?t=${new Date().getTime()}`;
+                
+                const response = await fetch(urlControle);
+                const data = await response.json();
+                
+                globalStoreStatus = data.loja_aberta;
+                
+                // Atualiza UI
+                const statusText = document.getElementById('status-text');
+                const statusIcon = document.getElementById('status-icon');
+                const statusContainer = document.getElementById('store-status-container');
+                
+                if(data.loja_aberta) {
+                    statusText.innerText = `${data.mensagem_aberto || 'Aberto agora'} • ${data.tempo_entrega || '30-45 min'}`;
+                    statusIcon.className = 'far fa-clock theme-brand-red';
+                } else {
+                    statusText.innerText = data.mensagem_fechado || 'Fechado no momento';
+                    statusIcon.className = 'far fa-clock text-gray-500';
+                    statusContainer.classList.add('opacity-70');
+                }
+            } catch (e) {
+                console.log('Erro ao carregar status, usando padrão (Aberto)');
+            }
+            
+            // Inicia Carrossel
+            startComboCarousel();
+        });
+
+        // --- PWA SERVICE WORKER REGISTRATION (ADICIONADO) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
 
         // --- TEMA ---
         function toggleTheme() {
@@ -682,8 +746,6 @@
                 slides[currentSlide].classList.add('opacity-100');
             }, 3000); 
         }
-
-        document.addEventListener('DOMContentLoaded', startComboCarousel);
 
         // --- HELPER PRICE FORMAT ---
         function formatPrice(value) {
@@ -819,6 +881,12 @@
         }
 
         function openCheckoutModal() {
+            // Verifica status da loja antes de abrir
+            if (!globalStoreStatus) {
+                showToast("Estamos fechados no momento! 🌙", true);
+                return;
+            }
+
             const total = cart.reduce((acc, i) => acc + i.price, 0);
             if (total < MIN_ORDER_VALUE) {
                 showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
@@ -857,6 +925,12 @@
         }
 
         function finalizeOrder() {
+            // Dupla verificação de status
+            if (!globalStoreStatus) {
+                showToast("Estamos fechados no momento! 🌙", true);
+                return;
+            }
+
             const name = document.getElementById('client-name').value;
             const phone = document.getElementById('client-phone').value;
             const address = document.getElementById('client-address').value;
@@ -871,7 +945,7 @@
 
             const formattedPhone = formatPhoneNumber(phone);
 
-            // Emoji codes
+            // Emojis (Unicode)
             const emojiStar = String.fromCodePoint(0x2B50); 
             const emojiPlate = String.fromCodePoint(0x1F37D);
             const emojiUser = String.fromCodePoint(0x1F464);
@@ -899,9 +973,9 @@
             cart.forEach(item => {
                 text += `${emojiCheck} *${item.name}*\n`; 
                 if (item.details) {
-                    text += `   ${emojiArrow} _${item.details}_\n`;
+                    text += `   ${emojiArrow} _${item.details}_\n`;
                 }
-                text += `   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
+                text += `   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
             });
 
             if(obs) {
