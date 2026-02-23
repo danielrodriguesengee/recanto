@@ -2,8 +2,8 @@
   "configuracoes": {
     "loja_aberta": true,
     "mensagem_aberto": "Aberto agora",
-    "mensagem_fechado": "Fechado no momento. Estamos descansando 😴",
-    "tempo_entrega": "30-45 min"
+    "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não éa de ferro 😴",
+    "tempo_entrega": "Estimativa de entrega em 30-45 min"
   },
   "combo": {
     "nome": "Super Combo",
