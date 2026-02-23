@@ -1,6 +1,70 @@
 {
-  "loja_aberta": 0,
-  "mensagem_aberto": "Aberto agora",
-  "mensagem_fechado": "Fechado no momento. Estamos descansando 😴",
-  "tempo_entrega": "30-45 min"
+  "configuracoes": {
+    "loja_aberta": true,
+    "mensagem_aberto": "Aberto agora",
+    "mensagem_fechado": "Fechado no momento. Estamos descansando 😴",
+    "tempo_entrega": "30-45 min"
+  },
+  "combo": {
+    "nome": "Super Combo",
+    "titulo": "SUPER COMBO: 1 ADICIONAL + 1 BEBIDA GRÁTIS",
+    "descricao": "Strogonoff tradicional + 1 adicional (Bacon ou Catupiry) + bebida grátis. Acompanha salada e batata palha crocante da casa.",
+    "preco_de": 46.00,
+    "preco_por": 39.90,
+    "imagens": ["image/combo1.png", "image/combo2.png", "image/combo3.png", "image/combo4.png", "image/combo5.png"],
+    "disponivel": true
+  },
+  "pratos": [
+    {
+      "nome": "TRADICIONAL (FRANGO)",
+      "descricao": "Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.",
+      "preco": 30.00,
+      "imagem": "image/strogonoff.png",
+      "disponivel": true,
+      "tipo": "main"
+    },
+    {
+      "nome": "BATATA RECHEADA",
+      "descricao": "Batata assada e recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
+      "preco": 35.00,
+      "imagem": "image/batata.png",
+      "disponivel": true,
+      "tipo": "main"
+    }
+  ],
+  "adicionais": [
+    {
+      "nome": "Chuva de Bacon",
+      "display": "Bacon Crispy",
+      "subtitulo": "Chuva de Bacon",
+      "preco": 8.00,
+      "imagem": "image/bacon.png",
+      "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
+      "icone": "🥓",
+      "disponivel": true,
+      "tipo": "extra"
+    },
+    {
+      "nome": "Catupiry Original",
+      "display": "Catupiry",
+      "subtitulo": "Talagada",
+      "preco": 10.00,
+      "imagem": "image/catupiry.png",
+      "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png",
+      "icone": "🧀",
+      "disponivel": true,
+      "tipo": "extra"
+    }
+  ],
+  "bebidas": [
+    { "nome": "Coca-Cola Lata", "preco": 6.00, "imagem": "image/coca.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Coca-Cola Zero Lata", "preco": 6.00, "imagem": "image/cocazero.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Guaraná Lata", "preco": 6.00, "imagem": "image/guarana.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Fanta Lata", "preco": 6.00, "imagem": "image/fanta.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Sprite Lata", "preco": 6.00, "imagem": "image/sprit.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Del Valle Uva Lata", "preco": 6.00, "imagem": "image/delvalleuva.png", "fallback": "https://cdn-icons-png.flaticon.com/512/9921/9921060.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Del Valle Pêssego Lata", "preco": 6.00, "imagem": "image/delvallepessego.png", "fallback": "https://cdn-icons-png.flaticon.com/512/9921/9921060.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Água com Gás", "preco": 4.00, "imagem": "image/aguagas.png", "disponivel": true, "tipo": "drink" },
+    { "nome": "Água sem Gás", "preco": 4.00, "imagem": "image/agua.png", "disponivel": true, "tipo": "drink" }
+  ]
 }
