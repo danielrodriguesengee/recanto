@@ -20,7 +20,7 @@
       "descricao": "Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.",
       "preco": 30.00,
       "imagem": "image/strogonoff.png",
-      "disponivel": true,
+      "disponivel": 0,
       "tipo": "main"
     },
     {
@@ -77,3 +77,4 @@
   ]
 
 }
+
