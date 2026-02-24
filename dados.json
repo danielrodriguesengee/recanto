@@ -36,7 +36,7 @@
       "descricao": "Lasanha recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
       "preco": 35.00,
       "imagem": "image/batata.png",
-      "disponivel": 0,
+      "disponivel": 1,
       "tipo": "main"
     }
   ],
@@ -75,4 +75,5 @@
     { "nome": "Água com Gás", "preco": 4.00, "imagem": "image/aguagas.png", "disponivel": true, "tipo": "drink" },
     { "nome": "Água sem Gás", "preco": 4.00, "imagem": "image/agua.png", "disponivel": true, "tipo": "drink" }
   ]
+
 }
