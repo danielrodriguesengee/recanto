@@ -20,7 +20,7 @@
       "descricao": "Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.",
       "preco": 30.00,
       "imagem": "image/strogonoff.png",
-      "disponivel": true,
+      "disponivel": 0,
       "tipo": "main"
     },
     {
@@ -36,7 +36,7 @@
       "descricao": "Lasanha recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
       "preco": 35.00,
       "imagem": "image/batata.png",
-      "disponivel": 0,
+      "disponivel": 1,
       "tipo": "main"
     }
   ],
@@ -75,4 +75,6 @@
     { "nome": "Água com Gás", "preco": 4.00, "imagem": "image/aguagas.png", "disponivel": true, "tipo": "drink" },
     { "nome": "Água sem Gás", "preco": 4.00, "imagem": "image/agua.png", "disponivel": true, "tipo": "drink" }
   ]
+
 }
+
