@@ -1,6 +1,6 @@
 {
   "configuracoes": {
-    "loja_aberta": true,
+    "loja_aberta": 0,
     "mensagem_aberto": "Aberto agora",
     "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não éa de ferro 😴",
     "tempo_entrega": "Estimativa de entrega em 30-45 min"
@@ -30,6 +30,14 @@
       "imagem": "image/batata.png",
       "disponivel": true,
       "tipo": "main"
+    },
+    {
+      "nome": "LASANHA DA CASA",
+      "descricao": "Lasanha recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
+      "preco": 35.00,
+      "imagem": "image/batata.png",
+      "disponivel": 0,
+      "tipo": "main"
     }
   ],
   "adicionais": [
@@ -41,7 +49,7 @@
       "imagem": "image/bacon.png",
       "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
       "icone": "🥓",
-      "disponivel": true,
+      "disponivel": 0,
       "tipo": "extra"
     },
     {
