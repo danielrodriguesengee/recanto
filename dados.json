@@ -19,7 +19,7 @@
       "nome": "TRADICIONAL (FRANGO)",
       "descricao": "Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.",
       "preco": 30.00,
-      "imagem": "image/strogonoff.png",
+      "imagens": ["image/strogonoff1.png", "image/strogonoff2.png"],
       "disponivel": 0,
       "tipo": "main"
     },
@@ -35,7 +35,7 @@
       "nome": "LASANHA DA CASA",
       "descricao": "Lasanha recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
       "preco": 35.00,
-      "imagem": "image/batata.png",
+      "imagens": ["image/lasanha1.png", "image/lasanha2.png"],
       "disponivel": 1,
       "tipo": "main"
     }
