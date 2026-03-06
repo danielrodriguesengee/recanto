@@ -3,3 +3,4 @@ git commit -m "atualiza site"
 git push
 
 
+git push -f origin main
