@@ -494,9 +494,12 @@
                             <p class="text-xs theme-text-secondary mt-1 line-clamp-3">${prato.descricao}</p>
                         </div>
                         <div class="flex justify-between items-end mt-2">
-                            <span class="font-bold theme-price text-lg flex items-baseline gap-1">
-                                <span class="text-xs font-bold">R$</span> ${formatPrice(prato.preco)}
-                            </span>
+                            <div class="flex flex-col">
+                                ${prato.preco_de ? `<span class="text-[10px] theme-text-secondary line-through opacity-60 h-3 leading-none block">R$ ${formatPrice(prato.preco_de)}</span>` : ''}
+                                <span class="font-bold theme-price text-lg flex items-baseline gap-1 leading-none ${prato.preco_de ? 'mt-1' : ''}">
+                                    <span class="text-xs font-bold">R$</span> ${formatPrice(prato.preco)}
+                                </span>
+                            </div>
                             ${prato.disponivel ? '<span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition">+</span>' : ''}
                         </div>
                     </div>
@@ -524,9 +527,12 @@
                     <div class="flex-1">
                         <h3 class="font-bold text-xs theme-text-primary">${adc.display}</h3>
                         <span class="text-[10px] theme-text-secondary block">${adc.subtitulo}</span>
-                        <span class="font-bold theme-price text-sm mt-1 flex items-baseline gap-1">
-                            <span class="text-[10px]">R$</span> ${formatPrice(adc.preco)}
-                        </span>
+                        <div class="flex flex-col mt-1">
+                            ${adc.preco_de ? `<span class="text-[9px] theme-text-secondary line-through opacity-60 leading-none block">R$ ${formatPrice(adc.preco_de)}</span>` : ''}
+                            <span class="font-bold theme-price text-sm flex items-baseline gap-1 leading-none ${adc.preco_de ? 'mt-0.5' : ''}">
+                                <span class="text-[10px]">R$</span> ${formatPrice(adc.preco)}
+                            </span>
+                        </div>
                     </div>
                 </div>`;
             }).join('');
@@ -563,7 +569,10 @@
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="theme-price font-bold text-sm flex items-baseline gap-1"><span class="text-[10px]">R$</span> ${formatPrice(bebida.preco)}</span>
+                        <div class="flex flex-col items-end">
+                            ${bebida.preco_de ? `<span class="text-[9px] theme-text-secondary line-through opacity-60 leading-none mb-0.5">R$ ${formatPrice(bebida.preco_de)}</span>` : ''}
+                            <span class="theme-price font-bold text-sm flex items-baseline gap-1 leading-none"><span class="text-[10px]">R$</span> ${formatPrice(bebida.preco)}</span>
+                        </div>
                         ${bebida.disponivel ? '<i class="fas fa-plus-circle theme-brand-red text-lg"></i>' : ''}
                     </div>
                 </div>`;
