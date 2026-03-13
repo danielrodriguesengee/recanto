@@ -303,7 +303,7 @@
             <div class="flex justify-between items-start mb-6 border-b theme-border pb-4">
                 <div>
                     <h3 class="text-xl font-serif font-bold theme-text-primary">Montar Combo</h3>
-                    <p class="theme-text-secondary text-xs mt-1">Strogonoff + Adicional + Bebida</p>
+                    <p class="theme-text-secondary text-xs mt-1">Prato + Adicional + Bebida</p>
                 </div>
                 <div class="text-right">
                     <span id="modal-combo-preco" class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 0,00</span>
@@ -312,11 +312,18 @@
 
             <div class="space-y-6 overflow-y-auto max-h-[60vh] custom-scrollbar">
                 <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Escolha o Adicional</label>
+                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Escolha o Prato</label>
+                    <div id="modal-combo-pratos" class="grid grid-cols-2 gap-3">
+                        <button onclick="selectComboOption('main', 'Strogonoff')" id="combo-main-Strogonoff" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition font-bold theme-text-primary">Strogonoff</button>
+                        <button onclick="selectComboOption('main', 'Lasanha')" id="combo-main-Lasanha" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition font-bold theme-text-primary">Lasanha</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">2. Escolha o Adicional</label>
                     <div id="modal-combo-extras" class="grid grid-cols-2 gap-3"></div>
                 </div>
                 <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">2. Bebida Grátis</label>
+                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">3. Bebida Grátis</label>
                     <div id="modal-combo-bebidas" class="grid grid-cols-2 gap-2"></div>
                 </div>
             </div>
@@ -628,7 +635,7 @@
         });
 
         let cart = [];
-        let comboSelection = { extra: null, drink: null };
+        let comboSelection = { main: null, extra: null, drink: null };
 
         // Função de carrossel unificada para todos os elementos
         function startGlobalCarousels() {
@@ -703,7 +710,7 @@
         }
 
         function openComboModal() {
-            comboSelection = { extra: null, drink: null };
+            comboSelection = { main: null, extra: null, drink: null };
             document.querySelectorAll('.combo-opt').forEach(el => resetComboButtonStyle(el));
             const modal = document.getElementById('combo-modal');
             modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -721,7 +728,7 @@
 
         function selectComboOption(type, value) {
             comboSelection[type] = value;
-            const container = document.getElementById(`modal-combo-${type === 'extra' ? 'extras' : 'bebidas'}`);
+            const container = document.getElementById(`modal-combo-${type === 'extra' ? 'extras' : type === 'drink' ? 'bebidas' : 'pratos'}`);
             container.querySelectorAll('button').forEach(resetComboButtonStyle);
             const btn = document.getElementById(`combo-${type}-${value.replace(/\s+/g, '-')}`);
             if(btn) {
@@ -734,8 +741,8 @@
         }
 
         function confirmCombo() {
-            if(!comboSelection.extra || !comboSelection.drink) return showToast('Selecione os itens!');
-            addToCart(comboGlobalData.nome, comboGlobalData.preco_por, `${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
+            if(!comboSelection.main || !comboSelection.extra || !comboSelection.drink) return showToast('Selecione todos os itens!');
+            addToCart(comboGlobalData.nome, comboGlobalData.preco_por, `${comboSelection.main} | ${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
             closeComboModal();
         }
 
