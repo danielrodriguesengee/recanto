@@ -314,8 +314,8 @@
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Escolha o Prato</label>
                     <div id="modal-combo-pratos" class="grid grid-cols-2 gap-3">
-                        <button onclick="selectComboOption('main', 'Strogonoff')" id="combo-main-Strogonoff" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition font-bold theme-text-primary">Strogonoff</button>
-                        <button onclick="selectComboOption('main', 'Lasanha')" id="combo-main-Lasanha" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition font-bold theme-text-primary">Lasanha</button>
+                        <button onclick="selectComboOption('main', 'Strogonoff')" id="combo-main-Strogonoff" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary">Strogonoff</button>
+                        <button onclick="selectComboOption('main', 'Lasanha')" id="combo-main-Lasanha" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary">Lasanha</button>
                     </div>
                 </div>
                 <div>
@@ -548,7 +548,7 @@
             document.getElementById('modal-combo-extras').innerHTML = extrasDisponiveis.map(adc => `
                 <button onclick="selectComboOption('extra', '${adc.display}')" id="combo-extra-${adc.display.replace(/\s+/g, '-')}" class="combo-opt text-left p-3 rounded-lg border theme-border hover:bg-black/5 transition flex items-center gap-3">
                     <span class="text-xl">${adc.icone || '➕'}</span>
-                    <span class="text-sm font-medium theme-text-primary">${adc.display}</span>
+                    <span class="text-sm font-bold theme-text-primary">${adc.display}</span>
                 </button>
             `).join('');
 
@@ -587,7 +587,7 @@
 
             // Preencher Modal de Combo (Bebidas) - Apenas disponíveis
             document.getElementById('modal-combo-bebidas').innerHTML = bebidasDisponiveis.map(bebida => `
-                <button onclick="selectComboOption('drink', '${bebida.nome}')" id="combo-drink-${bebida.nome.replace(/\s+/g, '-')}" class="combo-opt text-center p-2 rounded border theme-border hover:bg-black/5 text-xs font-bold theme-text-primary transition line-clamp-1">${bebida.nome}</button>
+                <button onclick="selectComboOption('drink', '${bebida.nome}')" id="combo-drink-${bebida.nome.replace(/\s+/g, '-')}" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary flex items-center justify-center line-clamp-1">${bebida.nome}</button>
             `).join('');
 
             // Reinicia o carrossel geral para os novos elementos gerados
