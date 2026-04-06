@@ -218,7 +218,7 @@
     </nav>
 
     <main class="max-w-3xl mx-auto px-4 py-6 space-y-10">
-        <!-- CONTAINERS DINÂMICOS (O JavaScript preencherá estes espaços) -->
+        <!-- CONTAINERS DINÂMICOS -->
         <section id="destaque" class="scroll-mt-24 section-spy"></section>
         
         <section id="pratos" class="scroll-mt-24 section-spy">
@@ -370,7 +370,7 @@
                     </div>
                 </div>
 
-                <!-- Passo 2: Adicionais (Contadores Limpos com Miniaturas) -->
+                <!-- Passo 2: Adicionais -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Grátis</label>
@@ -379,7 +379,7 @@
                     <div id="modal-cc-extras" class="space-y-2"></div>
                 </div>
 
-                <!-- Passo 3: Bebidas (Upsell Limpo com Miniaturas) -->
+                <!-- Passo 3: Bebidas -->
                 <div class="pt-2">
                     <div class="flex flex-col mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60">3. Turbinar Pedido (Opcional)</label>
@@ -707,8 +707,9 @@
             return `
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100 relative border theme-border bg-white dark:bg-gray-800">
-                        <img src="${thumbUrl}" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                    <!-- Fundo e bordas removidas para imagem limpa -->
+                    <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
+                        <img src="${thumbUrl}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
@@ -781,10 +782,15 @@
                 }
             });
 
-            // 1. Pratos
-            const pratosHtml = globalData.pratos.filter(p => p.disponivel).map(prato => {
-                const count = scState.pratos[prato.nome] || 0;
-                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato));
+            // 1. Pratos Fixos (Strogonoff e Lasanha)
+            const pratosPermitidos = ['Strogonoff', 'Lasanha'];
+            const pratosHtml = pratosPermitidos.map(nome => {
+                // Tenta puxar a imagem do JSON se existir, senão usa um ícone sem foto
+                const pratoReal = globalData.pratos.find(p => p.nome.toLowerCase().includes(nome.toLowerCase()));
+                const thumb = pratoReal ? getThumb(pratoReal) : `https://ui-avatars.com/api/?name=${nome}&background=random&color=fff`;
+                const count = scState.pratos[nome] || 0;
+                
+                return buildCounterRow('sc', 'pratos', nome, count, scState.pratosCount >= 1, 'Incluso', thumb);
             }).join('');
             document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
 
