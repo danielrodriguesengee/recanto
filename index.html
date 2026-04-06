@@ -292,12 +292,12 @@
     <!-- OVERLAY GERAL -->
     <div id="overlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/80 z-[55] hidden modal-overlay transition-opacity"></div>
 
-    <!-- MODAL SUPER COMBO (O Original de Seleção Única) -->
+    <!-- MODAL SUPER COMBO (UNIFICADO) -->
     <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboModal()"></div>
-        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors">
+        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
             
-            <div class="flex justify-between items-start mb-6 border-b theme-border pb-4">
+            <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
                 <div>
                     <h3 class="text-xl font-serif font-bold theme-text-primary">Montar Combo</h3>
                     <p class="theme-text-secondary text-xs mt-1">Prato + Adicional + Bebida</p>
@@ -307,31 +307,42 @@
                 </div>
             </div>
 
-            <div class="space-y-6 overflow-y-auto max-h-[60vh] custom-scrollbar pr-2">
+            <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
+                <!-- Passo 1 -->
                 <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Escolha o Prato</label>
-                    <div id="modal-combo-pratos" class="grid grid-cols-2 gap-3">
-                        <button onclick="selectComboOption('main', 'Strogonoff')" id="combo-main-Strogonoff" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary">Strogonoff</button>
-                        <button onclick="selectComboOption('main', 'Lasanha')" id="combo-main-Lasanha" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary">Lasanha</button>
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha o Prato</label>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-pratos-counter">0/1 Escolhido</span>
                     </div>
+                    <div id="modal-combo-pratos" class="space-y-2"></div>
                 </div>
+                
+                <!-- Passo 2 -->
                 <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">2. Escolha o Adicional</label>
-                    <div id="modal-combo-extras" class="grid grid-cols-2 gap-3"></div>
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Escolha o Adicional</label>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-extras-counter">0/1 Escolhido</span>
+                    </div>
+                    <div id="modal-combo-extras" class="space-y-2"></div>
                 </div>
+                
+                <!-- Passo 3 -->
                 <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">3. Bebida Grátis</label>
-                    <div id="modal-combo-bebidas" class="grid grid-cols-2 gap-2"></div>
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">3. Bebida Grátis</label>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-drinks-counter">0/1 Escolhida</span>
+                    </div>
+                    <div id="modal-combo-bebidas" class="space-y-2"></div>
                 </div>
             </div>
 
-            <button onclick="confirmCombo()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-8 hover:opacity-90 transition uppercase tracking-wide shadow-lg">
+            <button onclick="confirmCombo()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
                 Adicionar à Sacola
             </button>
         </div>
     </div>
 
-    <!-- MODAL NOVO: COMBO CASAL (COM ESTILO CORRIGIDO) -->
+    <!-- MODAL COMBO CASAL (UNIFICADO) -->
     <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
@@ -350,30 +361,30 @@
                 <!-- Passo 1: Prato Único Estático -->
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Prato Incluso</label>
-                    <div class="w-full text-center p-3 rounded-lg border theme-border-red theme-bg-red text-white text-sm font-bold shadow-md">
-                        <i class="fas fa-check-circle mr-1"></i> Prato Principal (Duplo)
+                    <div class="flex items-center gap-3 p-3 rounded-lg border theme-border-red theme-bg-red text-white shadow-md transition bg-opacity-90">
+                        <i class="fas fa-check-circle text-xl"></i>
+                        <div>
+                            <span class="text-sm font-bold block">Prato Principal (Duplo)</span>
+                            <span class="text-[10px] font-bold block uppercase tracking-wider opacity-80">Fixo</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Passo 2: Adicionais (Contadores Limpos) -->
+                <!-- Passo 2: Adicionais (Contadores Limpos com Miniaturas) -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Grátis</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-extras-counter">0/2 Escolhidos</span>
                     </div>
-                    <div id="modal-cc-extras" class="space-y-2">
-                        <!-- Preenchido via JS -->
-                    </div>
+                    <div id="modal-cc-extras" class="space-y-2"></div>
                 </div>
 
-                <!-- Passo 3: Bebidas (Upsell Limpo) -->
+                <!-- Passo 3: Bebidas (Upsell Limpo com Miniaturas) -->
                 <div class="pt-2">
                     <div class="flex flex-col mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60">3. Turbinar Pedido (Opcional)</label>
                     </div>
-                    <div id="modal-cc-drinks" class="space-y-2">
-                        <!-- Preenchido via JS -->
-                    </div>
+                    <div id="modal-cc-drinks" class="space-y-2"></div>
                 </div>
             </div>
 
@@ -447,24 +458,26 @@
         // --- CONFIGURAÇÕES GERAIS ---
         const MIN_ORDER_VALUE = 25.00;
         let globalStoreStatus = true;
-        let globalData = null; // Armazena todos os dados do JSON para uso fácil
+        let globalData = null; 
         
         const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
         let lastDataHash = "";
         let globalCarouselInterval = null;
 
-        // --- ESTADO DO COMBO CASAL ---
-        let ccState = {
-            basePrice: 0,
-            extras: {},       // ex: {'Bacon': 1, 'Calabresa': 1}
-            extrasCount: 0,   // Limite 2
-            drinks: {},       // ex: {'Coca-Cola': {count: 2, price: 5}}
-            drinksTotal: 0
+        // --- ESTADOS DOS COMBOS ---
+        let comboGlobalData = null; 
+        let scState = {
+            pratos: {}, pratosCount: 0,
+            extras: {}, extrasCount: 0,
+            drinks: {}, drinksCount: 0
         };
 
-        // --- ESTADO DO SUPER COMBO ORIGINAL ---
-        let comboGlobalData = null; 
-        let comboSelection = { main: null, extra: null, drink: null };
+        let ccState = {
+            basePrice: 0,
+            extras: {}, extrasCount: 0,
+            drinks: {}, drinksTotal: 0
+        };
+
         let cart = [];
 
         // --- FETCH DADOS E POLLING ---
@@ -616,7 +629,6 @@
 
             // 4. Renderizar Adicionais da Página Principal
             const listaAdicionais = document.getElementById('lista-adicionais');
-            const extrasDisponiveis = data.adicionais.filter(a => a.disponivel);
             
             listaAdicionais.innerHTML = data.adicionais.map(adc => {
                 const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')"` : '';
@@ -645,17 +657,8 @@
                 </div>`;
             }).join('');
 
-            // Modal Super Combo Original (Adicionais grátis de clique único)
-            document.getElementById('modal-combo-extras').innerHTML = extrasDisponiveis.map(adc => `
-                <button onclick="selectComboOption('extra', '${adc.display}')" id="combo-extra-${adc.display.replace(/\s+/g, '-')}" class="combo-opt text-left p-3 rounded-lg border theme-border hover:bg-black/5 transition flex items-center gap-3">
-                    <span class="text-xl">${adc.icone || '➕'}</span>
-                    <span class="text-sm font-bold theme-text-primary">${adc.display}</span>
-                </button>
-            `).join('');
-
             // 5. Renderizar Bebidas da Página Principal
             const listaBebidas = document.getElementById('lista-bebidas');
-            const bebidasDisponiveis = data.bebidas.filter(b => b.disponivel);
 
             listaBebidas.innerHTML = data.bebidas.map(bebida => {
                 const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')"` : '';
@@ -686,24 +689,140 @@
                 </div>`;
             }).join('');
 
-            // Modal Super Combo Original (Bebida grátis)
-            document.getElementById('modal-combo-bebidas').innerHTML = bebidasDisponiveis.map(bebida => `
-                <button onclick="selectComboOption('drink', '${bebida.nome}')" id="combo-drink-${bebida.nome.replace(/\s+/g, '-')}" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary flex items-center justify-center line-clamp-1">${bebida.nome}</button>
-            `).join('');
-
             startGlobalCarousels();
         }
 
-        // --- FUNCIONALIDADES DO COMBO CASAL (NOVO) ---
+        // --- SISTEMA DE UI UNIFICADA DOS COMBOS (FUNÇÕES HELPERS) ---
+        function getThumb(item) {
+            if (item.imagens && item.imagens.length > 0) return item.imagens[0];
+            if (item.imagem) return item.imagem;
+            return item.fallback || 'https://via.placeholder.com/150?text=Sem+Foto';
+        }
+
+        function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0) {
+            const isSc = comboType === 'sc';
+            const limitClass = (limitReached && count === 0) ? 'opacity-30 cursor-not-allowed' : '';
+            const priceStyle = priceText.includes('Grátis') || priceText.includes('Incluso') ? 'text-green-600' : 'theme-price';
+            
+            return `
+            <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100 relative border theme-border bg-white dark:bg-gray-800">
+                        <img src="${thumbUrl}" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                    </div>
+                    <div>
+                        <span class="text-sm font-bold theme-text-primary block">${nome}</span>
+                        <span class="text-[10px] ${priceStyle} font-bold block uppercase tracking-wider">${priceText}</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="${isSc ? `updateScItem('${category}', '${nome}', -1)` : (category === 'drinks' ? `updateCcDrink('${nome}', ${precoItem}, -1)` : `updateCcExtra('${nome}', -1)`)}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold active:scale-90">-</button>
+                    <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
+                    <button onclick="${isSc ? `updateScItem('${category}', '${nome}', 1)` : (category === 'drinks' ? `updateCcDrink('${nome}', ${precoItem}, 1)` : `updateCcExtra('${nome}', 1)`)}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold active:scale-90 ${limitClass}">+</button>
+                </div>
+            </div>`;
+        }
+
+        // --- FUNCIONALIDADES DO SUPER COMBO ---
+        function openComboModal() {
+            if (!globalData || !globalData.combo) return;
+            
+            scState = {
+                pratos: {}, pratosCount: 0,
+                extras: {}, extrasCount: 0,
+                drinks: {}, drinksCount: 0
+            };
+
+            renderSuperComboLists();
+            const modal = document.getElementById('combo-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+
+        function closeComboModal() {
+            const modal = document.getElementById('combo-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
+        }
+
+        function updateScItem(category, nome, delta) {
+            const config = {
+                'pratos': { stateObj: scState.pratos, countProp: 'pratosCount' },
+                'extras': { stateObj: scState.extras, countProp: 'extrasCount' },
+                'drinks': { stateObj: scState.drinks, countProp: 'drinksCount' }
+            }[category];
+
+            let current = config.stateObj[nome] || 0;
+            
+            if (delta > 0 && scState[config.countProp] >= 1) {
+                return showToast(`Você só pode escolher 1 item nesta categoria!`, true);
+            }
+            if (delta < 0 && current <= 0) return;
+
+            config.stateObj[nome] = current + delta;
+            scState[config.countProp] += delta;
+            renderSuperComboLists();
+        }
+
+        function renderSuperComboLists() {
+            // Atualiza Contadores Visuais
+            const cats = [
+                { id: 'sc-pratos-counter', count: scState.pratosCount },
+                { id: 'sc-extras-counter', count: scState.extrasCount },
+                { id: 'sc-drinks-counter', count: scState.drinksCount }
+            ];
+            cats.forEach(c => {
+                const el = document.getElementById(c.id);
+                if(el) {
+                    el.innerText = `${c.count}/1 Escolhido`;
+                    if(c.count === 1) {
+                        el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600');
+                    } else {
+                        el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600');
+                    }
+                }
+            });
+
+            // 1. Pratos
+            const pratosHtml = globalData.pratos.filter(p => p.disponivel).map(prato => {
+                const count = scState.pratos[prato.nome] || 0;
+                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato));
+            }).join('');
+            document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
+
+            // 2. Extras
+            const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
+                const count = scState.extras[adc.display] || 0;
+                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc));
+            }).join('');
+            document.getElementById('modal-combo-extras').innerHTML = extrasHtml;
+
+            // 3. Bebidas
+            const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
+                const count = scState.drinks[bebida.nome] || 0;
+                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida));
+            }).join('');
+            document.getElementById('modal-combo-bebidas').innerHTML = drinksHtml;
+        }
+
+        function confirmCombo() {
+            if (scState.pratosCount !== 1 || scState.extrasCount !== 1 || scState.drinksCount !== 1) {
+                return showToast('Selecione 1 item de cada categoria!', true);
+            }
+
+            const prato = Object.keys(scState.pratos).find(k => scState.pratos[k] > 0);
+            const extra = Object.keys(scState.extras).find(k => scState.extras[k] > 0);
+            const drink = Object.keys(scState.drinks).find(k => scState.drinks[k] > 0);
+
+            addToCart(comboGlobalData.titulo, comboGlobalData.preco_por, `${prato} | ${extra} | Bebida: ${drink}`, 'main');
+            closeComboModal();
+        }
+
+        // --- FUNCIONALIDADES DO COMBO CASAL ---
         function openComboCasalModal() {
             if (!globalData || !globalData.combo_casal) return;
             
-            // Reseta Estado
             ccState.basePrice = globalData.combo_casal.preco_por;
-            ccState.extras = {};
-            ccState.extrasCount = 0;
-            ccState.drinks = {};
-            ccState.drinksTotal = 0;
+            ccState.extras = {}; ccState.extrasCount = 0;
+            ccState.drinks = {}; ccState.drinksTotal = 0;
 
             renderComboCasalLists();
             updateComboCasalTotal();
@@ -719,13 +838,7 @@
 
         function updateCcExtra(nome, delta) {
             let current = ccState.extras[nome] || 0;
-            
-            // Trava caso já tenha 2 escolhidos e tente adicionar mais
-            if (delta > 0 && ccState.extrasCount >= 2) {
-                showToast('Você já escolheu seus 2 adicionais grátis!', true);
-                return;
-            }
-            // Não deixa baixar de 0
+            if (delta > 0 && ccState.extrasCount >= 2) return showToast('Você já escolheu seus 2 adicionais grátis!', true);
             if (delta < 0 && current <= 0) return;
 
             ccState.extras[nome] = current + delta;
@@ -738,18 +851,14 @@
             if (delta < 0 && current.count <= 0) return;
 
             current.count += delta;
-            if (current.count === 0) {
-                delete ccState.drinks[nome];
-            } else {
-                ccState.drinks[nome] = current;
-            }
+            if (current.count === 0) delete ccState.drinks[nome];
+            else ccState.drinks[nome] = current;
 
             renderComboCasalLists();
             updateComboCasalTotal();
         }
 
         function renderComboCasalLists() {
-            // Atualiza Contadores Visuais
             const extraCounterText = document.getElementById('cc-extras-counter');
             extraCounterText.innerText = `${ccState.extrasCount}/2 Escolhidos`;
             if(ccState.extrasCount === 2) {
@@ -760,51 +869,22 @@
                 extraCounterText.classList.remove('bg-green-600');
             }
 
-            // Renderizar Adicionais Grátis usando estilos originais limpos (sem fundo preto)
             const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
                 const count = ccState.extras[adc.display] || 0;
-                return `
-                <div class="flex items-center justify-between p-3 rounded-lg border theme-border hover:bg-black/5 transition">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xl">${adc.icone || '➕'}</span>
-                        <span class="text-sm font-bold theme-text-primary">${adc.display}</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="updateCcExtra('${adc.display}', -1)" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold">-</button>
-                        <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
-                        <button onclick="updateCcExtra('${adc.display}', 1)" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold ${ccState.extrasCount >= 2 ? 'opacity-30 cursor-not-allowed' : ''}">+</button>
-                    </div>
-                </div>`;
+                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= 2, 'Grátis', getThumb(adc));
             }).join('');
             document.getElementById('modal-cc-extras').innerHTML = extrasHtml;
 
-            // Renderizar Bebidas Pagas usando estilos originais limpos
             const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
-                const item = ccState.drinks[bebida.nome] || { count: 0 };
-                const count = item.count;
-                return `
-                <div class="flex items-center justify-between p-3 rounded-lg border theme-border hover:bg-black/5 transition">
-                    <div class="flex items-center gap-3">
-                        <div>
-                            <span class="text-sm font-bold theme-text-primary block">${bebida.nome}</span>
-                            <span class="text-[10px] theme-price font-bold block">+ R$ ${formatPrice(bebida.preco)}</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="updateCcDrink('${bebida.nome}', ${bebida.preco}, -1)" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold">-</button>
-                        <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
-                        <button onclick="updateCcDrink('${bebida.nome}', ${bebida.preco}, 1)" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold">+</button>
-                    </div>
-                </div>`;
+                const count = (ccState.drinks[bebida.nome] || {count: 0}).count;
+                return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco);
             }).join('');
             document.getElementById('modal-cc-drinks').innerHTML = drinksHtml;
         }
 
         function updateComboCasalTotal() {
             let drinksCost = 0;
-            for (let key in ccState.drinks) {
-                drinksCost += ccState.drinks[key].count * ccState.drinks[key].price;
-            }
+            for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price;
             let total = ccState.basePrice + drinksCost;
             document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(total)}`;
         }
@@ -812,27 +892,20 @@
         function confirmComboCasal() {
             if (ccState.extrasCount !== 2) return showToast('Você precisa escolher os seus 2 adicionais grátis!', true);
 
-            // Monta as strings de descrição do combo (Prato Fixo)
             let extraArr = [];
             for (let key in ccState.extras) {
                 if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`);
             }
 
             const detailsCombo = `Adicionais: ${extraArr.join(' e ')}`;
-            
-            // Adiciona o Combo Base ao carrinho
             addToCart(globalData.combo_casal.titulo, ccState.basePrice, detailsCombo, 'main');
 
-            // Adiciona Bebidas selecionadas separadamente ao carrinho para clareza
             for (let key in ccState.drinks) {
                 let drink = ccState.drinks[key];
                 if (drink.count > 0) {
-                    for(let i=0; i<drink.count; i++) {
-                        addToCart(key, drink.price, 'Add via Combo Casal', 'drink');
-                    }
+                    for(let i=0; i<drink.count; i++) addToCart(key, drink.price, 'Add via Combo Casal', 'drink');
                 }
             }
-
             closeComboCasalModal();
         }
 
@@ -943,44 +1016,6 @@
             document.getElementById('overlay').classList.add('hidden');
         }
 
-        // COMBO NORMAL (ANTIGO)
-        function openComboModal() {
-            comboSelection = { main: null, extra: null, drink: null };
-            document.querySelectorAll('.combo-opt').forEach(el => resetComboButtonStyle(el));
-            const modal = document.getElementById('combo-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-        }
-        function closeComboModal() {
-            const modal = document.getElementById('combo-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
-        }
-
-        function resetComboButtonStyle(btn) {
-            btn.classList.remove('theme-border-red', 'bg-red-500/10', 'theme-brand-red', 'text-white');
-            btn.classList.add('theme-border', 'theme-text-primary');
-            btn.style.backgroundColor = ''; btn.style.borderColor = ''; btn.style.color = '';
-        }
-
-        function selectComboOption(type, value) {
-            comboSelection[type] = value;
-            const container = document.getElementById(`modal-combo-${type === 'extra' ? 'extras' : type === 'drink' ? 'bebidas' : 'pratos'}`);
-            container.querySelectorAll('button').forEach(resetComboButtonStyle);
-            const btn = document.getElementById(`combo-${type}-${value.replace(/\s+/g, '-')}`);
-            if(btn) {
-                btn.classList.remove('theme-border', 'theme-text-primary');
-                btn.classList.add('theme-border-red');
-                btn.style.borderColor = 'var(--brand-red)';
-                btn.style.backgroundColor = 'var(--brand-red)';
-                btn.style.color = 'white';
-            }
-        }
-
-        function confirmCombo() {
-            if(!comboSelection.main || !comboSelection.extra || !comboSelection.drink) return showToast('Selecione todos os itens!');
-            addToCart(comboGlobalData.titulo, comboGlobalData.preco_por, `${comboSelection.main} | ${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
-            closeComboModal();
-        }
-
         function openCheckoutModal() {
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
@@ -1016,7 +1051,7 @@
             if(!name || !phone || !address || !cutlery || !payment) return showToast('Por favor, preencha os campos obrigatórios (*) para finalizar seu pedido! 😊', true);
 
             let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n*RESUMO DO PEDIDO:*\n`;
-            cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
+            cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
             
             if(obs) text += `📝 *OBSERVAÇÕES:*\n${obs}\n\n`;
             text += `🍴 *TALHERES:* ${cutlery}\n\n`;
