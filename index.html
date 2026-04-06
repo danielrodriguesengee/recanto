@@ -11,7 +11,6 @@
     <meta property="og:url" content="https://recantodostrogonoff.netlify.app/">
     <meta property="og:title" content="Recanto do Strogonoff | Pedido Online">
     <meta property="og:description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida. Peça já o seu!">
-    <!-- A IMAGEM ABAIXO É O QUE VAI APARECER NO WHATSAPP -->
     <meta property="og:image" content="https://recantodostrogonoff.netlify.app/image/wpp.jpg">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
@@ -361,12 +360,8 @@
                 <!-- Passo 1: Prato Único Estático -->
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Prato Incluso</label>
-                    <div class="flex items-center gap-3 p-3 rounded-lg border theme-border-red theme-bg-red text-white shadow-md transition bg-opacity-90">
-                        <i class="fas fa-check-circle text-xl"></i>
-                        <div>
-                            <span class="text-sm font-bold block">Prato Principal (Duplo)</span>
-                            <span class="text-[10px] font-bold block uppercase tracking-wider opacity-80">Fixo</span>
-                        </div>
+                    <div id="modal-cc-prato-estatico">
+                        <!-- Preenchido via JavaScript -->
                     </div>
                 </div>
 
@@ -676,7 +671,7 @@
                         </div>
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             ${bebida.nome}
-                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Tem mas acabou 😅</span>' : ''}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou</span>' : ''}
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
@@ -782,15 +777,11 @@
                 }
             });
 
-            // 1. Pratos Fixos (Strogonoff e Lasanha)
-            const pratosPermitidos = ['Strogonoff', 'Lasanha'];
-            const pratosHtml = pratosPermitidos.map(nome => {
-                // Tenta puxar a imagem do JSON se existir, senão usa um ícone sem foto
-                const pratoReal = globalData.pratos.find(p => p.nome.toLowerCase().includes(nome.toLowerCase()));
-                const thumb = pratoReal ? getThumb(pratoReal) : `https://ui-avatars.com/api/?name=${nome}&background=random&color=fff`;
-                const count = scState.pratos[nome] || 0;
-                
-                return buildCounterRow('sc', 'pratos', nome, count, scState.pratosCount >= 1, 'Incluso', thumb);
+            // 1. Pratos Dinâmicos (Puxa os que estão disponíveis no JSON)
+            const pratosDisponiveis = globalData.pratos.filter(p => p.disponivel);
+            const pratosHtml = pratosDisponiveis.map(prato => {
+                const count = scState.pratos[prato.nome] || 0;
+                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato));
             }).join('');
             document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
 
@@ -875,6 +866,28 @@
                 extraCounterText.classList.remove('bg-green-600');
             }
 
+            // Prato Estático (Puxando os dados do Strogonoff do JSON)
+            const strogonoffPrato = globalData.pratos.find(p => p.nome.toLowerCase().includes('strogonoff'));
+            const isStrogonoffAvail = strogonoffPrato && strogonoffPrato.disponivel;
+            const thumbStrogonoff = strogonoffPrato ? getThumb(strogonoffPrato) : 'https://via.placeholder.com/150?text=Strogonoff';
+            
+            const pratoCasalHtml = `
+            <div class="flex items-center justify-between p-2 rounded-lg border theme-border-red bg-red-50/50 dark:bg-red-900/10 transition ${!isStrogonoffAvail ? 'opacity-50' : ''}">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
+                        <img src="${thumbStrogonoff}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                    </div>
+                    <div>
+                        <span class="text-sm font-bold theme-text-primary block">Strogonoff (Duplo)</span>
+                        <span class="text-[10px] text-green-600 font-bold block uppercase tracking-wider">${isStrogonoffAvail ? 'Fixo / Incluso' : '<span class="text-red-500">Esgotado no momento</span>'}</span>
+                    </div>
+                </div>
+                <div class="pr-3">
+                    ${isStrogonoffAvail ? '<i class="fas fa-check-circle text-green-600 text-xl"></i>' : '<i class="fas fa-times-circle text-red-500 text-xl"></i>'}
+                </div>
+            </div>`;
+            document.getElementById('modal-cc-prato-estatico').innerHTML = pratoCasalHtml;
+
             const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
                 const count = ccState.extras[adc.display] || 0;
                 return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= 2, 'Grátis', getThumb(adc));
@@ -896,6 +909,11 @@
         }
 
         function confirmComboCasal() {
+            const strogonoffPrato = globalData.pratos.find(p => p.nome.toLowerCase().includes('strogonoff'));
+            if (!strogonoffPrato || !strogonoffPrato.disponivel) {
+                return showToast('O Strogonoff está esgotado no momento!', true);
+            }
+
             if (ccState.extrasCount !== 2) return showToast('Você precisa escolher os seus 2 adicionais grátis!', true);
 
             let extraArr = [];
