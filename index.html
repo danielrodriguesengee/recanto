@@ -694,13 +694,15 @@
             return item.fallback || 'https://via.placeholder.com/150?text=Sem+Foto';
         }
 
-        function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0) {
+        function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0, isAvailable = true) {
             const isSc = comboType === 'sc';
             const limitClass = (limitReached && count === 0) ? 'opacity-30 cursor-not-allowed' : '';
             const priceStyle = priceText.includes('Grátis') || priceText.includes('Incluso') ? 'text-green-600' : 'theme-price';
+            const disabledClass = !isAvailable ? 'opacity-50 grayscale pointer-events-none' : '';
+            const displayPrice = !isAvailable ? '<span class="text-red-500">Esgotado</span>' : priceText;
             
             return `
-            <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent">
+            <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
                     <!-- Fundo e bordas removidas para imagem limpa -->
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
@@ -708,7 +710,7 @@
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
-                        <span class="text-[10px] ${priceStyle} font-bold block uppercase tracking-wider">${priceText}</span>
+                        <span class="text-[10px] ${priceStyle} font-bold block uppercase tracking-wider">${displayPrice}</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -777,25 +779,24 @@
                 }
             });
 
-            // 1. Pratos Dinâmicos (Puxa os que estão disponíveis no JSON)
-            const pratosDisponiveis = globalData.pratos.filter(p => p.disponivel);
-            const pratosHtml = pratosDisponiveis.map(prato => {
+            // 1. Pratos Dinâmicos (Mostra todos, desativando os esgotados)
+            const pratosHtml = globalData.pratos.map(prato => {
                 const count = scState.pratos[prato.nome] || 0;
-                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato));
+                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato), 0, prato.disponivel);
             }).join('');
             document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
 
             // 2. Extras
-            const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
+            const extrasHtml = globalData.adicionais.map(adc => {
                 const count = scState.extras[adc.display] || 0;
-                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc));
+                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc), 0, adc.disponivel);
             }).join('');
             document.getElementById('modal-combo-extras').innerHTML = extrasHtml;
 
             // 3. Bebidas
-            const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
+            const drinksHtml = globalData.bebidas.map(bebida => {
                 const count = scState.drinks[bebida.nome] || 0;
-                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida));
+                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida), 0, bebida.disponivel);
             }).join('');
             document.getElementById('modal-combo-bebidas').innerHTML = drinksHtml;
         }
@@ -888,15 +889,15 @@
             </div>`;
             document.getElementById('modal-cc-prato-estatico').innerHTML = pratoCasalHtml;
 
-            const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
+            const extrasHtml = globalData.adicionais.map(adc => {
                 const count = ccState.extras[adc.display] || 0;
-                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= 2, 'Grátis', getThumb(adc));
+                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= 2, 'Grátis', getThumb(adc), 0, adc.disponivel);
             }).join('');
             document.getElementById('modal-cc-extras').innerHTML = extrasHtml;
 
-            const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
+            const drinksHtml = globalData.bebidas.map(bebida => {
                 const count = (ccState.drinks[bebida.nome] || {count: 0}).count;
-                return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco);
+                return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco, bebida.disponivel);
             }).join('');
             document.getElementById('modal-cc-drinks').innerHTML = drinksHtml;
         }
