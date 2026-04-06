@@ -12,13 +12,12 @@
     <meta property="og:title" content="Recanto do Strogonoff | Pedido Online">
     <meta property="og:description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida. Peça já o seu!">
     <!-- A IMAGEM ABAIXO É O QUE VAI APARECER NO WHATSAPP -->
-    <!-- Atenção: O link da imagem DEVE ser completo (começando com https://) -->
     <meta property="og:image" content="https://recantodostrogonoff.netlify.app/image/wpp.jpg">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <!-- Twitter Card (funciona de base para outros apps também) -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Recanto do Strogonoff | Pedido Online">
     <meta name="twitter:description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida.">
@@ -88,7 +87,7 @@
             --text-primary: #f2ead5;
             --text-secondary: rgba(242, 234, 213, 0.6);
             --brand-red: #63121a;
-            --input-bg: transparent;
+            --input-bg: #1c1c1c;
             --input-border: #333;
             --shadow-color: rgba(0, 0, 0, 0.5);
             --price-color: #f2ead5;
@@ -140,18 +139,16 @@
 
         .input-min {
             background: var(--input-bg);
-            border: none;
-            border-bottom: 1px solid var(--input-border);
-            border-radius: 0;
-            padding: 12px 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 12px;
             color: var(--text-primary);
             width: 100%;
             transition: border-color 0.3s;
         }
         .input-min:focus {
             outline: none;
-            border-bottom-color: var(--brand-red);
-            box-shadow: none; 
+            border-color: var(--brand-red);
         }
         
         .modal-overlay {
@@ -292,10 +289,10 @@
         </div>
     </div>
 
-    <!-- OVERLAY -->
+    <!-- OVERLAY GERAL -->
     <div id="overlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/80 z-[55] hidden modal-overlay transition-opacity"></div>
 
-    <!-- MODAL COMBO (Gerado Dinamicamente) -->
+    <!-- MODAL SUPER COMBO (O Original de Seleção Única) -->
     <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors">
@@ -310,10 +307,11 @@
                 </div>
             </div>
 
-            <div class="space-y-6 overflow-y-auto max-h-[60vh] custom-scrollbar">
+            <div class="space-y-6 overflow-y-auto max-h-[60vh] custom-scrollbar pr-2">
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Escolha o Prato</label>
                     <div id="modal-combo-pratos" class="grid grid-cols-2 gap-3">
+                        <!-- Gerado via JS no selectComboOption manual antigo -->
                         <button onclick="selectComboOption('main', 'Strogonoff')" id="combo-main-Strogonoff" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary">Strogonoff</button>
                         <button onclick="selectComboOption('main', 'Lasanha')" id="combo-main-Lasanha" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary">Lasanha</button>
                     </div>
@@ -334,6 +332,64 @@
         </div>
     </div>
 
+    <!-- MODAL NOVO: COMBO CASAL -->
+    <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
+        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
+            
+            <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
+                <div>
+                    <h3 class="text-xl font-serif font-bold theme-text-primary" id="cc-modal-title">Combo Casal</h3>
+                    <p class="theme-text-secondary text-xs mt-1">2 Pratos + 2 Adicionais Grátis</p>
+                </div>
+                <div class="text-right">
+                    <span id="modal-cc-preco" class="block theme-price font-bold text-xl"><span class="text-xs font-bold">R$</span> 0,00</span>
+                </div>
+            </div>
+
+            <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
+                <!-- Passo 1: Pratos -->
+                <div>
+                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">1. Escolha os 2 Pratos</label>
+                    <div class="space-y-3">
+                        <select id="cc-prato-1" class="input-min bg-gray-50/50 dark:bg-white/5 border theme-border w-full p-3 text-sm font-medium theme-text-primary">
+                            <option value="" disabled selected>Selecione o 1º Prato</option>
+                        </select>
+                        <select id="cc-prato-2" class="input-min bg-gray-50/50 dark:bg-white/5 border theme-border w-full p-3 text-sm font-medium theme-text-primary">
+                            <option value="" disabled selected>Selecione o 2º Prato</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Adicionais (Contadores) -->
+                <div>
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-80 mb-0">2. Adicionais Grátis</label>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-extras-counter">0/2 Escolhidos</span>
+                    </div>
+                    <div id="modal-cc-extras" class="space-y-2">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+
+                <!-- Passo 3: Bebidas (Upsell) -->
+                <div class="pt-4 border-t theme-border border-dashed">
+                    <div class="flex flex-col mb-3">
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-80">3. Turbinar Pedido (Opcional)</label>
+                        <span class="text-[10px] text-green-600 font-bold mt-0.5">Adicione bebidas para acompanhar!</span>
+                    </div>
+                    <div id="modal-cc-drinks" class="space-y-2">
+                        <!-- Preenchido via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="confirmComboCasal()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
+                Adicionar à Sacola
+            </button>
+        </div>
+    </div>
+
     <!-- MODAL CHECKOUT -->
     <div id="checkout-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
@@ -343,27 +399,27 @@
             </button>
             <h3 class="text-xl font-serif font-bold mb-8 theme-text-primary text-center">Finalizar Pedido</h3>
             <form id="checkout-form" onsubmit="event.preventDefault(); finalizeOrder();" class="space-y-4">
-                <div><input type="text" id="client-name" required class="input-min" placeholder="Seu Nome *"></div>
-                <div><input type="tel" id="client-phone" required class="input-min" placeholder="Seu WhatsApp (DDD) *"></div>
-                <div><textarea id="client-address" required rows="1" class="input-min resize-none" placeholder="Endereço de Entrega (Ex: Rua, N°, Bairro) *"></textarea></div>
-                <div><textarea id="client-obs" rows="2" class="input-min resize-none" placeholder="Observações (Ex: Sem cebola, capricha no molho...)"></textarea></div>
+                <div><input type="text" id="client-name" required class="input-min border-b" placeholder="Seu Nome *"></div>
+                <div><input type="tel" id="client-phone" required class="input-min border-b" placeholder="Seu WhatsApp (DDD) *"></div>
+                <div><textarea id="client-address" required rows="1" class="input-min border-b resize-none" placeholder="Endereço de Entrega (Ex: Rua, N°, Bairro) *"></textarea></div>
+                <div><textarea id="client-obs" rows="2" class="input-min border-b resize-none" placeholder="Observações (Ex: Sem cebola, capricha no molho...)"></textarea></div>
                 <div>
-                    <select id="client-cutlery" class="input-min" required>
+                    <select id="client-cutlery" class="input-min border-b" required>
                         <option value="" disabled selected>Precisa de talher? *</option>
-                        <option value="Sim" class="text-gray-800">Sim</option>
-                        <option value="Não" class="text-gray-800">Não</option>
+                        <option value="Sim" class="text-gray-800 dark:text-gray-200">Sim</option>
+                        <option value="Não" class="text-gray-800 dark:text-gray-200">Não</option>
                     </select>
                 </div>
                 <div>
-                    <select id="payment-method" onchange="toggleChangeInput()" class="input-min" required>
+                    <select id="payment-method" onchange="toggleChangeInput()" class="input-min border-b" required>
                         <option value="" disabled selected>Forma de Pagamento *</option>
-                        <option value="Pix" class="text-gray-800">Pix</option>
-                        <option value="Cartão" class="text-gray-800">Cartão</option>
-                        <option value="Dinheiro" class="text-gray-800">Dinheiro</option>
+                        <option value="Pix" class="text-gray-800 dark:text-gray-200">Pix</option>
+                        <option value="Cartão" class="text-gray-800 dark:text-gray-200">Cartão</option>
+                        <option value="Dinheiro" class="text-gray-800 dark:text-gray-200">Dinheiro</option>
                     </select>
                 </div>
                 <div id="change-input-group" class="hidden">
-                    <input type="text" id="change-for" class="input-min" placeholder="Troco para quanto?">
+                    <input type="text" id="change-for" class="input-min border-b" placeholder="Troco para quanto?">
                 </div>
             </form>
             <button onclick="finalizeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg flex items-center justify-center gap-2 transition text-center">
@@ -395,16 +451,28 @@
     </div>
 
     <script>
-        // --- CONFIGURAÇÕES ---
+        // --- CONFIGURAÇÕES GERAIS ---
         const MIN_ORDER_VALUE = 25.00;
         let globalStoreStatus = true;
-        let comboGlobalData = null; // Armazena dados do combo
+        let globalData = null; // Armazena todos os dados do JSON para uso fácil
         
-        // Substitua esta URL pela URL do seu novo JSON gerado
         const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
-        
         let lastDataHash = "";
         let globalCarouselInterval = null;
+
+        // --- ESTADO DO COMBO CASAL ---
+        let ccState = {
+            basePrice: 0,
+            extras: {},       // ex: {'Bacon': 1, 'Calabresa': 1}
+            extrasCount: 0,   // Limite 2
+            drinks: {},       // ex: {'Coca-Cola': {count: 2, price: 5}}
+            drinksTotal: 0
+        };
+
+        // --- ESTADO DO SUPER COMBO ORIGINAL ---
+        let comboGlobalData = null; 
+        let comboSelection = { main: null, extra: null, drink: null };
+        let cart = [];
 
         // --- FETCH DADOS E POLLING ---
         async function carregarDadosDoBanco() {
@@ -414,6 +482,7 @@
                 
                 const currentDataHash = JSON.stringify(data);
                 if (currentDataHash !== lastDataHash) {
+                    globalData = data;
                     renderizarInterface(data);
                     lastDataHash = currentDataHash;
                 }
@@ -440,39 +509,78 @@
                 statusContainer.classList.add('opacity-70');
             }
 
-            // 2. Renderizar Combo
-            comboGlobalData = data.combo;
+            // 2. Renderizar Destaques (Combo e Combo Casal)
             const destaqueSection = document.getElementById('destaque');
-            if (data.combo.disponivel) {
+            let destaquesHTML = '';
+
+            // Super Combo Original
+            if (data.combo && data.combo.disponivel) {
+                comboGlobalData = data.combo;
                 const imagensCombo = data.combo.imagens.map((img, i) => 
-                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" alt="Combo Image ${i+1}">`
+                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                 ).join('');
 
-                destaqueSection.innerHTML = `
-                    <div class="theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300">
+                destaquesHTML += `
+                    <div class="theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300 h-full flex flex-col">
                         <div class="absolute top-3 left-3 theme-bg-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">Mais Pedido</div>
-                        <div onclick="openComboModal()" class="cursor-pointer">
-                            <div class="h-56 overflow-hidden relative bg-gray-100 carousel-container">
+                        <div onclick="openComboModal()" class="cursor-pointer flex flex-col h-full">
+                            <div class="h-48 overflow-hidden relative bg-gray-100 carousel-container">
                                 ${imagensCombo}
                             </div>
-                            <div class="p-5 relative z-20">
-                                <h2 class="font-serif text-2xl font-bold theme-text-primary mb-2 text-[#63121a]">${data.combo.titulo}</h2>
-                                <p class="theme-text-secondary text-sm leading-relaxed mb-4">${data.combo.descricao}</p>
+                            <div class="p-5 relative z-20 flex flex-col flex-1">
+                                <h2 class="font-serif text-xl font-bold theme-text-primary mb-2 text-[#63121a]">${data.combo.titulo}</h2>
+                                <p class="theme-text-secondary text-xs leading-relaxed mb-4 flex-1">${data.combo.descricao}</p>
                                 <div class="flex justify-between items-end pt-4 border-t theme-border border-dashed">
                                     <div class="flex flex-col">
-                                        <span class="text-xs text-red-500 line-through opacity-80"><span class="text-[10px]">R$</span> ${formatPrice(data.combo.preco_de)}</span>
-                                        <span class="text-2xl font-bold theme-price flex items-baseline gap-1">
-                                            <span class="text-sm font-bold">R$</span> ${formatPrice(data.combo.preco_por)}
+                                        ${data.combo.preco_de ? `<span class="text-xs text-red-500 line-through opacity-80"><span class="text-[10px]">R$</span> ${formatPrice(data.combo.preco_de)}</span>` : ''}
+                                        <span class="text-xl font-bold theme-price flex items-baseline gap-1">
+                                            <span class="text-xs font-bold">R$</span> ${formatPrice(data.combo.preco_por)}
                                         </span>
                                     </div>
-                                    <button class="btn-add-theme text-xs font-bold uppercase px-4 py-2 rounded transition flex items-center gap-2">
-                                        <i class="fas fa-plus text-[10px]"></i> Adicionar
+                                    <button class="btn-add-theme text-[10px] font-bold uppercase px-3 py-2 rounded transition flex items-center gap-1">
+                                        <i class="fas fa-plus text-[8px]"></i> Montar
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>`;
                 document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(data.combo.preco_por)}`;
+            }
+
+            // Novo Combo Casal (Ele espera a chave data.combo_casal no JSON)
+            if (data.combo_casal && data.combo_casal.disponivel) {
+                const imagensComboCasal = data.combo_casal.imagens.map((img, i) => 
+                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                ).join('');
+
+                destaquesHTML += `
+                    <div class="theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300 h-full flex flex-col">
+                        <div class="absolute top-3 left-3 bg-purple-700 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">Ideal para Dois</div>
+                        <div onclick="openComboCasalModal()" class="cursor-pointer flex flex-col h-full">
+                            <div class="h-48 overflow-hidden relative bg-gray-100 carousel-container">
+                                ${imagensComboCasal}
+                            </div>
+                            <div class="p-5 relative z-20 flex flex-col flex-1">
+                                <h2 class="font-serif text-xl font-bold theme-text-primary mb-2 text-purple-900 dark:text-purple-400">${data.combo_casal.titulo}</h2>
+                                <p class="theme-text-secondary text-xs leading-relaxed mb-4 flex-1">${data.combo_casal.descricao}</p>
+                                <div class="flex justify-between items-end pt-4 border-t theme-border border-dashed">
+                                    <div class="flex flex-col">
+                                        ${data.combo_casal.preco_de ? `<span class="text-xs text-red-500 line-through opacity-80"><span class="text-[10px]">R$</span> ${formatPrice(data.combo_casal.preco_de)}</span>` : ''}
+                                        <span class="text-xl font-bold theme-price flex items-baseline gap-1">
+                                            <span class="text-xs font-bold">R$</span> ${formatPrice(data.combo_casal.preco_por)}
+                                        </span>
+                                    </div>
+                                    <button class="bg-purple-700 hover:bg-purple-800 text-white text-[10px] font-bold uppercase px-3 py-2 rounded transition flex items-center gap-1 shadow-md">
+                                        <i class="fas fa-heart text-[8px]"></i> Montar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            if (destaquesHTML !== '') {
+                destaqueSection.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">${destaquesHTML}</div>`;
             } else {
                 destaqueSection.innerHTML = '';
             }
@@ -513,7 +621,7 @@
                 </div>`;
             }).join('');
 
-            // 4. Renderizar Adicionais
+            // 4. Renderizar Adicionais da Página Principal
             const listaAdicionais = document.getElementById('lista-adicionais');
             const extrasDisponiveis = data.adicionais.filter(a => a.disponivel);
             
@@ -544,7 +652,7 @@
                 </div>`;
             }).join('');
 
-            // Preencher Modal de Combo (Adicionais) - Apenas disponíveis
+            // Modal Super Combo Original (Adicionais grátis de clique único)
             document.getElementById('modal-combo-extras').innerHTML = extrasDisponiveis.map(adc => `
                 <button onclick="selectComboOption('extra', '${adc.display}')" id="combo-extra-${adc.display.replace(/\s+/g, '-')}" class="combo-opt text-left p-3 rounded-lg border theme-border hover:bg-black/5 transition flex items-center gap-3">
                     <span class="text-xl">${adc.icone || '➕'}</span>
@@ -552,7 +660,7 @@
                 </button>
             `).join('');
 
-            // 5. Renderizar Bebidas
+            // 5. Renderizar Bebidas da Página Principal
             const listaBebidas = document.getElementById('lista-bebidas');
             const bebidasDisponiveis = data.bebidas.filter(b => b.disponivel);
 
@@ -572,7 +680,7 @@
                         </div>
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             ${bebida.nome}
-                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Tem mas acabou 😁</span>' : ''}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou</span>' : ''}
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
@@ -585,22 +693,174 @@
                 </div>`;
             }).join('');
 
-            // Preencher Modal de Combo (Bebidas) - Apenas disponíveis
+            // Modal Super Combo Original (Bebida grátis)
             document.getElementById('modal-combo-bebidas').innerHTML = bebidasDisponiveis.map(bebida => `
                 <button onclick="selectComboOption('drink', '${bebida.nome}')" id="combo-drink-${bebida.nome.replace(/\s+/g, '-')}" class="combo-opt text-center p-3 rounded-lg border theme-border hover:bg-black/5 transition text-sm font-bold theme-text-primary flex items-center justify-center line-clamp-1">${bebida.nome}</button>
             `).join('');
 
-            // Reinicia o carrossel geral para os novos elementos gerados
             startGlobalCarousels();
         }
 
-        // --- INICIALIZAÇÃO ---
+        // --- FUNCIONALIDADES DO COMBO CASAL (NOVO) ---
+        function openComboCasalModal() {
+            if (!globalData || !globalData.combo_casal) return;
+            
+            // Reseta Estado
+            ccState.basePrice = globalData.combo_casal.preco_por;
+            ccState.extras = {};
+            ccState.extrasCount = 0;
+            ccState.drinks = {};
+            ccState.drinksTotal = 0;
+
+            // Popular Menus de Pratos
+            const pratosOptions = globalData.pratos.filter(p => p.disponivel).map(p => `<option value="${p.nome}">${p.nome}</option>`).join('');
+            document.getElementById('cc-prato-1').innerHTML = `<option value="" disabled selected>Selecione o Sabor do 1º Prato</option>${pratosOptions}`;
+            document.getElementById('cc-prato-2').innerHTML = `<option value="" disabled selected>Selecione o Sabor do 2º Prato</option>${pratosOptions}`;
+
+            renderComboCasalLists();
+            updateComboCasalTotal();
+
+            document.getElementById('combo-casal-modal').classList.remove('hidden');
+            document.getElementById('combo-casal-modal').classList.add('flex');
+        }
+
+        function closeComboCasalModal() {
+            document.getElementById('combo-casal-modal').classList.add('hidden');
+            document.getElementById('combo-casal-modal').classList.remove('flex');
+        }
+
+        function updateCcExtra(nome, delta) {
+            let current = ccState.extras[nome] || 0;
+            
+            // Trava caso já tenha 2 escolhidos e tente adicionar mais
+            if (delta > 0 && ccState.extrasCount >= 2) {
+                showToast('Você já escolheu seus 2 adicionais grátis!', true);
+                return;
+            }
+            // Não deixa baixar de 0
+            if (delta < 0 && current <= 0) return;
+
+            ccState.extras[nome] = current + delta;
+            ccState.extrasCount += delta;
+            renderComboCasalLists();
+        }
+
+        function updateCcDrink(nome, preco, delta) {
+            let current = ccState.drinks[nome] || { count: 0, price: preco };
+            if (delta < 0 && current.count <= 0) return;
+
+            current.count += delta;
+            if (current.count === 0) {
+                delete ccState.drinks[nome];
+            } else {
+                ccState.drinks[nome] = current;
+            }
+
+            renderComboCasalLists();
+            updateComboCasalTotal();
+        }
+
+        function renderComboCasalLists() {
+            // Atualiza Contadores Visuais
+            const extraCounterText = document.getElementById('cc-extras-counter');
+            extraCounterText.innerText = `${ccState.extrasCount}/2 Escolhidos`;
+            if(ccState.extrasCount === 2) {
+                extraCounterText.classList.remove('theme-bg-red');
+                extraCounterText.classList.add('bg-green-600');
+            } else {
+                extraCounterText.classList.add('theme-bg-red');
+                extraCounterText.classList.remove('bg-green-600');
+            }
+
+            // Renderizar Adicionais Grátis
+            const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
+                const count = ccState.extras[adc.display] || 0;
+                return `
+                <div class="flex items-center justify-between p-3 rounded-lg border theme-border hover:bg-black/5 dark:hover:bg-white/5 transition bg-white/50 dark:bg-transparent">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xl">${adc.icone || '➕'}</span>
+                        <div>
+                            <span class="text-sm font-bold theme-text-primary block">${adc.display}</span>
+                            <span class="text-[10px] text-green-600 font-bold block uppercase tracking-wider">Grátis</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white dark:bg-black border theme-border rounded-full px-2 py-1 shadow-sm">
+                        <button onclick="updateCcExtra('${adc.display}', -1)" class="w-6 h-6 flex items-center justify-center rounded-full text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition active:scale-90 font-bold">-</button>
+                        <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
+                        <button onclick="updateCcExtra('${adc.display}', 1)" class="w-6 h-6 flex items-center justify-center rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition active:scale-90 font-bold ${ccState.extrasCount >= 2 ? 'opacity-30 cursor-not-allowed' : ''}">+</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('modal-cc-extras').innerHTML = extrasHtml;
+
+            // Renderizar Bebidas Pagas
+            const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
+                const item = ccState.drinks[bebida.nome] || { count: 0 };
+                const count = item.count;
+                return `
+                <div class="flex items-center justify-between p-3 rounded-lg border theme-border hover:bg-black/5 dark:hover:bg-white/5 transition bg-white/50 dark:bg-transparent">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <span class="text-sm font-bold theme-text-primary block">${bebida.nome}</span>
+                            <span class="text-[10px] theme-price font-bold block">+ R$ ${formatPrice(bebida.preco)}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white dark:bg-black border theme-border rounded-full px-2 py-1 shadow-sm">
+                        <button onclick="updateCcDrink('${bebida.nome}', ${bebida.preco}, -1)" class="w-6 h-6 flex items-center justify-center rounded-full text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition active:scale-90 font-bold">-</button>
+                        <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
+                        <button onclick="updateCcDrink('${bebida.nome}', ${bebida.preco}, 1)" class="w-6 h-6 flex items-center justify-center rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition active:scale-90 font-bold">+</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('modal-cc-drinks').innerHTML = drinksHtml;
+        }
+
+        function updateComboCasalTotal() {
+            let drinksCost = 0;
+            for (let key in ccState.drinks) {
+                drinksCost += ccState.drinks[key].count * ccState.drinks[key].price;
+            }
+            let total = ccState.basePrice + drinksCost;
+            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(total)}`;
+        }
+
+        function confirmComboCasal() {
+            const prato1 = document.getElementById('cc-prato-1').value;
+            const prato2 = document.getElementById('cc-prato-2').value;
+
+            if (!prato1 || !prato2) return showToast('Selecione os sabores dos dois pratos!', true);
+            if (ccState.extrasCount !== 2) return showToast('Você precisa escolher os seus 2 adicionais grátis!', true);
+
+            // Monta as strings de descrição do combo
+            let extraArr = [];
+            for (let key in ccState.extras) {
+                if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`);
+            }
+
+            const detailsCombo = `Sabores: 1x ${prato1} + 1x ${prato2} | Adicionais: ${extraArr.join(' e ')}`;
+            
+            // Adiciona o Combo Base ao carrinho
+            addToCart(globalData.combo_casal.titulo, ccState.basePrice, detailsCombo, 'main');
+
+            // Adiciona Bebidas selecionadas separadamente ao carrinho para clareza
+            for (let key in ccState.drinks) {
+                let drink = ccState.drinks[key];
+                if (drink.count > 0) {
+                    for(let i=0; i<drink.count; i++) {
+                        addToCart(key, drink.price, 'Add via Combo Casal', 'drink');
+                    }
+                }
+            }
+
+            closeComboCasalModal();
+        }
+
+        // --- INIT GERAL ---
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 1000); // Polling: Atualiza a cada 1 segundo
+            setInterval(carregarDadosDoBanco, 1000); 
         });
 
-        // --- FUNCIONALIDADES ORIGINAIS MANTIDAS ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
         }
@@ -634,23 +894,16 @@
             });
         });
 
-        let cart = [];
-        let comboSelection = { main: null, extra: null, drink: null };
-
-        // Função de carrossel unificada para todos os elementos
         function startGlobalCarousels() {
             if (globalCarouselInterval) clearInterval(globalCarouselInterval);
             globalCarouselInterval = setInterval(() => {
                 document.querySelectorAll('.carousel-container').forEach(container => {
                     const imgs = container.querySelectorAll('.carousel-img');
                     if (imgs.length <= 1) return;
-                    
                     let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('opacity-100'));
                     if (currentIndex === -1) currentIndex = 0;
-                    
                     imgs[currentIndex].classList.remove('opacity-100');
                     imgs[currentIndex].classList.add('opacity-0');
-                    
                     const nextIndex = (currentIndex + 1) % imgs.length;
                     imgs[nextIndex].classList.remove('opacity-0');
                     imgs[nextIndex].classList.add('opacity-100');
@@ -691,7 +944,7 @@
                     <div class="flex justify-between items-start py-2 border-b theme-border border-opacity-10 last:border-0">
                         <div>
                             <div class="theme-text-primary font-medium text-sm">${item.name}</div>
-                            ${item.details ? `<div class="text-xs theme-text-secondary mt-0.5">${item.details}</div>` : ''}
+                            ${item.details ? `<div class="text-[10px] theme-text-secondary mt-1 leading-tight">${item.details}</div>` : ''}
                             <div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1">
                                 <span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}
                             </div>
@@ -709,6 +962,7 @@
             document.getElementById('overlay').classList.add('hidden');
         }
 
+        // COMBO NORMAL (ANTIGO)
         function openComboModal() {
             comboSelection = { main: null, extra: null, drink: null };
             document.querySelectorAll('.combo-opt').forEach(el => resetComboButtonStyle(el));
@@ -742,7 +996,7 @@
 
         function confirmCombo() {
             if(!comboSelection.main || !comboSelection.extra || !comboSelection.drink) return showToast('Selecione todos os itens!');
-            addToCart(comboGlobalData.nome, comboGlobalData.preco_por, `${comboSelection.main} | ${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
+            addToCart(comboGlobalData.titulo, comboGlobalData.preco_por, `${comboSelection.main} | ${comboSelection.extra} | Bebida: ${comboSelection.drink}`, 'main');
             closeComboModal();
         }
 

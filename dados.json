@@ -1,42 +1,34 @@
 {
   "configuracoes": {
-    "loja_aberta": 0,
+    "loja_aberta": 1,
     "mensagem_aberto": "Aberto agora",
-    "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não éa de ferro 😴",
-    "tempo_entrega": "Estimativa de entrega em 30-45 min"
+    "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴",
+    "tempo_entrega": "Entrega 45-60 min"
   },
   "combo": {
     "nome": "Super Combo",
-    "titulo": "SUPER COMBO: 1 ADICIONAL + 1 BEBIDA GRÁTIS",
+    "titulo": "SUPER COMBO: STROGONOFF ou LASANHA + 1 ADICIONAL + 1 BEBIDA GRÁTIS",
     "descricao": "Strogonoff tradicional + 1 adicional (Bacon ou Catupiry) + bebida grátis. Acompanha salada e batata palha crocante da casa.",
     "preco_de": 46.00,
     "preco_por": 39.90,
-    "imagens": ["image/combo1.png", "image/combo2.png", "image/combo3.png", "image/combo4.png", "image/combo5.png"],
-    "disponivel": true
+    "imagens": ["image/combo1.jpg", "image/combo2.jpg", "image/combo3.jpg", "image/combo4.jpg", "image/combo5.jpg", "image/combo6.jpg", "image/combo7.jpg", "image/combo8.jpg", "image/combo9.jpg","image/combo10.jpg"],
+    "disponivel": 1
   },
   "pratos": [
     {
-      "nome": "TRADICIONAL (FRANGO)",
+      "nome": "STROGONOFF TRADICIONAL FRANGO",
       "descricao": "Peito de frango, molho cremoso de verdade (zero amido). Acompanha arroz soltinho, salada e batata palha crocante da casa.",
       "preco": 30.00,
       "imagens": ["image/strogonoff1.png", "image/strogonoff2.png"],
-      "disponivel": 0,
+      "disponivel": 1,
       "tipo": "main"
     },
     {
-      "nome": "BATATA RECHEADA",
-      "descricao": "Batata assada e recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
-      "preco": 35.00,
-      "imagem": "image/batata.png",
-      "disponivel": true,
-      "tipo": "main"
-    },
-    {
-      "nome": "LASANHA DA CASA",
-      "descricao": "Lasanha recheada com Strogonoff + mussarela gratinada. Acompanha salada e batata palha crocante da casa.",
+      "nome": "LASANHA DE STROGONOFF",
+      "descricao": "Lasanha recheada com Strogonoff + mussarela, presunto e molho branco. Acompanha salada e batata palha crocante da casa.",
       "preco": 35.00,
       "imagens": ["image/lasanha1.png", "image/lasanha2.png"],
-      "disponivel": 1,
+      "disponivel": 0,
       "tipo": "main"
     }
   ],
@@ -49,7 +41,7 @@
       "imagem": "image/bacon.png",
       "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
       "icone": "🥓",
-      "disponivel": 0,
+      "disponivel": 1,
       "tipo": "extra"
     },
     {
@@ -61,6 +53,17 @@
       "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png",
       "icone": "🧀",
       "disponivel": true,
+      "tipo": "extra"
+    },
+    {
+      "nome": "Calabresa",
+      "display": "Calabresa",
+      "subtitulo": "Fritinha Fritinha",
+      "preco": 8.00,
+      "imagem": "image/calabresa.png",
+      "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
+      "icone": "🍖",
+      "disponivel": 0,
       "tipo": "extra"
     }
   ],
