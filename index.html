@@ -4,6 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recanto do Strogonoff | Pedido Online</title>
+    
+    <!-- ======================================================= -->
+    <!-- SEO BÁSICO (Otimização para o Google) -->
+    <!-- ======================================================= -->
+    <meta name="description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida. Peça já o seu!">
+    <meta name="keywords" content="strogonoff, arcos mg, delivery, restaurante, comida, almoço, jantar, recanto do strogonoff, pedido online">
+    <meta name="author" content="Recanto do Strogonoff">
+
+    <!-- ======================================================= -->
+    <!-- OTIMIZAÇÕES DE PERFORMANCE (Baseado no PageSpeed) -->
+    <!-- ======================================================= -->
+    <!-- Preload da imagem de LCP (Header) com alta prioridade -->
+    <link rel="preload" as="image" href="image/capa.webp" fetchpriority="high">
+    
+    <!-- Pré-conexão com servidores externos cruciais -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://api.npoint.io" crossorigin>
+
     <!-- ======================================================= -->
     <!-- OPEN GRAPH / PREVIEW PARA WHATSAPP, INSTAGRAM E REDES SOCIAIS -->
     <!-- ======================================================= -->
@@ -31,18 +51,6 @@
     <link rel="icon" href="image/logo1.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <!-- ======================================================= -->
-    <!-- OTIMIZAÇÕES DE PERFORMANCE (Baseado no PageSpeed) -->
-    <!-- ======================================================= -->
-    <!-- Preload da imagem de LCP (Header) com alta prioridade -->
-    <link rel="preload" as="image" href="image/capa.webp" fetchpriority="high">
-    
-    <!-- Pré-conexão com servidores externos cruciais -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://api.npoint.io" crossorigin>
 
     <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
@@ -547,7 +555,7 @@
             if (data.combo && data.combo.disponivel) {
                 comboGlobalData = data.combo;
                 const imagensCombo = data.combo.imagens.map((img, i) => 
-                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                    `<img src="${img}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                 ).join('');
 
                 destaquesHTML += `
@@ -580,7 +588,7 @@
             // Novo Combo Casal
             if (data.combo_casal && data.combo_casal.disponivel) {
                 const imagensComboCasal = data.combo_casal.imagens.map((img, i) => 
-                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                    `<img src="${img}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                 ).join('');
 
                 destaquesHTML += `
@@ -622,8 +630,8 @@
                 const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
                 
                 const imagensPratoHTML = prato.imagens && prato.imagens.length > 0
-                    ? prato.imagens.map((img, i) => `<img src="${img}" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
-                    : `<img src="${prato.imagem || ''}" class="w-full h-full object-cover absolute inset-0">`;
+                    ? prato.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
+                    : `<img src="${prato.imagem || ''}" loading="lazy" class="w-full h-full object-cover absolute inset-0">`;
 
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex gap-4 group ${indisponivelClass} relative overflow-hidden">
@@ -659,8 +667,8 @@
                 const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
                 
                 const imagensAdcHTML = adc.imagens && adc.imagens.length > 0
-                    ? adc.imagens.map((img, i) => `<img src="${img}" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
-                    : `<img src="${adc.imagem || ''}" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
+                    ? adc.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
+                    : `<img src="${adc.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
 
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex items-center gap-3 transition ${indisponivelClass} relative">
@@ -689,8 +697,8 @@
                 const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
 
                 const imagensBebidaHTML = bebida.imagens && bebida.imagens.length > 0
-                    ? bebida.imagens.map((img, i) => `<img src="${img}" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
-                    : `<img src="${bebida.imagem || ''}" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
+                    ? bebida.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
+                    : `<img src="${bebida.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
 
                 return `
                 <div ${disponivelAttr} class="flex items-center justify-between p-4 transition ${indisponivelClass}">
@@ -734,7 +742,7 @@
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
-                        <img src="${thumbUrl}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                        <img src="${thumbUrl}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
@@ -899,7 +907,7 @@
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border-red bg-red-50/50 dark:bg-red-900/10 transition ${!isStrogonoffAvail ? 'opacity-50 grayscale' : ''}">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
-                        <img src="${thumbStrogonoff}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                        <img src="${thumbStrogonoff}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">Strogonoff (Duplo)</span>
@@ -1024,7 +1032,7 @@
         // --- INIT GERAL ---
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 10000); 
+            setInterval(carregarDadosDoBanco, 1000); 
         });
 
         if ('serviceWorker' in navigator) {
