@@ -11,8 +11,7 @@
     <meta property="og:url" content="https://recantodostrogonoff.netlify.app/">
     <meta property="og:title" content="Recanto do Strogonoff | Pedido Online">
     <meta property="og:description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida. Peça já o seu!">
-    <!-- A IMAGEM ABAIXO É O QUE VAI APARECER NO WHATSAPP -->
-    <meta property="og:image" content="https://recantodostrogonoff.netlify.app/image/wpp.jpg">
+    <meta property="og:image" content="https://recantodostrogonoff.netlify.app/image/wpp.webp">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -21,7 +20,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Recanto do Strogonoff | Pedido Online">
     <meta name="twitter:description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida.">
-    <meta name="twitter:image" content="https://recantodostrogonoff.netlify.app/image/wpp.jpg">
+    <meta name="twitter:image" content="https://recantodostrogonoff.netlify.app/image/wpp.webp">
     <!-- ======================================================= -->
     
     <!-- CONFIGURAÇÃO PWA -->
@@ -195,10 +194,10 @@
 
     <header class="relative h-56 md:h-72 overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-body)] via-transparent to-black/20 transition-colors duration-300 z-10"></div>
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000')] bg-cover bg-center opacity-10"></div>
+        <div class="absolute inset-0 bg-[url('image/capa.webp')] bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.png" alt="Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
+            <img src="image/logo.webp" alt="Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm transition-opacity duration-300">
@@ -218,7 +217,7 @@
     </nav>
 
     <main class="max-w-3xl mx-auto px-4 py-6 space-y-10">
-        <!-- CONTAINERS DINÂMICOS (O JavaScript preencherá estes espaços) -->
+        <!-- CONTAINERS DINÂMICOS -->
         <section id="destaque" class="scroll-mt-24 section-spy"></section>
         
         <section id="pratos" class="scroll-mt-24 section-spy">
@@ -361,16 +360,12 @@
                 <!-- Passo 1: Prato Único Estático -->
                 <div>
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-60">1. Prato Incluso</label>
-                    <div class="flex items-center gap-3 p-3 rounded-lg border theme-border-red theme-bg-red text-white shadow-md transition bg-opacity-90">
-                        <i class="fas fa-check-circle text-xl"></i>
-                        <div>
-                            <span class="text-sm font-bold block">Prato Principal (Duplo)</span>
-                            <span class="text-[10px] font-bold block uppercase tracking-wider opacity-80">Fixo</span>
-                        </div>
+                    <div id="modal-cc-prato-estatico">
+                        <!-- Preenchido via JavaScript -->
                     </div>
                 </div>
 
-                <!-- Passo 2: Adicionais (Contadores Limpos com Miniaturas) -->
+                <!-- Passo 2: Adicionais -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Grátis</label>
@@ -379,7 +374,7 @@
                     <div id="modal-cc-extras" class="space-y-2"></div>
                 </div>
 
-                <!-- Passo 3: Bebidas (Upsell Limpo com Miniaturas) -->
+                <!-- Passo 3: Bebidas -->
                 <div class="pt-2">
                     <div class="flex flex-col mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60">3. Turbinar Pedido (Opcional)</label>
@@ -394,36 +389,53 @@
         </div>
     </div>
 
-    <!-- MODAL CHECKOUT -->
+    <!-- MODAL CHECKOUT OTIMIZADO PARA MOBILE -->
     <div id="checkout-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
-        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors">
+        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors max-h-[95vh] overflow-y-auto no-scrollbar">
             <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary p-2">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 class="text-xl font-serif font-bold mb-8 theme-text-primary text-center">Finalizar Pedido</h3>
+            <h3 class="text-xl font-serif font-bold mb-6 theme-text-primary text-center">Finalizar Pedido</h3>
             <form id="checkout-form" onsubmit="event.preventDefault(); finalizeOrder();" class="space-y-4">
                 <div><input type="text" id="client-name" required class="input-min border-b" placeholder="Seu Nome *"></div>
                 <div><input type="tel" id="client-phone" required class="input-min border-b" placeholder="Seu WhatsApp (DDD) *"></div>
                 <div><textarea id="client-address" required rows="1" class="input-min border-b resize-none" placeholder="Endereço de Entrega (Ex: Rua, N°, Bairro) *"></textarea></div>
-                <div><textarea id="client-obs" rows="2" class="input-min border-b resize-none" placeholder="Observações (Ex: Sem cebola, capricha no molho...)"></textarea></div>
-                <div>
-                    <select id="client-cutlery" class="input-min border-b" required>
-                        <option value="" disabled selected>Precisa de talher? *</option>
-                        <option value="Sim" class="text-gray-800 dark:text-gray-200">Sim</option>
-                        <option value="Não" class="text-gray-800 dark:text-gray-200">Não</option>
-                    </select>
+                <div><textarea id="client-obs" rows="2" class="input-min border-b resize-none" placeholder="Observações (Ex: Sem salada, capricha no molho...)"></textarea></div>
+                
+                <!-- SELETOR DE TALHERES VISUAL -->
+                <div class="pt-2">
+                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">Precisa de talher? *</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" onclick="selectCutlery('Sim')" id="btn-cutlery-Sim" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fas fa-utensils text-gray-400"></i> Sim
+                        </button>
+                        <button type="button" onclick="selectCutlery('Não')" id="btn-cutlery-Não" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fas fa-ban text-gray-400"></i> Não
+                        </button>
+                    </div>
+                    <input type="hidden" id="client-cutlery" required>
                 </div>
-                <div>
-                    <select id="payment-method" onchange="toggleChangeInput()" class="input-min border-b" required>
-                        <option value="" disabled selected>Forma de Pagamento *</option>
-                        <option value="Pix" class="text-gray-800 dark:text-gray-200">Pix</option>
-                        <option value="Cartão" class="text-gray-800 dark:text-gray-200">Cartão</option>
-                        <option value="Dinheiro" class="text-gray-800 dark:text-gray-200">Dinheiro</option>
-                    </select>
+                
+                <!-- SELETOR DE PAGAMENTO VISUAL -->
+                <div class="pt-2">
+                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">Forma de Pagamento *</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="selectPayment('Pix')" id="btn-payment-Pix" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                            <i class="fab fa-pix text-xl text-teal-500 mb-1 transition-colors"></i> Pix
+                        </button>
+                        <button type="button" onclick="selectPayment('Cartão')" id="btn-payment-Cartão" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                            <i class="fas fa-credit-card text-xl text-blue-500 mb-1 transition-colors"></i> Cartão
+                        </button>
+                        <button type="button" onclick="selectPayment('Dinheiro')" id="btn-payment-Dinheiro" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                            <i class="fas fa-money-bill-wave text-xl text-green-500 mb-1 transition-colors"></i> Dinheiro
+                        </button>
+                    </div>
+                    <input type="hidden" id="payment-method" required>
                 </div>
-                <div id="change-input-group" class="hidden">
-                    <input type="text" id="change-for" class="input-min border-b" placeholder="Troco para quanto?">
+
+                <div id="change-input-group" class="hidden pt-2">
+                    <input type="text" id="change-for" class="input-min border-b bg-green-50 dark:bg-green-900/10 text-green-800 dark:text-green-200 placeholder-green-600/50" placeholder="Troco para quanto? (Ex: 50)">
                 </div>
             </form>
             <button onclick="finalizeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg flex items-center justify-center gap-2 transition text-center">
@@ -676,7 +688,7 @@
                         </div>
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             ${bebida.nome}
-                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou</span>' : ''}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Tem mas acabou 😅</span>' : ''}
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
@@ -699,20 +711,22 @@
             return item.fallback || 'https://via.placeholder.com/150?text=Sem+Foto';
         }
 
-        function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0) {
+        function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0, isAvailable = true) {
             const isSc = comboType === 'sc';
             const limitClass = (limitReached && count === 0) ? 'opacity-30 cursor-not-allowed' : '';
             const priceStyle = priceText.includes('Grátis') || priceText.includes('Incluso') ? 'text-green-600' : 'theme-price';
+            const disabledClass = !isAvailable ? 'opacity-50 grayscale pointer-events-none' : '';
+            const displayPrice = !isAvailable ? '<span class="text-red-500">Esgotado</span>' : priceText;
             
             return `
-            <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent">
+            <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100 relative border theme-border bg-white dark:bg-gray-800">
-                        <img src="${thumbUrl}" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                    <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
+                        <img src="${thumbUrl}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
-                        <span class="text-[10px] ${priceStyle} font-bold block uppercase tracking-wider">${priceText}</span>
+                        <span class="text-[10px] ${priceStyle} font-bold block uppercase tracking-wider">${displayPrice}</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -763,7 +777,6 @@
         }
 
         function renderSuperComboLists() {
-            // Atualiza Contadores Visuais
             const cats = [
                 { id: 'sc-pratos-counter', count: scState.pratosCount },
                 { id: 'sc-extras-counter', count: scState.extrasCount },
@@ -781,24 +794,21 @@
                 }
             });
 
-            // 1. Pratos
-            const pratosHtml = globalData.pratos.filter(p => p.disponivel).map(prato => {
+            const pratosHtml = globalData.pratos.map(prato => {
                 const count = scState.pratos[prato.nome] || 0;
-                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato));
+                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato), 0, prato.disponivel);
             }).join('');
             document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
 
-            // 2. Extras
-            const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
+            const extrasHtml = globalData.adicionais.map(adc => {
                 const count = scState.extras[adc.display] || 0;
-                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc));
+                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc), 0, adc.disponivel);
             }).join('');
             document.getElementById('modal-combo-extras').innerHTML = extrasHtml;
 
-            // 3. Bebidas
-            const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
+            const drinksHtml = globalData.bebidas.map(bebida => {
                 const count = scState.drinks[bebida.nome] || 0;
-                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida));
+                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida), 0, bebida.disponivel);
             }).join('');
             document.getElementById('modal-combo-bebidas').innerHTML = drinksHtml;
         }
@@ -869,15 +879,36 @@
                 extraCounterText.classList.remove('bg-green-600');
             }
 
-            const extrasHtml = globalData.adicionais.filter(a => a.disponivel).map(adc => {
+            const strogonoffPrato = globalData.pratos.find(p => p.nome.toLowerCase().includes('strogonoff'));
+            const isStrogonoffAvail = strogonoffPrato && strogonoffPrato.disponivel;
+            const thumbStrogonoff = strogonoffPrato ? getThumb(strogonoffPrato) : 'https://via.placeholder.com/150?text=Strogonoff';
+            
+            const pratoCasalHtml = `
+            <div class="flex items-center justify-between p-2 rounded-lg border theme-border-red bg-red-50/50 dark:bg-red-900/10 transition ${!isStrogonoffAvail ? 'opacity-50 grayscale' : ''}">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
+                        <img src="${thumbStrogonoff}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                    </div>
+                    <div>
+                        <span class="text-sm font-bold theme-text-primary block">Strogonoff (Duplo)</span>
+                        <span class="text-[10px] text-green-600 font-bold block uppercase tracking-wider">${isStrogonoffAvail ? 'Fixo / Incluso' : '<span class="text-red-500">Esgotado no momento</span>'}</span>
+                    </div>
+                </div>
+                <div class="pr-3">
+                    ${isStrogonoffAvail ? '<i class="fas fa-check-circle text-green-600 text-xl"></i>' : '<i class="fas fa-times-circle text-red-500 text-xl"></i>'}
+                </div>
+            </div>`;
+            document.getElementById('modal-cc-prato-estatico').innerHTML = pratoCasalHtml;
+
+            const extrasHtml = globalData.adicionais.map(adc => {
                 const count = ccState.extras[adc.display] || 0;
-                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= 2, 'Grátis', getThumb(adc));
+                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= 2, 'Grátis', getThumb(adc), 0, adc.disponivel);
             }).join('');
             document.getElementById('modal-cc-extras').innerHTML = extrasHtml;
 
-            const drinksHtml = globalData.bebidas.filter(b => b.disponivel).map(bebida => {
+            const drinksHtml = globalData.bebidas.map(bebida => {
                 const count = (ccState.drinks[bebida.nome] || {count: 0}).count;
-                return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco);
+                return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco, bebida.disponivel);
             }).join('');
             document.getElementById('modal-cc-drinks').innerHTML = drinksHtml;
         }
@@ -890,6 +921,11 @@
         }
 
         function confirmComboCasal() {
+            const strogonoffPrato = globalData.pratos.find(p => p.nome.toLowerCase().includes('strogonoff'));
+            if (!strogonoffPrato || !strogonoffPrato.disponivel) {
+                return showToast('O Strogonoff está esgotado no momento!', true);
+            }
+
             if (ccState.extrasCount !== 2) return showToast('Você precisa escolher os seus 2 adicionais grátis!', true);
 
             let extraArr = [];
@@ -907,6 +943,70 @@
                 }
             }
             closeComboCasalModal();
+        }
+
+        // --- SISTEMA DE FORMULÁRIO DO CHECKOUT (VISUAL) ---
+        function selectCutlery(value) {
+            document.getElementById('client-cutlery').value = value;
+            document.querySelectorAll('.cutlery-btn').forEach(btn => {
+                btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
+                btn.classList.add('theme-border', 'theme-text-primary');
+                btn.style.borderColor = ''; btn.style.backgroundColor = ''; btn.style.color = '';
+                
+                const icon = btn.querySelector('i');
+                if(icon) {
+                    icon.classList.remove('text-white');
+                    icon.classList.add('text-gray-400');
+                }
+            });
+            const activeBtn = document.getElementById(`btn-cutlery-${value}`);
+            activeBtn.classList.remove('theme-border', 'theme-text-primary');
+            activeBtn.classList.add('theme-border-red');
+            activeBtn.style.borderColor = 'var(--brand-red)';
+            activeBtn.style.backgroundColor = 'var(--brand-red)';
+            activeBtn.style.color = 'white';
+            
+            const activeIcon = activeBtn.querySelector('i');
+            if(activeIcon) {
+                activeIcon.classList.remove('text-gray-400');
+                activeIcon.classList.add('text-white');
+            }
+        }
+
+        function selectPayment(value) {
+            document.getElementById('payment-method').value = value;
+            document.querySelectorAll('.payment-btn').forEach(btn => {
+                btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
+                btn.classList.add('theme-border', 'theme-text-primary');
+                btn.style.borderColor = ''; btn.style.backgroundColor = ''; btn.style.color = '';
+                
+                const icon = btn.querySelector('i');
+                if(icon) {
+                    icon.classList.remove('text-white');
+                    if (btn.id.includes('Pix')) icon.classList.add('text-teal-500');
+                    if (btn.id.includes('Cartão')) icon.classList.add('text-blue-500');
+                    if (btn.id.includes('Dinheiro')) icon.classList.add('text-green-500');
+                }
+            });
+            
+            const activeBtn = document.getElementById(`btn-payment-${value}`);
+            activeBtn.classList.remove('theme-border', 'theme-text-primary');
+            activeBtn.classList.add('theme-border-red');
+            activeBtn.style.borderColor = 'var(--brand-red)';
+            activeBtn.style.backgroundColor = 'var(--brand-red)';
+            activeBtn.style.color = 'white';
+            
+            const activeIcon = activeBtn.querySelector('i');
+            if(activeIcon) {
+                activeIcon.classList.remove('text-teal-500', 'text-blue-500', 'text-green-500');
+                activeIcon.classList.add('text-white');
+            }
+            
+            toggleChangeInput();
+        }
+
+        function toggleChangeInput() {
+            document.getElementById('change-input-group').classList.toggle('hidden', document.getElementById('payment-method').value !== 'Dinheiro');
         }
 
         // --- INIT GERAL ---
@@ -1023,13 +1123,10 @@
             const modal = document.getElementById('checkout-modal');
             modal.classList.remove('hidden'); modal.classList.add('flex');
         }
+        
         function closeCheckoutModal() {
             const modal = document.getElementById('checkout-modal');
             modal.classList.add('hidden'); modal.classList.remove('flex');
-        }
-
-        function toggleChangeInput() {
-            document.getElementById('change-input-group').classList.toggle('hidden', document.getElementById('payment-method').value !== 'Dinheiro');
         }
 
         function formatPhoneNumber(phone) {

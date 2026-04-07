@@ -32,6 +32,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <!-- ======================================================= -->
+    <!-- OTIMIZAÇÕES DE PERFORMANCE (Baseado no PageSpeed) -->
+    <!-- ======================================================= -->
+    <!-- Preload da imagem de LCP (Header) com alta prioridade -->
+    <link rel="preload" as="image" href="image/capa.webp" fetchpriority="high">
+    
+    <!-- Pré-conexão com servidores externos cruciais -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://api.npoint.io" crossorigin>
+
     <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
