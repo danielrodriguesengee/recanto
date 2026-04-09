@@ -1172,7 +1172,7 @@
         // --- INIT GERAL ---
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 30000); 
+            setInterval(carregarDadosDoBanco, 1000); 
         });
 
         if ('serviceWorker' in navigator) {
@@ -1222,7 +1222,7 @@
                     imgs[nextIndex].classList.remove('opacity-0');
                     imgs[nextIndex].classList.add('opacity-100');
                 });
-            }, 1000); 
+            }, 3000); 
         }
 
         function formatPrice(value) {
