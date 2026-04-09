@@ -205,7 +205,7 @@
         }
     </style>
 </head>
-<body class="pb-24"> 
+<body class="pb-32"> 
 
     <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors">
         <i id="theme-icon" class="fas fa-moon"></i>
@@ -270,7 +270,7 @@
     </main>
 
     <!-- BARRA DE INFORMAÇÕES (RODAPÉ) - ADAPTADO AO TEMA -->
-    <footer class="w-full theme-bg-card border-t theme-border py-6 mt-4 mb-20 shadow-inner transition-colors duration-300">
+    <footer class="w-full theme-bg-card border-t theme-border py-6 mt-4 transition-colors duration-300">
         <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 text-sm">
             
             <button onclick="openInfoModal('pagamento')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
@@ -295,6 +295,23 @@
             
         </div>
     </footer>
+
+    <!-- COPYRIGHT & CONTATOS MINIMALISTA -->
+    <div class="w-full theme-bg-body border-t theme-border py-8 mb-16 text-center text-[10px] sm:text-xs theme-text-secondary opacity-80">
+        <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
+            <p class="font-medium tracking-wide">RECANTO DO STROGONOFF</p>
+            <p>CNPJ: 65.655.282/0001-00</p>
+            <p>Endereço: R. Juca Dias, 196, São Judas - Arcos, MG</p>
+            <div class="flex items-center justify-center gap-4 mt-1">
+                <a href="mailto:recantodostrogonoff@gmail.com" class="hover:theme-text-primary transition"><i class="far fa-envelope"></i> recantodostrogonoff@gmail.com</a>
+                <span class="w-1 h-1 rounded-full bg-gray-400"></span>
+                <a href="https://wa.me/5537984243487" target="_blank" class="hover:theme-text-primary transition"><i class="fab fa-whatsapp"></i> (37) 98424-3487</a>
+            </div>
+            <p class="mt-4 pt-4 border-t theme-border border-dashed opacity-60">
+                &copy; <span id="current-year"></span> Recanto do Strogonoff. Todos os direitos reservados.
+            </p>
+        </div>
+    </div>
 
     <!-- BARRA DE SACOLA -->
     <div id="cart-bar" class="fixed bottom-0 left-0 right-0 theme-bg-card border-t theme-border p-4 z-50 transform translate-y-full transition-transform duration-300 shadow-[0_-5px_20px_rgba(0,0,0,0.1)]">
@@ -550,6 +567,9 @@
         const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
         let lastDataHash = "";
         let globalCarouselInterval = null;
+
+        // Adiciona o ano atual automaticamente no copyright
+        document.getElementById('current-year').textContent = new Date().getFullYear();
 
         // --- ESTADOS DOS COMBOS ---
         let comboGlobalData = null; 
@@ -1162,7 +1182,7 @@
         // --- INIT GERAL ---
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 1000); 
+            setInterval(carregarDadosDoBanco, 30000); 
         });
 
         if ('serviceWorker' in navigator) {
