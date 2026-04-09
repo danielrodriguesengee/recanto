@@ -519,11 +519,19 @@
 
             if (globalStoreStatus) {
                 statusText.innerText = `${data.configuracoes.mensagem_aberto || 'Aberto agora'} • ${data.configuracoes.tempo_entrega || '30-45 min'}`;
-                statusIcon.className = 'far fa-clock theme-brand-red';
+                
+                // Luz Verde Pulsante (Efeito "Ao Vivo" / Gatilho de Imediatismo)
+                statusIcon.className = 'relative flex h-2.5 w-2.5';
+                statusIcon.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>';
+                
                 statusContainer.classList.remove('opacity-70');
             } else {
                 statusText.innerText = data.configuracoes.mensagem_fechado || 'Fechado no momento';
-                statusIcon.className = 'far fa-clock text-gray-500';
+                
+                // Luz Vermelha Estática e Suave (Minimalista)
+                statusIcon.className = 'relative flex h-2.5 w-2.5';
+                statusIcon.innerHTML = '<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 opacity-80"></span>';
+                
                 statusContainer.classList.add('opacity-70');
             }
 
