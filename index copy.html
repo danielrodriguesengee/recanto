@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recanto do Strogonoff | Pedido Online</title>
+    
+    <!-- ======================================================= -->
+    <!-- SEO BÁSICO (Otimização para o Google) -->
+    <!-- ======================================================= -->
+    <meta name="description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida. Peça já o seu!">
+    <meta name="keywords" content="strogonoff, arcos mg, delivery, restaurante, comida, almoço, jantar, recanto do strogonoff, pedido online">
+    <meta name="author" content="Recanto do Strogonoff">
+
     <!-- ======================================================= -->
     <!-- OPEN GRAPH / PREVIEW PARA WHATSAPP, INSTAGRAM E REDES SOCIAIS -->
     <!-- ======================================================= -->
@@ -23,6 +31,13 @@
     <meta name="twitter:image" content="https://recantodostrogonoff.netlify.app/image/wpp.webp">
     <!-- ======================================================= -->
     
+    <!-- OTIMIZAÇÕES DE PERFORMANCE -->
+    <link rel="preload" as="image" href="image/capa.webp" fetchpriority="high">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://api.npoint.io" crossorigin>
+
     <!-- CONFIGURAÇÃO PWA -->
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
@@ -149,6 +164,10 @@
             outline: none;
             border-color: var(--brand-red);
         }
+
+        /* Classe de zebrado dinâmico (Claro/Escuro) */
+        .zebra-row:nth-child(even) { background-color: var(--bg-body); }
+        .zebra-row:nth-child(odd) { background-color: var(--bg-card); }
         
         .modal-overlay {
             background: rgba(0,0,0,0.85);
@@ -186,7 +205,7 @@
         }
     </style>
 </head>
-<body class="pb-32"> 
+<body class="pb-0"> 
 
     <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors">
         <i id="theme-icon" class="fas fa-moon"></i>
@@ -201,7 +220,7 @@
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm transition-opacity duration-300">
-                <i id="status-icon" class="far fa-clock theme-brand-red"></i> 
+                <i id="status-icon" class="relative flex h-2.5 w-2.5"></i> 
                 <span id="status-text">Carregando...</span>
             </div>
         </div>
@@ -249,6 +268,45 @@
             </div>
         </section>
     </main>
+
+    <!-- BARRA DE INFORMAÇÕES (RODAPÉ) - ADAPTADO AO TEMA -->
+    <footer class="w-full theme-bg-card border-t theme-border py-6 mt-4 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 text-xs">
+            
+            <button onclick="openInfoModal('pagamento')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
+                <i class="fas fa-dollar-sign theme-bg-body border theme-border rounded-full w-6 h-6 flex items-center justify-center text-xs"></i> 
+                Formas de pagamento
+            </button>
+
+            <button onclick="openInfoModal('taxas')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
+                <i class="fas fa-map-marker-alt text-lg"></i> 
+                Taxas e locais de entrega
+            </button>
+
+            <button onclick="openInfoModal('horarios')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
+                <i class="far fa-clock text-lg"></i> 
+                Horários de funcionamento
+            </button>
+            
+        </div>
+    </footer>
+
+    <!-- COPYRIGHT & CONTATOS MINIMALISTA -->
+    <div class="w-full theme-bg-body border-t theme-border py-8 mb-16 text-center text-[10px] sm:text-xs theme-text-secondary opacity-80">
+        <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
+            <p class="font-medium tracking-wide">RECANTO DO STROGONOFF</p>
+            <p>CNPJ: 65.655.282/0001-00</p>
+            <p>📍 R. Juca Dias, 196, São Judas - Arcos, MG</p>
+            <div class="flex items-center justify-center gap-4 mt-1">
+                <a href="mailto:recantodostrogonoff@gmail.com" class="hover:theme-text-primary transition"><i class="far fa-envelope"></i> recantodostrogonoff@gmail.com</a>
+                <span class="w-1 h-1 rounded-full bg-gray-400"></span>
+                <a href="https://wa.me/5537984243487" target="_blank" class="hover:theme-text-primary transition"><i class="fab fa-whatsapp"></i> (37) 98424-3487</a>
+            </div>
+            <p class="mt-4 pt-4 border-t theme-border border-dashed opacity-60">
+                &copy; <span id="current-year"></span> Recanto do Strogonoff. Todos os direitos reservados.
+            </p>
+        </div>
+    </div>
 
     <!-- BARRA DE SACOLA -->
     <div id="cart-bar" class="fixed bottom-0 left-0 right-0 theme-bg-card border-t theme-border p-4 z-50 transform translate-y-full transition-transform duration-300 shadow-[0_-5px_20px_rgba(0,0,0,0.1)]">
@@ -458,6 +516,35 @@
         </div>
     </div>
 
+    <!-- MODAL DE INFORMAÇÕES (ESTILO GOOD PIZZA - ADAPTADO AO TEMA) -->
+    <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeInfoModal()"></div>
+        <div class="theme-bg-body border theme-border w-full max-w-md shadow-2xl relative z-10 animate-pop-in flex flex-col overflow-hidden rounded-xl">
+            
+            <!-- Cabeçalho com linha vermelha -->
+            <div class="p-4 theme-bg-card border-t-4 border-[#7a121a] shadow-sm z-20">
+                <h3 id="info-modal-title" class="text-lg theme-text-primary font-bold">Título</h3>
+            </div>
+            
+            <!-- Subtítulo -->
+            <div class="px-5 py-3">
+                <p id="info-modal-subtitle" class="text-[13px] font-bold theme-text-secondary uppercase tracking-wider"></p>
+            </div>
+
+            <!-- Lista Zebrada Dinâmica -->
+            <div id="info-modal-list" class="max-h-[50vh] overflow-y-auto px-5 pb-5">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <!-- Botão Fechar -->
+            <div class="p-4 theme-bg-card flex justify-center border-t theme-border">
+                <button onclick="closeInfoModal()" class="w-full max-w-[200px] theme-bg-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST -->
     <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[90] translate-y-[-200%] transition-transform duration-300">
         <div class="theme-bg-red text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2">
@@ -475,6 +562,9 @@
         const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
         let lastDataHash = "";
         let globalCarouselInterval = null;
+
+        // Adiciona o ano atual automaticamente no copyright
+        document.getElementById('current-year').textContent = new Date().getFullYear();
 
         // --- ESTADOS DOS COMBOS ---
         let comboGlobalData = null; 
@@ -519,11 +609,19 @@
 
             if (globalStoreStatus) {
                 statusText.innerText = `${data.configuracoes.mensagem_aberto || 'Aberto agora'} • ${data.configuracoes.tempo_entrega || '30-45 min'}`;
-                statusIcon.className = 'far fa-clock theme-brand-red';
+                
+                // Luz Verde Pulsante (Efeito "Ao Vivo" / Gatilho de Imediatismo)
+                statusIcon.className = 'relative flex h-2.5 w-2.5';
+                statusIcon.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>';
+                
                 statusContainer.classList.remove('opacity-70');
             } else {
                 statusText.innerText = data.configuracoes.mensagem_fechado || 'Fechado no momento';
-                statusIcon.className = 'far fa-clock text-gray-500';
+                
+                // Luz Vermelha Estática e Suave (Minimalista)
+                statusIcon.className = 'relative flex h-2.5 w-2.5';
+                statusIcon.innerHTML = '<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 opacity-80"></span>';
+                
                 statusContainer.classList.add('opacity-70');
             }
 
@@ -535,7 +633,7 @@
             if (data.combo && data.combo.disponivel) {
                 comboGlobalData = data.combo;
                 const imagensCombo = data.combo.imagens.map((img, i) => 
-                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                    `<img src="${img}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                 ).join('');
 
                 destaquesHTML += `
@@ -568,7 +666,7 @@
             // Novo Combo Casal
             if (data.combo_casal && data.combo_casal.disponivel) {
                 const imagensComboCasal = data.combo_casal.imagens.map((img, i) => 
-                    `<img src="${img}" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                    `<img src="${img}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                 ).join('');
 
                 destaquesHTML += `
@@ -610,8 +708,8 @@
                 const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
                 
                 const imagensPratoHTML = prato.imagens && prato.imagens.length > 0
-                    ? prato.imagens.map((img, i) => `<img src="${img}" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
-                    : `<img src="${prato.imagem || ''}" class="w-full h-full object-cover absolute inset-0">`;
+                    ? prato.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
+                    : `<img src="${prato.imagem || ''}" loading="lazy" class="w-full h-full object-cover absolute inset-0">`;
 
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex gap-4 group ${indisponivelClass} relative overflow-hidden">
@@ -647,8 +745,8 @@
                 const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
                 
                 const imagensAdcHTML = adc.imagens && adc.imagens.length > 0
-                    ? adc.imagens.map((img, i) => `<img src="${img}" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
-                    : `<img src="${adc.imagem || ''}" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
+                    ? adc.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
+                    : `<img src="${adc.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
 
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex items-center gap-3 transition ${indisponivelClass} relative">
@@ -677,8 +775,8 @@
                 const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
 
                 const imagensBebidaHTML = bebida.imagens && bebida.imagens.length > 0
-                    ? bebida.imagens.map((img, i) => `<img src="${img}" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
-                    : `<img src="${bebida.imagem || ''}" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
+                    ? bebida.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
+                    : `<img src="${bebida.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
 
                 return `
                 <div ${disponivelAttr} class="flex items-center justify-between p-4 transition ${indisponivelClass}">
@@ -722,7 +820,7 @@
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
-                        <img src="${thumbUrl}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                        <img src="${thumbUrl}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
@@ -887,7 +985,7 @@
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border-red bg-red-50/50 dark:bg-red-900/10 transition ${!isStrogonoffAvail ? 'opacity-50 grayscale' : ''}">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
-                        <img src="${thumbStrogonoff}" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                        <img src="${thumbStrogonoff}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">Strogonoff (Duplo)</span>
@@ -1009,10 +1107,72 @@
             document.getElementById('change-input-group').classList.toggle('hidden', document.getElementById('payment-method').value !== 'Dinheiro');
         }
 
+        // --- SISTEMA DE INFORMAÇÕES EXTRAS (MODAL FOOTER) ---
+        function openInfoModal(type) {
+            // Utilizamos dados do banco, ou um fallback seguro se o JSON não foi atualizado
+            const conf = (globalData && globalData.configuracoes) ? globalData.configuracoes : {};
+            
+            const titleEl = document.getElementById('info-modal-title');
+            const subtitleEl = document.getElementById('info-modal-subtitle');
+            const listEl = document.getElementById('info-modal-list');
+            
+            let html = '';
+
+            if (type === 'pagamento') {
+                titleEl.innerText = 'Formas de pagamento';
+                subtitleEl.innerText = 'As seguintes formas de pagamento são aceitas:';
+                const itens = conf.pagamento_modal || [
+                    {"icone": "fab fa-pix text-teal-500", "texto": "PIX Online"},
+                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Crédito"},
+                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Débito"},
+                    {"icone": "fas fa-money-bill-wave text-green-500", "texto": "Dinheiro"}
+                ];
+                html = itens.map(item => `
+                    <div class="zebra-row px-5 py-3 flex items-center gap-3 border-b theme-border last:border-0">
+                        <i class="${item.icone} text-lg w-6 text-center drop-shadow-sm"></i>
+                        <span class="text-sm theme-text-primary font-medium">${item.texto}</span>
+                    </div>
+                `).join('');
+            } else if (type === 'taxas') {
+                titleEl.innerText = 'Taxas e locais de entrega';
+                subtitleEl.innerText = 'Entregamos nos seguintes locais:';
+                const itens = conf.taxas_modal || [
+                    "Centro: Entrega Grátis",
+                    "Demais bairros: Consultar (R$ 4,00 a R$ 8,00)"
+                ];
+                html = itens.map(item => `
+                    <div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">
+                        ${item}
+                    </div>
+                `).join('');
+            } else if (type === 'horarios') {
+                titleEl.innerText = 'Horários de Funcionamento';
+                subtitleEl.innerText = 'Abrimos nos seguintes dias e horários:';
+                const itens = conf.horarios_modal || [
+                    "Segunda-feira: Fechado",
+                    "Ter a Dom: das 18:00hs às 23:00hs"
+                ];
+                html = itens.map(item => `
+                    <div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">
+                        ${item}
+                    </div>
+                `).join('');
+            }
+
+            listEl.innerHTML = html;
+            document.getElementById('info-modal').classList.remove('hidden');
+            document.getElementById('info-modal').classList.add('flex');
+        }
+
+        function closeInfoModal() {
+            document.getElementById('info-modal').classList.add('hidden');
+            document.getElementById('info-modal').classList.remove('flex');
+        }
+
         // --- INIT GERAL ---
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 1000); 
+            setInterval(carregarDadosDoBanco, 30000); 
         });
 
         if ('serviceWorker' in navigator) {
