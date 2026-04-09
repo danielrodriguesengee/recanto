@@ -249,6 +249,37 @@
             </div>
         </section>
     </main>
+    <!-- RODAPÉ DE INFORMAÇÕES -->
+    <footer class="max-w-3xl mx-auto px-4 py-8 mb-20 border-t theme-border opacity-90">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left theme-text-secondary text-xs">
+            
+            <!-- Pagamento -->
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2 font-bold theme-text-primary mb-1">
+                    <i class="fas fa-dollar-sign text-[#63121a]"></i> Formas de pagamento
+                </div>
+                <span id="info-pagamento">Carregando...</span>
+            </div>
+
+            <!-- Entrega e Local -->
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2 font-bold theme-text-primary mb-1">
+                    <i class="fas fa-map-marker-alt text-[#63121a]"></i> Taxas e entrega
+                </div>
+                <span id="info-taxas">Carregando...</span>
+                <span id="info-local" class="font-bold theme-text-primary mt-1 opacity-70"></span>
+            </div>
+
+            <!-- Horários -->
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <div class="flex items-center gap-2 font-bold theme-text-primary mb-1">
+                    <i class="far fa-clock text-[#63121a]"></i> Horários de funcionamento
+                </div>
+                <span id="info-horarios">Carregando...</span>
+            </div>
+
+        </div>
+    </footer>
 
     <!-- BARRA DE SACOLA -->
     <div id="cart-bar" class="fixed bottom-0 left-0 right-0 theme-bg-card border-t theme-border p-4 z-50 transform translate-y-full transition-transform duration-300 shadow-[0_-5px_20px_rgba(0,0,0,0.1)]">
@@ -516,6 +547,13 @@
             const statusContainer = document.getElementById('store-status-container');
             const statusIcon = document.getElementById('status-icon');
             const statusText = document.getElementById('status-text');
+            // Atualizar Informações do Rodapé
+            if (data.configuracoes) {
+                document.getElementById('info-pagamento').innerText = data.configuracoes.formas_pagamento || 'Pix, Cartão e Dinheiro';
+                document.getElementById('info-taxas').innerText = data.configuracoes.taxas_entrega || 'Consulte a taxa de entrega';
+                document.getElementById('info-horarios').innerText = data.configuracoes.horarios || 'Consulte nossos horários';
+                document.getElementById('info-local').innerText = `📍 Estamos em ${data.configuracoes.localizacao || 'sua cidade'}`;
+            }
 
             if (globalStoreStatus) {
                 statusText.innerText = `${data.configuracoes.mensagem_aberto || 'Aberto agora'} • ${data.configuracoes.tempo_entrega || '30-45 min'}`;
