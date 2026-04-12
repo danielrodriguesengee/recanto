@@ -203,6 +203,13 @@
         .animate-pop-in {
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
+        @keyframes bounceX {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-5px); }
+        }
+        .animate-bounce-x {
+            animation: bounceX 1.5s infinite ease-in-out;
+        }
     </style>
 </head>
 <body> 
@@ -671,7 +678,25 @@
 
             if (destaquesHTML !== '') {
                 // Renderiza em uma linha rolável horizontalmente (estilo carrossel/swipe)
-                destaqueSection.innerHTML = `<div class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch">${destaquesHTML}</div>`;
+                // Se tiver mais de um combo, adiciona o indicador de arraste (setinha animada)
+                const hasMultipleCombos = comboKeys.length > 1;
+                const swipeIndicator = hasMultipleCombos ? `
+                    <div id="swipe-indicator" class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-700 z-30">
+                        <div class="theme-bg-nav backdrop-blur-md border border-r-0 theme-border rounded-l-full py-3 px-2 pl-3 flex items-center justify-center animate-bounce-x" style="box-shadow: -4px 0 15px var(--shadow-color);">
+                            <i class="fas fa-chevron-right theme-text-primary text-xs opacity-40"></i>
+                            <i class="fas fa-chevron-right theme-brand-red text-xs -ml-1"></i>
+                        </div>
+                    </div>
+                ` : '';
+
+                destaqueSection.innerHTML = `
+                    <div class="relative group">
+                        <div class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onscroll="document.getElementById('swipe-indicator')?.classList.add('opacity-0')">
+                            ${destaquesHTML}
+                        </div>
+                        ${swipeIndicator}
+                    </div>
+                `;
             } else {
                 destaqueSection.innerHTML = '';
             }
