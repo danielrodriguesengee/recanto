@@ -165,7 +165,6 @@
             border-color: var(--brand-red);
         }
 
-        /* Classe de zebrado dinâmico (Claro/Escuro) */
         .zebra-row:nth-child(even) { background-color: var(--bg-body); }
         .zebra-row:nth-child(odd) { background-color: var(--bg-card); }
         
@@ -236,7 +235,6 @@
     </nav>
 
     <main class="max-w-3xl mx-auto px-4 py-6 space-y-10">
-        <!-- CONTAINERS DINÂMICOS -->
         <section id="destaque" class="scroll-mt-24 section-spy"></section>
         
         <section id="pratos" class="scroll-mt-24 section-spy">
@@ -269,29 +267,23 @@
         </section>
     </main>
 
-    <!-- BARRA DE INFORMAÇÕES (RODAPÉ) - ADAPTADO AO TEMA -->
     <footer class="w-full theme-bg-card border-t theme-border py-6 mt-4 transition-colors duration-300">
         <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 text-xs">
-            
             <button onclick="openInfoModal('pagamento')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
                 <i class="fas fa-dollar-sign theme-bg-body border theme-border rounded-full w-6 h-6 flex items-center justify-center text-xs"></i> 
                 Formas de pagamento
             </button>
-
             <button onclick="openInfoModal('taxas')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
                 <i class="fas fa-map-marker-alt text-lg"></i> 
                 Taxas e locais de entrega
             </button>
-
             <button onclick="openInfoModal('horarios')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
                 <i class="far fa-clock text-lg"></i> 
                 Horários de funcionamento
             </button>
-            
         </div>
     </footer>
 
-    <!-- COPYRIGHT & CONTATOS MINIMALISTA -->
     <div class="w-full theme-bg-body border-t theme-border pt-8 pb-4 text-center text-[10px] sm:text-xs theme-text-secondary opacity-80">
         <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
             <p class="font-medium tracking-wide">RECANTO DO STROGONOFF</p>
@@ -346,111 +338,67 @@
         </div>
     </div>
 
-    <!-- OVERLAY GERAL -->
     <div id="overlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/80 z-[55] hidden modal-overlay transition-opacity"></div>
 
-    <!-- MODAL SUPER COMBO (UNIFICADO E DINÂMICO) -->
-    <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboModal()"></div>
+    <!-- ÚNICO MODAL DE COMBO (BUILDER DINÂMICO GOVERNADO PELO JSON) -->
+    <div id="combo-builder-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeBuilderModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
             
             <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
                 <div>
-                    <h3 class="text-xl font-serif font-bold theme-text-primary" id="sc-modal-title">Montar Combo</h3>
-                    <p class="theme-text-secondary text-xs mt-1">Prato + Adicional + Bebida</p>
+                    <h3 class="text-xl font-serif font-bold theme-text-primary" id="cb-modal-title">Montar Combo</h3>
+                    <p class="theme-text-secondary text-xs mt-1" id="cb-modal-subtitle">Carregando regras...</p>
                 </div>
                 <div class="text-right">
-                    <span id="modal-combo-preco" class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 0,00</span>
+                    <span id="cb-modal-preco" class="block theme-price font-bold text-xl"><span class="text-xs font-bold">R$</span> 0,00</span>
                 </div>
             </div>
 
             <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <!-- Passo 1 -->
-                <div>
+                <!-- Seção 1: Pratos (Exibição Dinâmica + Filtro do JSON) -->
+                <div id="wrap-pratos">
                     <div class="flex justify-between items-end mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha o Prato</label>
-                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-pratos-counter">0/1 Escolhido</span>
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha o(s) Prato(s)</label>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cb-pratos-counter">0/0 Escolhidos</span>
                     </div>
-                    <div id="modal-combo-pratos" class="space-y-2"></div>
-                </div>
-                
-                <!-- Passo 2 -->
-                <div>
-                    <div class="flex justify-between items-end mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Escolha o Adicional</label>
-                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-extras-counter">0/1 Escolhido</span>
-                    </div>
-                    <div id="modal-combo-extras" class="space-y-2"></div>
-                </div>
-                
-                <!-- Passo 3 -->
-                <div>
-                    <div class="flex justify-between items-end mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">3. Bebida Grátis</label>
-                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-drinks-counter">0/1 Escolhida</span>
-                    </div>
-                    <div id="modal-combo-bebidas" class="space-y-2"></div>
-                </div>
-            </div>
-
-            <button onclick="confirmCombo()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
-                Adicionar à Sacola
-            </button>
-        </div>
-    </div>
-
-    <!-- MODAL COMBO CASAL / MULTIPLO (AGORA DINÂMICO PELO JSON) -->
-    <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
-        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
-            
-            <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
-                <div>
-                    <h3 class="text-xl font-serif font-bold theme-text-primary" id="cc-modal-title">Combo Casal</h3>
-                    <p class="theme-text-secondary text-xs mt-1" id="cc-modal-subtitle">2 Pratos + 2 Adicionais Grátis</p>
-                </div>
-                <div class="text-right">
-                    <span id="modal-cc-preco" class="block theme-price font-bold text-xl"><span class="text-xs font-bold">R$</span> 0,00</span>
-                </div>
-            </div>
-
-            <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <!-- Passo 1: Pratos Dinâmicos (Escolhido Pelo Cliente e Filtrado Pelo JSON) -->
-                <div>
-                    <div class="flex justify-between items-end mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha seus Pratos</label>
-                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-pratos-counter">0/2 Escolhidos</span>
-                    </div>
-                    <div id="modal-cc-pratos" class="space-y-2">
-                        <!-- Preenchido via JavaScript -->
-                    </div>
+                    <div id="cb-pratos-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Passo 2: Adicionais -->
-                <div>
+                <!-- Seção 2: Adicionais (Exibido se qtd_adicionais > 0) -->
+                <div id="wrap-extras" class="hidden">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Inclusos</label>
-                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-extras-counter">0/2 Escolhidos</span>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cb-extras-counter">0/0 Escolhidos</span>
                     </div>
-                    <div id="modal-cc-extras" class="space-y-2"></div>
+                    <div id="cb-extras-list" class="space-y-2"></div>
+                </div>
+                
+                <!-- Seção 3: Bebidas Inclusas (Exibido se qtd_bebidas > 0) -->
+                <div id="wrap-free-drinks" class="hidden">
+                    <div class="flex justify-between items-end mb-3">
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">3. Bebida Inclusa</label>
+                        <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cb-free-drinks-counter">0/0 Escolhidas</span>
+                    </div>
+                    <div id="cb-free-drinks-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Passo 3: Bebidas -->
-                <div class="pt-2">
+                <!-- Seção 4: Bebidas Pagas (Turbinar - Sempre Visível) -->
+                <div id="wrap-paid-drinks" class="pt-2">
                     <div class="flex flex-col mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60">3. Turbinar Pedido (Opcional)</label>
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60" id="title-paid-drinks">Turbinar Pedido (Opcional)</label>
                     </div>
-                    <div id="modal-cc-drinks" class="space-y-2"></div>
+                    <div id="cb-paid-drinks-list" class="space-y-2"></div>
                 </div>
             </div>
 
-            <button onclick="confirmComboCasal()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
+            <button onclick="confirmBuilder()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
                 Adicionar à Sacola
             </button>
         </div>
     </div>
 
-    <!-- MODAL CHECKOUT OTIMIZADO PARA MOBILE -->
+    <!-- MODAL CHECKOUT -->
     <div id="checkout-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors max-h-[95vh] overflow-y-auto no-scrollbar">
@@ -464,33 +412,21 @@
                 <div><textarea id="client-address" required rows="1" class="input-min border-b resize-none" placeholder="Endereço de Entrega (Ex: Rua, N°, Bairro) *"></textarea></div>
                 <div><textarea id="client-obs" rows="2" class="input-min border-b resize-none" placeholder="Observações (Ex: Sem salada, capricha no molho...)"></textarea></div>
                 
-                <!-- SELETOR DE TALHERES VISUAL -->
                 <div class="pt-2">
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">Precisa de talher? *</label>
                     <div class="grid grid-cols-2 gap-3">
-                        <button type="button" onclick="selectCutlery('Sim')" id="btn-cutlery-Sim" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fas fa-utensils text-gray-400"></i> Sim
-                        </button>
-                        <button type="button" onclick="selectCutlery('Não')" id="btn-cutlery-Não" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fas fa-ban text-gray-400"></i> Não
-                        </button>
+                        <button type="button" onclick="selectCutlery('Sim')" id="btn-cutlery-Sim" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm"><i class="fas fa-utensils text-gray-400"></i> Sim</button>
+                        <button type="button" onclick="selectCutlery('Não')" id="btn-cutlery-Não" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm"><i class="fas fa-ban text-gray-400"></i> Não</button>
                     </div>
                     <input type="hidden" id="client-cutlery" required>
                 </div>
                 
-                <!-- SELETOR DE PAGAMENTO VISUAL -->
                 <div class="pt-2">
                     <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">Forma de Pagamento *</label>
                     <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="selectPayment('Pix')" id="btn-payment-Pix" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
-                            <i class="fab fa-pix text-xl text-teal-500 mb-1 transition-colors"></i> Pix
-                        </button>
-                        <button type="button" onclick="selectPayment('Cartão')" id="btn-payment-Cartão" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
-                            <i class="fas fa-credit-card text-xl text-blue-500 mb-1 transition-colors"></i> Cartão
-                        </button>
-                        <button type="button" onclick="selectPayment('Dinheiro')" id="btn-payment-Dinheiro" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
-                            <i class="fas fa-money-bill-wave text-xl text-green-500 mb-1 transition-colors"></i> Dinheiro
-                        </button>
+                        <button type="button" onclick="selectPayment('Pix')" id="btn-payment-Pix" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm"><i class="fab fa-pix text-xl text-teal-500 mb-1 transition-colors"></i> Pix</button>
+                        <button type="button" onclick="selectPayment('Cartão')" id="btn-payment-Cartão" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm"><i class="fas fa-credit-card text-xl text-blue-500 mb-1 transition-colors"></i> Cartão</button>
+                        <button type="button" onclick="selectPayment('Dinheiro')" id="btn-payment-Dinheiro" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm"><i class="fas fa-money-bill-wave text-xl text-green-500 mb-1 transition-colors"></i> Dinheiro</button>
                     </div>
                     <input type="hidden" id="payment-method" required>
                 </div>
@@ -519,31 +455,19 @@
         </div>
     </div>
 
-    <!-- MODAL DE INFORMAÇÕES (ESTILO GOOD PIZZA - ADAPTADO AO TEMA) -->
+    <!-- MODAL DE INFORMAÇÕES EXTRAS -->
     <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeInfoModal()"></div>
         <div class="theme-bg-body border theme-border w-full max-w-md shadow-2xl relative z-10 animate-pop-in flex flex-col overflow-hidden rounded-xl">
-            
-            <!-- Cabeçalho com linha vermelha -->
             <div class="p-4 theme-bg-card border-t-4 border-[#7a121a] shadow-sm z-20">
                 <h3 id="info-modal-title" class="text-lg theme-text-primary font-bold">Título</h3>
             </div>
-            
-            <!-- Subtítulo -->
             <div class="px-5 py-3">
                 <p id="info-modal-subtitle" class="text-[13px] font-bold theme-text-secondary uppercase tracking-wider"></p>
             </div>
-
-            <!-- Lista Zebrada Dinâmica -->
-            <div id="info-modal-list" class="max-h-[50vh] overflow-y-auto px-5 pb-5">
-                <!-- Preenchido via JS -->
-            </div>
-
-            <!-- Botão Fechar -->
+            <div id="info-modal-list" class="max-h-[50vh] overflow-y-auto px-5 pb-5"></div>
             <div class="p-4 theme-bg-card flex justify-center border-t theme-border">
-                <button onclick="closeInfoModal()" class="w-full max-w-[200px] theme-bg-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition">
-                    Fechar
-                </button>
+                <button onclick="closeInfoModal()" class="w-full max-w-[200px] theme-bg-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition">Fechar</button>
             </div>
         </div>
     </div>
@@ -566,32 +490,25 @@
         let lastDataHash = "";
         let globalCarouselInterval = null;
 
-        // Controle da Animação Peek (Arraste automático)
         let globalPeekTimeout = null;
         let isPeeking = false;
 
-        // Adiciona o ano atual automaticamente no copyright
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // --- ESTADOS DOS COMBOS (Agora dinâmicos e guiados pelo JSON) ---
+        // --- ESTADO DO BUILDER UNIVERSAL DE COMBOS ---
         let activeComboData = null; 
+        let comboRules = { qtd_pratos: 1, qtd_adicionais: 0, qtd_bebidas: 0, filtro_pratos: [] };
         
-        let scState = {
+        let cbState = {
+            basePrice: 0,
             pratos: {}, pratosCount: 0,
             extras: {}, extrasCount: 0,
-            drinks: {}, drinksCount: 0
-        };
-
-        let ccState = {
-            basePrice: 0,
-            pratos: {}, pratosCount: 0, // Agora o cliente ESCOLHE os pratos
-            extras: {}, extrasCount: 0,
-            drinks: {}, drinksTotal: 0
+            freeDrinks: {}, freeDrinksCount: 0,
+            paidDrinks: {}
         };
 
         let cart = [];
 
-        // --- FETCH DADOS E POLLING ---
         async function carregarDadosDoBanco() {
             try {
                 const response = await fetch(`${DATA_URL}?t=${new Date().getTime()}`);
@@ -608,9 +525,7 @@
             }
         }
 
-        // --- RENDERIZAÇÃO DINÂMICA (SEM F5) ---
         function renderizarInterface(data) {
-            // 1. Status da Loja
             globalStoreStatus = data.configuracoes.loja_aberta;
             const statusContainer = document.getElementById('store-status-container');
             const statusIcon = document.getElementById('status-icon');
@@ -628,14 +543,12 @@
                 statusContainer.classList.add('opacity-70');
             }
 
-            // Títulos dinâmicos pelo JSON
             if (data.configuracoes && data.configuracoes.titulos) {
                 if (data.configuracoes.titulos.pratos) document.getElementById('titulo-pratos').innerText = data.configuracoes.titulos.pratos;
                 if (data.configuracoes.titulos.adicionais) document.getElementById('titulo-adicionais').innerText = data.configuracoes.titulos.adicionais;
                 if (data.configuracoes.titulos.bebidas) document.getElementById('titulo-bebidas').innerText = data.configuracoes.titulos.bebidas;
             }
 
-            // 2. Renderizar Destaques 
             const destaqueSection = document.getElementById('destaque');
             let destaquesHTML = '';
 
@@ -643,13 +556,10 @@
 
             comboKeys.forEach(key => {
                 const comboItem = data[key];
+                const badgeText = comboItem.badge || 'Promoção';
                 
-                // Abre o modal de casal apenas se a chave tiver casal ou se nas regras do JSON tiver pedindo mais de 1 prato.
-                const isMultiplo = key.includes('casal') || (comboItem.regras && comboItem.regras.qtd_pratos > 1);
-                
-                const badgeText = comboItem.badge || (isMultiplo ? 'Ideal para Dois' : 'Mais Pedido');
-                const icon = isMultiplo ? 'fa-heart' : 'fa-plus';
-                const onClickFunction = isMultiplo ? `openComboCasalModal('${key}')` : `openComboModal('${key}')`;
+                // MÁGICA: Agora TODOS os combos abrem o mesmo modal dinâmico, sem precisar checar o nome da chave.
+                const onClickFunction = `openBuilderModal('${key}')`;
 
                 const imagensHTML = comboItem.imagens && comboItem.imagens.length > 0 
                     ? comboItem.imagens.map((img, i) => 
@@ -675,7 +585,7 @@
                                         </span>
                                     </div>
                                     <button class="btn-add-theme text-[10px] font-bold uppercase px-3 py-2 rounded transition flex items-center gap-1">
-                                        <i class="fas ${icon} text-[8px]"></i> Montar
+                                        <i class="fas fa-plus text-[8px]"></i> Montar
                                     </button>
                                 </div>
                             </div>
@@ -691,22 +601,18 @@
                         </div>
                     </div>
                 `;
-                
                 if (comboKeys.length > 1) {
                     clearTimeout(globalPeekTimeout);
                     globalPeekTimeout = setTimeout(peekCarousel, 1500);
                 }
-
             } else {
                 destaqueSection.innerHTML = '';
             }
 
-            // 3. Renderizar Pratos Principais
             const listaPratos = document.getElementById('lista-pratos');
             listaPratos.innerHTML = data.pratos.map(prato => {
                 const disponivelAttr = prato.disponivel ? `onclick="addToCart('${prato.nome}', ${prato.preco}, '', '${prato.tipo}')"` : '';
                 const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
-                
                 const imagensPratoHTML = prato.imagens && prato.imagens.length > 0
                     ? prato.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
                     : `<img src="${prato.imagem || ''}" loading="lazy" class="w-full h-full object-cover absolute inset-0">`;
@@ -737,13 +643,10 @@
                 </div>`;
             }).join('');
 
-            // 4. Renderizar Adicionais da Página Principal
             const listaAdicionais = document.getElementById('lista-adicionais');
-            
             listaAdicionais.innerHTML = data.adicionais.map(adc => {
                 const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')"` : '';
                 const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
-                
                 const imagensAdcHTML = adc.imagens && adc.imagens.length > 0
                     ? adc.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
                     : `<img src="${adc.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
@@ -767,13 +670,10 @@
                 </div>`;
             }).join('');
 
-            // 5. Renderizar Bebidas da Página Principal
             const listaBebidas = document.getElementById('lista-bebidas');
-
             listaBebidas.innerHTML = data.bebidas.map(bebida => {
                 const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')"` : '';
                 const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
-
                 const imagensBebidaHTML = bebida.imagens && bebida.imagens.length > 0
                     ? bebida.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
                     : `<img src="${bebida.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
@@ -811,26 +711,20 @@
 
         function customSmoothScroll(element, change, duration, isReturn = false) {
             if (!isPeeking) return;
-            
             const start = element.scrollLeft;
             const startTime = performance.now();
             element.classList.remove('snap-x', 'snap-mandatory');
 
             function animateScroll(currentTime) {
                 if (!isPeeking) return; 
-                
                 const timeElapsed = currentTime - startTime;
-                
                 if (timeElapsed < duration) {
                     element.scrollLeft = easeInOutCubic(timeElapsed, start, change, duration);
                     requestAnimationFrame(animateScroll);
                 } else {
                     element.scrollLeft = start + change; 
-                    
                     if (!isReturn) {
-                        setTimeout(() => {
-                            customSmoothScroll(element, -change, duration, true);
-                        }, 300); 
+                        setTimeout(() => { customSmoothScroll(element, -change, duration, true); }, 300); 
                     } else {
                         setTimeout(() => {
                             if (isPeeking) element.classList.add('snap-x', 'snap-mandatory');
@@ -846,7 +740,6 @@
             const carousel = document.getElementById('combos-carousel');
             if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
             if (carousel.scrollLeft > 10) return;
-            
             isPeeking = true;
             customSmoothScroll(carousel, 80, 800, false);
         }
@@ -859,40 +752,92 @@
             }
         }
 
-
-        // --- SISTEMA DE UI UNIFICADA DOS COMBOS (FUNÇÕES HELPERS) ---
         function getThumb(item) {
             if (item.imagens && item.imagens.length > 0) return item.imagens[0];
             if (item.imagem) return item.imagem;
             return item.fallback || 'https://via.placeholder.com/150?text=Sem+Foto';
         }
 
-        function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0, isAvailable = true) {
+        // --- SISTEMA ÚNICO E DINÂMICO DE COMBOS (MOTOR DE REGRAS JSON) ---
+
+        function openBuilderModal(comboKey) {
+            if (!globalData || !globalData[comboKey]) return;
+            activeComboData = globalData[comboKey];
+            
+            // Puxa as regras do JSON (se não existir, cria regras padrão de 1 prato simples)
+            comboRules = activeComboData.regras || { qtd_pratos: 1, qtd_adicionais: 0, qtd_bebidas: 0, filtro_pratos: [] };
+            
+            document.getElementById('cb-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
+            
+            // Gera o subtítulo dinâmico
+            let subtitleParts = [];
+            if (comboRules.qtd_pratos > 0) subtitleParts.push(`${comboRules.qtd_pratos} Prato${comboRules.qtd_pratos > 1 ? 's' : ''}`);
+            if (comboRules.qtd_adicionais > 0) subtitleParts.push(`${comboRules.qtd_adicionais} Adicional${comboRules.qtd_adicionais > 1 ? 'is' : ''}`);
+            if (comboRules.qtd_bebidas > 0) subtitleParts.push(`${comboRules.qtd_bebidas} Bebida${comboRules.qtd_bebidas > 1 ? 's' : ''}`);
+            document.getElementById('cb-modal-subtitle').innerText = subtitleParts.join(' + ') + ' (Inclusos)';
+
+            // Controla a exibição das sessões
+            document.getElementById('wrap-extras').className = comboRules.qtd_adicionais > 0 ? 'block' : 'hidden';
+            document.getElementById('wrap-free-drinks').className = comboRules.qtd_bebidas > 0 ? 'block' : 'hidden';
+            document.getElementById('title-paid-drinks').innerText = comboRules.qtd_bebidas > 0 ? '4. Turbinar Pedido (Pagas à Parte)' : 'Turbinar Pedido (Opcional)';
+
+            // Reseta o estado
+            cbState = {
+                basePrice: activeComboData.preco_por,
+                pratos: {}, pratosCount: 0,
+                extras: {}, extrasCount: 0,
+                freeDrinks: {}, freeDrinksCount: 0,
+                paidDrinks: {}
+            };
+
+            renderBuilderLists();
+            
+            const modal = document.getElementById('combo-builder-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+
+        function closeBuilderModal() {
+            const modal = document.getElementById('combo-builder-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
+        }
+
+        // Função universal de botões de mais e menos
+        function updateBuilderItem(category, nome, delta, precoItem = 0) {
+            if (category === 'pratos') {
+                if (delta > 0 && cbState.pratosCount >= comboRules.qtd_pratos) return showToast(`Limite de ${comboRules.qtd_pratos} prato(s) atingido!`, true);
+                if (delta < 0 && (cbState.pratos[nome] || 0) <= 0) return;
+                cbState.pratos[nome] = (cbState.pratos[nome] || 0) + delta;
+                cbState.pratosCount += delta;
+            } 
+            else if (category === 'extras') {
+                if (delta > 0 && cbState.extrasCount >= comboRules.qtd_adicionais) return showToast(`Limite de ${comboRules.qtd_adicionais} adicional(is) atingido!`, true);
+                if (delta < 0 && (cbState.extras[nome] || 0) <= 0) return;
+                cbState.extras[nome] = (cbState.extras[nome] || 0) + delta;
+                cbState.extrasCount += delta;
+            }
+            else if (category === 'freeDrinks') {
+                if (delta > 0 && cbState.freeDrinksCount >= comboRules.qtd_bebidas) return showToast(`Limite de ${comboRules.qtd_bebidas} bebida(s) grátis atingido! Use a seção abaixo.`, true);
+                if (delta < 0 && (cbState.freeDrinks[nome] || 0) <= 0) return;
+                cbState.freeDrinks[nome] = (cbState.freeDrinks[nome] || 0) + delta;
+                cbState.freeDrinksCount += delta;
+            }
+            else if (category === 'paidDrinks') {
+                let current = cbState.paidDrinks[nome] || { count: 0, price: precoItem };
+                if (delta < 0 && current.count <= 0) return;
+                current.count += delta;
+                if (current.count === 0) delete cbState.paidDrinks[nome];
+                else cbState.paidDrinks[nome] = current;
+            }
+
+            renderBuilderLists();
+        }
+
+        function buildRow(category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0, isAvailable = true) {
             const limitClass = (limitReached && count === 0) ? 'opacity-30 cursor-not-allowed' : '';
             const priceStyle = priceText.includes('Grátis') || priceText.includes('Incluso') ? 'text-green-600' : 'theme-price';
             const disabledClass = !isAvailable ? 'opacity-50 grayscale pointer-events-none' : '';
             const displayPrice = !isAvailable ? '<span class="text-red-500">Esgotado</span>' : priceText;
             
-            // Construção inteligente dos botões + e -
-            let clickFnMinus = '';
-            let clickFnPlus = '';
-            
-            if (comboType === 'sc') {
-                clickFnMinus = `updateScItem('${category}', '${nome}', -1)`;
-                clickFnPlus = `updateScItem('${category}', '${nome}', 1)`;
-            } else if (comboType === 'cc') {
-                if (category === 'pratos') {
-                    clickFnMinus = `updateCcPrato('${nome}', -1)`;
-                    clickFnPlus = `updateCcPrato('${nome}', 1)`;
-                } else if (category === 'extras') {
-                    clickFnMinus = `updateCcExtra('${nome}', -1)`;
-                    clickFnPlus = `updateCcExtra('${nome}', 1)`;
-                } else if (category === 'drinks') {
-                    clickFnMinus = `updateCcDrink('${nome}', ${precoItem}, -1)`;
-                    clickFnPlus = `updateCcDrink('${nome}', ${precoItem}, 1)`;
-                }
-            }
-
             return `
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
@@ -905,279 +850,104 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="${clickFnMinus}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold active:scale-90">-</button>
+                    <button onclick="updateBuilderItem('${category}', '${nome}', -1, ${precoItem})" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold active:scale-90">-</button>
                     <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
-                    <button onclick="${clickFnPlus}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold active:scale-90 ${limitClass}">+</button>
+                    <button onclick="updateBuilderItem('${category}', '${nome}', 1, ${precoItem})" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold active:scale-90 ${limitClass}">+</button>
                 </div>
             </div>`;
         }
 
-        // --- FUNCIONALIDADES DO SUPER COMBO (1 PRATO, 1 EXTRA, 1 BEBIDA) ---
-        function openComboModal(comboKey) {
-            if (!globalData || !globalData[comboKey]) return;
-            activeComboData = globalData[comboKey];
-            
-            document.getElementById('sc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
-            document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(activeComboData.preco_por)}`;
-
-            scState = {
-                pratos: {}, pratosCount: 0,
-                extras: {}, extrasCount: 0,
-                drinks: {}, drinksCount: 0
+        function renderBuilderLists() {
+            // Atualiza Contadores
+            const updateCounterUI = (id, count, max) => {
+                const el = document.getElementById(id);
+                if(!el) return;
+                el.innerText = `${count}/${max} Escolhido${max > 1 ? 's' : ''}`;
+                if(count === max) { el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600'); } 
+                else { el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600'); }
             };
 
-            renderSuperComboLists();
-            const modal = document.getElementById('combo-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-        }
+            updateCounterUI('cb-pratos-counter', cbState.pratosCount, comboRules.qtd_pratos);
+            if(comboRules.qtd_adicionais > 0) updateCounterUI('cb-extras-counter', cbState.extrasCount, comboRules.qtd_adicionais);
+            if(comboRules.qtd_bebidas > 0) updateCounterUI('cb-free-drinks-counter', cbState.freeDrinksCount, comboRules.qtd_bebidas);
 
-        function closeComboModal() {
-            const modal = document.getElementById('combo-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
-        }
-
-        function updateScItem(category, nome, delta) {
-            const config = {
-                'pratos': { stateObj: scState.pratos, countProp: 'pratosCount' },
-                'extras': { stateObj: scState.extras, countProp: 'extrasCount' },
-                'drinks': { stateObj: scState.drinks, countProp: 'drinksCount' }
-            }[category];
-
-            let current = config.stateObj[nome] || 0;
-            
-            if (delta > 0 && scState[config.countProp] >= 1) {
-                return showToast(`Você só pode escolher 1 item nesta categoria!`, true);
-            }
-            if (delta < 0 && current <= 0) return;
-
-            config.stateObj[nome] = current + delta;
-            scState[config.countProp] += delta;
-            renderSuperComboLists();
-        }
-
-        function renderSuperComboLists() {
-            const cats = [
-                { id: 'sc-pratos-counter', count: scState.pratosCount },
-                { id: 'sc-extras-counter', count: scState.extrasCount },
-                { id: 'sc-drinks-counter', count: scState.drinksCount }
-            ];
-            cats.forEach(c => {
-                const el = document.getElementById(c.id);
-                if(el) {
-                    el.innerText = `${c.count}/1 Escolhido`;
-                    if(c.count === 1) {
-                        el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600');
-                    } else {
-                        el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600');
-                    }
-                }
-            });
-
-            const pratosHtml = globalData.pratos.map(prato => {
-                const count = scState.pratos[prato.nome] || 0;
-                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato), 0, prato.disponivel);
-            }).join('');
-            document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
-
-            const extrasHtml = globalData.adicionais.map(adc => {
-                const count = scState.extras[adc.display] || 0;
-                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc), 0, adc.disponivel);
-            }).join('');
-            document.getElementById('modal-combo-extras').innerHTML = extrasHtml;
-
-            const drinksHtml = globalData.bebidas.map(bebida => {
-                const count = scState.drinks[bebida.nome] || 0;
-                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida), 0, bebida.disponivel);
-            }).join('');
-            document.getElementById('modal-combo-bebidas').innerHTML = drinksHtml;
-        }
-
-        function confirmCombo() {
-            if (scState.pratosCount !== 1 || scState.extrasCount !== 1 || scState.drinksCount !== 1) {
-                return showToast('Selecione 1 item de cada categoria!', true);
-            }
-
-            const prato = Object.keys(scState.pratos).find(k => scState.pratos[k] > 0);
-            const extra = Object.keys(scState.extras).find(k => scState.extras[k] > 0);
-            const drink = Object.keys(scState.drinks).find(k => scState.drinks[k] > 0);
-
-            addToCart(activeComboData.titulo || activeComboData.nome, activeComboData.preco_por, `${prato} | ${extra} | Bebida: ${drink}`, 'main');
-            closeComboModal();
-        }
-
-        // --- FUNCIONALIDADES DO COMBO CASAL / MULTIPLOS (BUILDER GUIADO PELO JSON) ---
-        function openComboCasalModal(comboKey) {
-            if (!globalData || !globalData[comboKey]) return;
-            activeComboData = globalData[comboKey];
-            
-            document.getElementById('cc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
-            
-            const maxPratos = (activeComboData.regras && activeComboData.regras.qtd_pratos) ? activeComboData.regras.qtd_pratos : 2;
-            const maxExtras = (activeComboData.regras && activeComboData.regras.qtd_adicionais) ? activeComboData.regras.qtd_adicionais : 2;
-            document.getElementById('cc-modal-subtitle').innerText = `${maxPratos} Pratos + ${maxExtras} Adicionais Grátis`;
-
-            ccState.basePrice = activeComboData.preco_por;
-            ccState.pratos = {}; ccState.pratosCount = 0;
-            ccState.extras = {}; ccState.extrasCount = 0;
-            ccState.drinks = {}; ccState.drinksTotal = 0;
-
-            renderComboCasalLists();
-            updateComboCasalTotal();
-
-            document.getElementById('combo-casal-modal').classList.remove('hidden');
-            document.getElementById('combo-casal-modal').classList.add('flex');
-        }
-
-        function closeComboCasalModal() {
-            document.getElementById('combo-casal-modal').classList.add('hidden');
-            document.getElementById('combo-casal-modal').classList.remove('flex');
-        }
-
-        function updateCcPrato(nome, delta) {
-            const maxPratos = (activeComboData.regras && activeComboData.regras.qtd_pratos) ? activeComboData.regras.qtd_pratos : 2;
-            let current = ccState.pratos[nome] || 0;
-            
-            if (delta > 0 && ccState.pratosCount >= maxPratos) return showToast(`Você já escolheu os seus ${maxPratos} pratos!`, true);
-            if (delta < 0 && current <= 0) return;
-
-            ccState.pratos[nome] = current + delta;
-            ccState.pratosCount += delta;
-            renderComboCasalLists();
-        }
-
-        function updateCcExtra(nome, delta) {
-            const maxExtras = (activeComboData.regras && activeComboData.regras.qtd_adicionais) ? activeComboData.regras.qtd_adicionais : 2;
-            let current = ccState.extras[nome] || 0;
-            
-            if (delta > 0 && ccState.extrasCount >= maxExtras) return showToast(`Você já escolheu seus ${maxExtras} adicionais grátis!`, true);
-            if (delta < 0 && current <= 0) return;
-
-            ccState.extras[nome] = current + delta;
-            ccState.extrasCount += delta;
-            renderComboCasalLists();
-        }
-
-        function updateCcDrink(nome, preco, delta) {
-            let current = ccState.drinks[nome] || { count: 0, price: preco };
-            if (delta < 0 && current.count <= 0) return;
-
-            current.count += delta;
-            if (current.count === 0) delete ccState.drinks[nome];
-            else ccState.drinks[nome] = current;
-
-            renderComboCasalLists();
-            updateComboCasalTotal();
-        }
-
-        function renderComboCasalLists() {
-            // Lógica dos Pratos
-            const maxPratos = (activeComboData.regras && activeComboData.regras.qtd_pratos) ? activeComboData.regras.qtd_pratos : 2;
-            const pratosCounterText = document.getElementById('cc-pratos-counter');
-            pratosCounterText.innerText = `${ccState.pratosCount}/${maxPratos} Escolhidos`;
-            if(ccState.pratosCount === maxPratos) {
-                pratosCounterText.classList.remove('theme-bg-red'); pratosCounterText.classList.add('bg-green-600');
-            } else {
-                pratosCounterText.classList.add('theme-bg-red'); pratosCounterText.classList.remove('bg-green-600');
-            }
-
-            // Filtro inteligente do JSON
+            // Filtro dinâmico de pratos vindo do JSON (Ex: Esconder Strogonoff no combo só de Lasanha)
             let pratosPermitidos = globalData.pratos;
-            if (activeComboData.regras && activeComboData.regras.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) {
-                pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome));
+            if (comboRules.filtro_pratos && comboRules.filtro_pratos.length > 0) {
+                pratosPermitidos = globalData.pratos.filter(p => comboRules.filtro_pratos.includes(p.nome));
             }
 
-            const pratosCasalHtml = pratosPermitidos.map(prato => {
-                const count = ccState.pratos[prato.nome] || 0;
-                return buildCounterRow('cc', 'pratos', prato.nome, count, ccState.pratosCount >= maxPratos, 'Incluso', getThumb(prato), 0, prato.disponivel);
-            }).join('');
-            document.getElementById('modal-cc-pratos').innerHTML = pratosCasalHtml;
+            document.getElementById('cb-pratos-list').innerHTML = pratosPermitidos.map(prato => 
+                buildRow('pratos', prato.nome, cbState.pratos[prato.nome] || 0, cbState.pratosCount >= comboRules.qtd_pratos, 'Incluso', getThumb(prato), 0, prato.disponivel)
+            ).join('');
 
-            // Lógica dos Extras
-            const maxExtras = (activeComboData.regras && activeComboData.regras.qtd_adicionais) ? activeComboData.regras.qtd_adicionais : 2;
-            const extraCounterText = document.getElementById('cc-extras-counter');
-            extraCounterText.innerText = `${ccState.extrasCount}/${maxExtras} Escolhidos`;
-            if(ccState.extrasCount === maxExtras) {
-                extraCounterText.classList.remove('theme-bg-red'); extraCounterText.classList.add('bg-green-600');
-            } else {
-                extraCounterText.classList.add('theme-bg-red'); extraCounterText.classList.remove('bg-green-600');
+            if(comboRules.qtd_adicionais > 0) {
+                document.getElementById('cb-extras-list').innerHTML = globalData.adicionais.map(adc => 
+                    buildRow('extras', adc.display, cbState.extras[adc.display] || 0, cbState.extrasCount >= comboRules.qtd_adicionais, 'Grátis', getThumb(adc), 0, adc.disponivel)
+                ).join('');
             }
 
-            const extrasHtml = globalData.adicionais.map(adc => {
-                const count = ccState.extras[adc.display] || 0;
-                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= maxExtras, 'Grátis', getThumb(adc), 0, adc.disponivel);
-            }).join('');
-            document.getElementById('modal-cc-extras').innerHTML = extrasHtml;
+            if(comboRules.qtd_bebidas > 0) {
+                document.getElementById('cb-free-drinks-list').innerHTML = globalData.bebidas.map(bebida => 
+                    buildRow('freeDrinks', bebida.nome, cbState.freeDrinks[bebida.nome] || 0, cbState.freeDrinksCount >= comboRules.qtd_bebidas, 'Grátis', getThumb(bebida), 0, bebida.disponivel)
+                ).join('');
+            }
 
-            // Lógica de Bebidas Pagas
-            const drinksHtml = globalData.bebidas.map(bebida => {
-                const count = (ccState.drinks[bebida.nome] || {count: 0}).count;
-                return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco, bebida.disponivel);
-            }).join('');
-            document.getElementById('modal-cc-drinks').innerHTML = drinksHtml;
+            document.getElementById('cb-paid-drinks-list').innerHTML = globalData.bebidas.map(bebida => 
+                buildRow('paidDrinks', bebida.nome, (cbState.paidDrinks[bebida.nome] || {count:0}).count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco, bebida.disponivel)
+            ).join('');
+
+            // Atualiza Preço Total
+            let totalPaidDrinks = 0;
+            for (let key in cbState.paidDrinks) totalPaidDrinks += cbState.paidDrinks[key].count * cbState.paidDrinks[key].price;
+            document.getElementById('cb-modal-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(cbState.basePrice + totalPaidDrinks)}`;
         }
 
-        function updateComboCasalTotal() {
-            let drinksCost = 0;
-            for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price;
-            let total = ccState.basePrice + drinksCost;
-            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(total)}`;
-        }
+        function confirmBuilder() {
+            // Validações Dinâmicas baseadas nas regras do JSON
+            if (cbState.pratosCount !== comboRules.qtd_pratos) return showToast(`Você precisa selecionar ${comboRules.qtd_pratos} prato(s)!`, true);
+            if (cbState.extrasCount !== comboRules.qtd_adicionais) return showToast(`Selecione seus ${comboRules.qtd_adicionais} adicionais grátis!`, true);
+            if (cbState.freeDrinksCount !== comboRules.qtd_bebidas) return showToast(`Selecione sua(s) ${comboRules.qtd_bebidas} bebida(s) grátis!`, true);
 
-        function confirmComboCasal() {
-            const maxPratos = (activeComboData.regras && activeComboData.regras.qtd_pratos) ? activeComboData.regras.qtd_pratos : 2;
-            const maxExtras = (activeComboData.regras && activeComboData.regras.qtd_adicionais) ? activeComboData.regras.qtd_adicionais : 2;
+            // Monta o texto de detalhes inteligente
+            let arrPratos = [], arrExtras = [], arrDrinks = [];
+            for (let key in cbState.pratos) if (cbState.pratos[key] > 0) arrPratos.push(`${cbState.pratos[key]}x ${key.split('+')[0].trim()}`);
+            for (let key in cbState.extras) if (cbState.extras[key] > 0) arrExtras.push(`${cbState.extras[key]}x ${key}`);
+            for (let key in cbState.freeDrinks) if (cbState.freeDrinks[key] > 0) arrDrinks.push(`${cbState.freeDrinks[key]}x ${key}`);
 
-            if (ccState.pratosCount !== maxPratos) return showToast(`Você precisa escolher seus ${maxPratos} pratos!`, true);
-            if (ccState.extrasCount !== maxExtras) return showToast(`Você precisa escolher os seus ${maxExtras} adicionais grátis!`, true);
+            let detailsArr = [];
+            if(arrPratos.length) detailsArr.push(`Pratos: ${arrPratos.join(' e ')}`);
+            if(arrExtras.length) detailsArr.push(`Extras: ${arrExtras.join(' e ')}`);
+            if(arrDrinks.length) detailsArr.push(`Bebidas(inc): ${arrDrinks.join(' e ')}`);
 
-            let pratosArr = [];
-            for (let key in ccState.pratos) {
-                if (ccState.pratos[key] > 0) pratosArr.push(`${ccState.pratos[key]}x ${key}`);
-            }
+            addToCart(activeComboData.titulo || activeComboData.nome, cbState.basePrice, detailsArr.join(' | '), 'main');
 
-            let extraArr = [];
-            for (let key in ccState.extras) {
-                if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`);
-            }
-
-            const detailsCombo = `Pratos: ${pratosArr.join(' + ')} | Adicionais: ${extraArr.join(' + ')}`;
-            addToCart(activeComboData.titulo || activeComboData.nome, ccState.basePrice, detailsCombo, 'main');
-
-            for (let key in ccState.drinks) {
-                let drink = ccState.drinks[key];
+            // Adiciona as bebidas extras pagas como itens separados no carrinho
+            for (let key in cbState.paidDrinks) {
+                let drink = cbState.paidDrinks[key];
                 if (drink.count > 0) {
-                    for(let i=0; i<drink.count; i++) addToCart(key, drink.price, `Add via ${activeComboData.nome || 'Combo Casal'}`, 'drink');
+                    for(let i=0; i<drink.count; i++) addToCart(key, drink.price, `Extra via ${activeComboData.nome || 'Combo'}`, 'drink');
                 }
             }
-            closeComboCasalModal();
+            closeBuilderModal();
         }
 
-        // --- SISTEMA DE FORMULÁRIO DO CHECKOUT (VISUAL) ---
+        // --- SISTEMAS ORIGINAIS MANTIDOS ---
         function selectCutlery(value) {
             document.getElementById('client-cutlery').value = value;
             document.querySelectorAll('.cutlery-btn').forEach(btn => {
                 btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
                 btn.classList.add('theme-border', 'theme-text-primary');
                 btn.style.borderColor = ''; btn.style.backgroundColor = ''; btn.style.color = '';
-                
                 const icon = btn.querySelector('i');
-                if(icon) {
-                    icon.classList.remove('text-white');
-                    icon.classList.add('text-gray-400');
-                }
+                if(icon) { icon.classList.remove('text-white'); icon.classList.add('text-gray-400'); }
             });
             const activeBtn = document.getElementById(`btn-cutlery-${value}`);
             activeBtn.classList.remove('theme-border', 'theme-text-primary');
             activeBtn.classList.add('theme-border-red');
-            activeBtn.style.borderColor = 'var(--brand-red)';
-            activeBtn.style.backgroundColor = 'var(--brand-red)';
-            activeBtn.style.color = 'white';
-            
+            activeBtn.style.borderColor = 'var(--brand-red)'; activeBtn.style.backgroundColor = 'var(--brand-red)'; activeBtn.style.color = 'white';
             const activeIcon = activeBtn.querySelector('i');
-            if(activeIcon) {
-                activeIcon.classList.remove('text-gray-400');
-                activeIcon.classList.add('text-white');
-            }
+            if(activeIcon) { activeIcon.classList.remove('text-gray-400'); activeIcon.classList.add('text-white'); }
         }
 
         function selectPayment(value) {
@@ -1186,7 +956,6 @@
                 btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
                 btn.classList.add('theme-border', 'theme-text-primary');
                 btn.style.borderColor = ''; btn.style.backgroundColor = ''; btn.style.color = '';
-                
                 const icon = btn.querySelector('i');
                 if(icon) {
                     icon.classList.remove('text-white');
@@ -1195,20 +964,15 @@
                     if (btn.id.includes('Dinheiro')) icon.classList.add('text-green-500');
                 }
             });
-            
             const activeBtn = document.getElementById(`btn-payment-${value}`);
             activeBtn.classList.remove('theme-border', 'theme-text-primary');
             activeBtn.classList.add('theme-border-red');
-            activeBtn.style.borderColor = 'var(--brand-red)';
-            activeBtn.style.backgroundColor = 'var(--brand-red)';
-            activeBtn.style.color = 'white';
-            
+            activeBtn.style.borderColor = 'var(--brand-red)'; activeBtn.style.backgroundColor = 'var(--brand-red)'; activeBtn.style.color = 'white';
             const activeIcon = activeBtn.querySelector('i');
             if(activeIcon) {
                 activeIcon.classList.remove('text-teal-500', 'text-blue-500', 'text-green-500');
                 activeIcon.classList.add('text-white');
             }
-            
             toggleChangeInput();
         }
 
@@ -1216,147 +980,75 @@
             document.getElementById('change-input-group').classList.toggle('hidden', document.getElementById('payment-method').value !== 'Dinheiro');
         }
 
-        // --- SISTEMA DE INFORMAÇÕES EXTRAS (MODAL FOOTER) ---
         function openInfoModal(type) {
             const conf = (globalData && globalData.configuracoes) ? globalData.configuracoes : {};
-            
             const titleEl = document.getElementById('info-modal-title');
             const subtitleEl = document.getElementById('info-modal-subtitle');
             const listEl = document.getElementById('info-modal-list');
-            
             let html = '';
 
             if (type === 'pagamento') {
-                titleEl.innerText = 'Formas de pagamento';
-                subtitleEl.innerText = 'As seguintes formas de pagamento são aceitas:';
-                const itens = conf.pagamento_modal || [
-                    {"icone": "fab fa-pix text-teal-500", "texto": "PIX Online"},
-                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Crédito"},
-                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Débito"},
-                    {"icone": "fas fa-money-bill-wave text-green-500", "texto": "Dinheiro"}
-                ];
+                titleEl.innerText = 'Formas de pagamento'; subtitleEl.innerText = 'As seguintes formas de pagamento são aceitas:';
+                const itens = conf.pagamento_modal || [];
                 html = itens.map(item => `
                     <div class="zebra-row px-5 py-3 flex items-center gap-3 border-b theme-border last:border-0">
-                        <i class="${item.icone} text-lg w-6 text-center drop-shadow-sm"></i>
-                        <span class="text-sm theme-text-primary font-medium">${item.texto}</span>
-                    </div>
-                `).join('');
+                        <i class="${item.icone} text-lg w-6 text-center drop-shadow-sm"></i><span class="text-sm theme-text-primary font-medium">${item.texto}</span>
+                    </div>`).join('');
             } else if (type === 'taxas') {
-                titleEl.innerText = 'Taxas e locais de entrega';
-                subtitleEl.innerText = 'Entregamos nos seguintes locais:';
-                const itens = conf.taxas_modal || [
-                    "Centro: Entrega Grátis",
-                    "Demais bairros: Consultar (R$ 4,00 a R$ 8,00)"
-                ];
-                html = itens.map(item => `
-                    <div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">
-                        ${item}
-                    </div>
-                `).join('');
+                titleEl.innerText = 'Taxas e locais de entrega'; subtitleEl.innerText = 'Entregamos nos seguintes locais:';
+                const itens = conf.taxas_modal || [];
+                html = itens.map(item => `<div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">${item}</div>`).join('');
             } else if (type === 'horarios') {
-                titleEl.innerText = 'Horários de Funcionamento';
-                subtitleEl.innerText = 'Abrimos nos seguintes dias e horários:';
-                const itens = conf.horarios_modal || [
-                    "Segunda-feira: Fechado",
-                    "Ter a Dom: das 18:00hs às 23:00hs"
-                ];
-                html = itens.map(item => `
-                    <div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">
-                        ${item}
-                    </div>
-                `).join('');
+                titleEl.innerText = 'Horários de Funcionamento'; subtitleEl.innerText = 'Abrimos nos seguintes dias e horários:';
+                const itens = conf.horarios_modal || [];
+                html = itens.map(item => `<div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">${item}</div>`).join('');
             }
-
             listEl.innerHTML = html;
-            document.getElementById('info-modal').classList.remove('hidden');
-            document.getElementById('info-modal').classList.add('flex');
+            document.getElementById('info-modal').classList.remove('hidden'); document.getElementById('info-modal').classList.add('flex');
         }
 
         function closeInfoModal() {
-            document.getElementById('info-modal').classList.add('hidden');
-            document.getElementById('info-modal').classList.remove('flex');
+            document.getElementById('info-modal').classList.add('hidden'); document.getElementById('info-modal').classList.remove('flex');
         }
 
-        // --- INIT GERAL ---
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 1000); 
-        });
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
-        }
+        document.addEventListener('DOMContentLoaded', () => { carregarDadosDoBanco(); setInterval(carregarDadosDoBanco, 1000); });
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js')); }
 
         function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('theme-icon');
+            const body = document.body; const icon = document.getElementById('theme-icon');
             body.classList.toggle('dark-mode'); 
             icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
         }
 
         function setActiveNav(element) {
-            document.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('active');
-                el.classList.add('inactive');
-            });
-            element.classList.add('active');
-            element.classList.remove('inactive');
+            document.querySelectorAll('.nav-link').forEach(el => { el.classList.remove('active'); el.classList.add('inactive'); });
+            element.classList.add('active'); element.classList.remove('inactive');
         }
 
         window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section'); const navLinks = document.querySelectorAll('.nav-link');
             let current = '';
             sections.forEach(s => { if (pageYOffset >= (s.offsetTop - 150)) current = s.getAttribute('id'); });
             navLinks.forEach(link => {
                 link.classList.remove('active'); link.classList.add('inactive');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active'); link.classList.remove('inactive');
-                }
+                if (link.getAttribute('href').includes(current)) { link.classList.add('active'); link.classList.remove('inactive'); }
             });
         });
 
-        function startGlobalCarousels() {
-            if (globalCarouselInterval) clearInterval(globalCarouselInterval);
-            globalCarouselInterval = setInterval(() => {
-                document.querySelectorAll('.carousel-container').forEach(container => {
-                    const imgs = container.querySelectorAll('.carousel-img');
-                    if (imgs.length <= 1) return;
-                    let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('opacity-100'));
-                    if (currentIndex === -1) currentIndex = 0;
-                    imgs[currentIndex].classList.remove('opacity-100');
-                    imgs[currentIndex].classList.add('opacity-0');
-                    const nextIndex = (currentIndex + 1) % imgs.length;
-                    imgs[nextIndex].classList.remove('opacity-0');
-                    imgs[nextIndex].classList.add('opacity-100');
-                });
-            }, 3000); 
-        }
-
-        function formatPrice(value) {
-            return value % 1 === 0 ? value.toString() : value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-        }
+        function formatPrice(value) { return value % 1 === 0 ? value.toString() : value.toLocaleString('pt-BR', { minimumFractionDigits: 2 }); }
 
         function addToCart(name, price, details = '', type = 'other') {
-            if (type === 'extra' && !cart.some(i => i.type === 'main')) {
-                return showToast('Ops! Adicione um prato antes do adicional 🥓', true);
-            }
-            cart.push({ name, price, details, type });
-            updateCartUI();
-            showToast(`${name} adicionado`);
+            if (type === 'extra' && !cart.some(i => i.type === 'main')) return showToast('Ops! Adicione um prato antes do adicional 🥓', true);
+            cart.push({ name, price, details, type }); updateCartUI(); showToast(`${name} adicionado`);
             if (navigator.vibrate) navigator.vibrate(30);
         }
 
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
         function updateCartUI() {
-            const bar = document.getElementById('cart-bar');
-            const container = document.getElementById('cart-items-container');
-            if (cart.length > 0) bar.classList.remove('translate-y-full');
-            else { bar.classList.add('translate-y-full'); closeCartDrawer(); }
-
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            const formattedTotal = formatPrice(total);
+            const bar = document.getElementById('cart-bar'); const container = document.getElementById('cart-items-container');
+            if (cart.length > 0) bar.classList.remove('translate-y-full'); else { bar.classList.add('translate-y-full'); closeCartDrawer(); }
+            const total = cart.reduce((acc, item) => acc + item.price, 0); const formattedTotal = formatPrice(total);
             document.getElementById('cart-total').innerHTML = `<span class="text-sm font-bold">R$</span> ${formattedTotal}`;
             document.getElementById('cart-bar-total').innerHTML = `<span class="text-xs font-bold">R$</span> ${formattedTotal}`;
             document.getElementById('cart-bar-count').textContent = `${cart.length} item${cart.length !== 1 ? 's' : ''}`;
@@ -1367,35 +1059,22 @@
                         <div>
                             <div class="theme-text-primary font-medium text-sm">${item.name}</div>
                             ${item.details ? `<div class="text-[10px] theme-text-secondary mt-1 leading-tight">${item.details}</div>` : ''}
-                            <div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1">
-                                <span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}
-                            </div>
+                            <div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1"><span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}</div>
                         </div>
                         <button onclick="removeFromCart(${index})" class="theme-text-secondary hover:text-red-500 p-2"><i class="fas fa-trash-alt"></i></button>
                     </div>`).join('');
         }
 
-        function openCartDrawer() {
-            document.getElementById('cart-drawer').classList.remove('translate-x-full');
-            document.getElementById('overlay').classList.remove('hidden');
-        }
-        function closeCartDrawer() {
-            document.getElementById('cart-drawer').classList.add('translate-x-full');
-            document.getElementById('overlay').classList.add('hidden');
-        }
+        function openCartDrawer() { document.getElementById('cart-drawer').classList.remove('translate-x-full'); document.getElementById('overlay').classList.remove('hidden'); }
+        function closeCartDrawer() { document.getElementById('cart-drawer').classList.add('translate-x-full'); document.getElementById('overlay').classList.add('hidden'); }
 
         function openCheckoutModal() {
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
             closeCartDrawer();
-            const modal = document.getElementById('checkout-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            const modal = document.getElementById('checkout-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
         }
-        
-        function closeCheckoutModal() {
-            const modal = document.getElementById('checkout-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
-        }
+        function closeCheckoutModal() { const modal = document.getElementById('checkout-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
 
         function formatPhoneNumber(phone) {
             const cleaned = ('' + phone).replace(/\D/g, '');
@@ -1405,38 +1084,27 @@
 
         function finalizeOrder() {
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
-            const name = document.getElementById('client-name').value, 
-                  phone = document.getElementById('client-phone').value, 
-                  address = document.getElementById('client-address').value, 
-                  obs = document.getElementById('client-obs').value, 
-                  cutlery = document.getElementById('client-cutlery').value,
-                  payment = document.getElementById('payment-method').value, 
-                  change = document.getElementById('change-for').value;
+            const name = document.getElementById('client-name').value, phone = document.getElementById('client-phone').value, address = document.getElementById('client-address').value, obs = document.getElementById('client-obs').value, cutlery = document.getElementById('client-cutlery').value, payment = document.getElementById('payment-method').value, change = document.getElementById('change-for').value;
                   
             if(!name || !phone || !address || !cutlery || !payment) return showToast('Por favor, preencha os campos obrigatórios (*) para finalizar seu pedido! 😊', true);
 
             let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n*RESUMO DO PEDIDO:*\n`;
             cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
-            
             if(obs) text += `📝 *OBSERVAÇÕES:*\n${obs}\n\n`;
             text += `🍴 *TALHERES:* ${cutlery}\n\n`;
-            
             text += `💰 *TOTAL: R$ ${cart.reduce((acc, i) => acc + i.price, 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n💳 *PAGAMENTO:* ${payment}${change ? ` (Troco p/ ${change})` : ''}`;
 
             window.open(`https://api.whatsapp.com/send?phone=5537984243487&text=${encodeURIComponent(text)}`, '_blank');
             cart = []; updateCartUI(); closeCheckoutModal();
             document.getElementById('success-modal').classList.remove('hidden'); document.getElementById('success-modal').classList.add('flex');
         }
-        
         function closeSuccessModal() { document.getElementById('success-modal').classList.add('hidden'); document.getElementById('success-modal').classList.remove('flex'); }
 
         function showToast(msg, isError = false) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
+            const toast = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
             toast.querySelector('div').className = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 ${isError ? 'bg-red-600' : 'theme-bg-red'}`;
             toast.querySelector('i').className = `text-white fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}`;
-            toast.classList.remove('translate-y-[-200%]');
-            setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
+            toast.classList.remove('translate-y-[-200%]'); setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
         }
     </script>
 </body>
