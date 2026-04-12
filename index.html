@@ -686,7 +686,7 @@
                 // Se houver mais de um combo, dispara o timeout para dar aquela "espiadinha" para o lado
                 if (comboKeys.length > 1) {
                     clearTimeout(globalPeekTimeout);
-                    globalPeekTimeout = setTimeout(peekCarousel, 2500);
+                    globalPeekTimeout = setTimeout(peekCarousel, 1500);
                 }
 
             } else {
@@ -794,32 +794,60 @@
             startGlobalCarousels();
         }
 
-        // --- SISTEMA INTELIGENTE DE "PEEK" (ESPIADINHA E VOLTA) ---
+        // --- SISTEMA INTELIGENTE DE "PEEK" (ESPIADINHA E VOLTA SUAVIZADA) ---
+        // Função matemática para deixar o deslize "amanteigado" (Cubic Easing)
+        function easeInOutCubic(t, b, c, d) {
+            t /= d/2;
+            if (t < 1) return c/2*t*t*t + b;
+            t -= 2;
+            return c/2*(t*t*t + 2) + b;
+        }
+
+        function customSmoothScroll(element, change, duration, isReturn = false) {
+            if (!isPeeking) return;
+            
+            const start = element.scrollLeft;
+            const startTime = performance.now();
+            element.classList.remove('snap-x', 'snap-mandatory');
+
+            function animateScroll(currentTime) {
+                if (!isPeeking) return; // Aborta se o usuário tocar na tela
+                
+                const timeElapsed = currentTime - startTime;
+                
+                if (timeElapsed < duration) {
+                    element.scrollLeft = easeInOutCubic(timeElapsed, start, change, duration);
+                    requestAnimationFrame(animateScroll);
+                } else {
+                    element.scrollLeft = start + change; // Garante que parou no lugar exato
+                    
+                    if (!isReturn) {
+                        // Espera 300ms parado olhando o próximo combo e volta
+                        setTimeout(() => {
+                            customSmoothScroll(element, -change, duration, true);
+                        }, 300); 
+                    } else {
+                        // Finalizou todo o vai-e-volta
+                        setTimeout(() => {
+                            if (isPeeking) element.classList.add('snap-x', 'snap-mandatory');
+                            isPeeking = false;
+                        }, 50);
+                    }
+                }
+            }
+            requestAnimationFrame(animateScroll);
+        }
+
         function peekCarousel() {
             const carousel = document.getElementById('combos-carousel');
-            // Se o carrossel não existe ou se tudo já cabe na tela, não precisa animar
             if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
             
+            // Se o usuário já arrastou manualmente antes do tempo, cancelamos a dica
+            if (carousel.scrollLeft > 10) return;
+            
             isPeeking = true;
-            
-            // Remove as classes de snap temporariamente para não brigar com a animação suave
-            carousel.classList.remove('snap-x', 'snap-mandatory');
-            
-            // Arrastada suave para a direita (mostrando que tem itens)
-            carousel.scrollTo({ left: 60, behavior: 'smooth' });
-            
-            // Aguarda o final da rolagem e volta
-            setTimeout(() => {
-                if (!isPeeking) return; // Se o cliente interrompeu, aborta
-                carousel.scrollTo({ left: 0, behavior: 'smooth' });
-                
-                // Retorna o snap (imã) natural aos cards
-                setTimeout(() => {
-                    if (!isPeeking) return;
-                    carousel.classList.add('snap-x', 'snap-mandatory');
-                    isPeeking = false;
-                }, 500);
-            }, 600); // tempo para "olhar" e voltar
+            // Arrasta 80px (distância), durante 800ms (tempo de animação suave)
+            customSmoothScroll(carousel, 80, 800, false);
         }
 
         // Caso o usuário arraste a tela no meio do "Peek", devolve o controle manual na mesma hora
