@@ -242,7 +242,7 @@
         <section id="pratos" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
-                STROGONOFF
+                <span id="titulo-pratos" class="uppercase">STROGONOFF</span>
             </h2>
             <div id="lista-pratos" class="space-y-4"></div>
         </section>
@@ -250,7 +250,7 @@
         <section id="adicionais" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
-                TURBINE SEU STROGONOFF
+                <span id="titulo-adicionais" class="uppercase">TURBINE SEU STROGONOFF</span>
             </h2>
             <div id="lista-adicionais" class="grid grid-cols-2 gap-3"></div>
         </section>
@@ -258,7 +258,7 @@
         <section id="bebidas" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
-                Bebidas
+                <span id="titulo-bebidas" class="uppercase">Bebidas</span>
             </h2>
             <div class="theme-bg-card border theme-border rounded-xl divide-y theme-border divide-opacity-10 overflow-hidden shadow-soft">
                 <div class="p-3 theme-bg-header text-xs font-bold uppercase tracking-wider theme-text-secondary transition-colors duration-300">
@@ -624,6 +624,13 @@
                 statusContainer.classList.add('opacity-70');
             }
 
+            // --- NOVO: Títulos das seções controlados pelo JSON ---
+            if (data.configuracoes && data.configuracoes.titulos) {
+                if (data.configuracoes.titulos.pratos) document.getElementById('titulo-pratos').innerText = data.configuracoes.titulos.pratos;
+                if (data.configuracoes.titulos.adicionais) document.getElementById('titulo-adicionais').innerText = data.configuracoes.titulos.adicionais;
+                if (data.configuracoes.titulos.bebidas) document.getElementById('titulo-bebidas').innerText = data.configuracoes.titulos.bebidas;
+            }
+
             // 2. Renderizar Destaques (Combos Dinâmicos - Suporta N Combos)
             const destaqueSection = document.getElementById('destaque');
             let destaquesHTML = '';
@@ -637,7 +644,9 @@
                 // Lógica Inteligente: Se a chave tiver "casal", aplicamos o estilo e modal de casal. 
                 // Se não, aplicamos o modal de combo normal. Assim você pode ter combo_casal2, combo_familia, etc.
                 const isCasal = key.includes('casal');
-                const badgeText = isCasal ? 'Ideal para Dois' : 'Mais Pedido';
+                
+                // --- NOVO: Badge dinâmica pelo JSON. Se não achar, usa o padrão. ---
+                const badgeText = comboItem.badge || (isCasal ? 'Ideal para Dois' : 'Mais Pedido');
                 const icon = isCasal ? 'fa-heart' : 'fa-plus';
                 const onClickFunction = isCasal ? `openComboCasalModal('${key}')` : `openComboModal('${key}')`;
 
