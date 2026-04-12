@@ -705,7 +705,7 @@
             if (!carousel || carousel.scrollWidth <= carousel.clientWidth || hasUserInteracted) return;
 
             // Tira o imã pra rolar suave
-            carousel.classList.remove('snap-mandatory');
+            carousel.classList.remove('snap-proximity');
             
             // Empurra 80px pra frente
             carousel.scrollTo({ left: 80, behavior: 'smooth' });
@@ -718,7 +718,7 @@
 
                 // Devolve o imã depois que ele terminar de voltar
                 peekSnapTimeoutId = setTimeout(() => {
-                    if (carousel && !hasUserInteracted) carousel.classList.add('snap-mandatory');
+                    if (carousel && !hasUserInteracted) carousel.classList.add('snap-proximity');
                 }, 500);
 
             }, 800);
