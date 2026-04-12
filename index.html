@@ -678,20 +678,20 @@
 
             if (destaquesHTML !== '') {
                 // Renderiza em uma linha rolável horizontalmente (estilo carrossel/swipe)
-                // Se tiver mais de um combo, adiciona o indicador de arraste (setinha animada)
+                // Se tiver mais de um combo, adiciona o indicador de arraste (setinha animada e interativa)
                 const hasMultipleCombos = comboKeys.length > 1;
                 const swipeIndicator = hasMultipleCombos ? `
-                    <div id="swipe-indicator" class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-700 z-30">
-                        <div class="theme-bg-nav backdrop-blur-md border border-r-0 theme-border rounded-l-full py-3 px-2 pl-3 flex items-center justify-center animate-bounce-x" style="box-shadow: -4px 0 15px var(--shadow-color);">
+                    <button id="swipe-indicator" onclick="document.getElementById('combos-carousel').scrollBy({ left: 320, behavior: 'smooth' })" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-700 z-30 focus:outline-none hover:opacity-90">
+                        <div class="theme-bg-nav backdrop-blur-md border border-r-0 theme-border rounded-l-full py-3 px-2 pl-3 flex items-center justify-center animate-bounce-x active:scale-95 transition-transform" style="box-shadow: -4px 0 15px var(--shadow-color);">
                             <i class="fas fa-chevron-right theme-text-primary text-xs opacity-40"></i>
                             <i class="fas fa-chevron-right theme-brand-red text-xs -ml-1"></i>
                         </div>
-                    </div>
+                    </button>
                 ` : '';
 
                 destaqueSection.innerHTML = `
                     <div class="relative group">
-                        <div class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onscroll="document.getElementById('swipe-indicator')?.classList.add('opacity-0')">
+                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onscroll="const ind = document.getElementById('swipe-indicator'); if(ind) ind.classList.add('opacity-0', 'pointer-events-none');">
                             ${destaquesHTML}
                         </div>
                         ${swipeIndicator}
