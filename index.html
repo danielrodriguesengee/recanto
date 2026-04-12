@@ -593,7 +593,7 @@
                 // Eventos adicionados: onpointerdown, ontouchstart, onwheel e onscroll para matar o timeout de forma infalível
                 destaqueSection.innerHTML = `
                     <div class="relative group">
-                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onpointerdown="cancelPeek()" ontouchstart="cancelPeek()" onwheel="cancelPeek()" onscroll="if(this.scrollLeft > 80) cancelPeek()">
+                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-proximity no-scrollbar items-stretch" onpointerdown="cancelPeek()" ontouchstart="cancelPeek()" onwheel="cancelPeek()" onscroll="if(this.scrollLeft > 80) cancelPeek()">
                             ${destaquesHTML}
                         </div>
                     </div>
