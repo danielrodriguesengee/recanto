@@ -644,7 +644,7 @@
                     : `<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-image text-4xl"></i></div>`;
 
                 destaquesHTML += `
-                    <div class="theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300 h-full flex flex-col">
+                    <div class="flex-none w-[85vw] sm:w-[320px] snap-center theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300 flex flex-col">
                         <div class="absolute top-3 left-3 theme-bg-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">${badgeText}</div>
                         <div onclick="${onClickFunction}" class="cursor-pointer flex flex-col h-full">
                             <div class="h-48 overflow-hidden relative bg-gray-100 carousel-container">
@@ -670,8 +670,8 @@
             });
 
             if (destaquesHTML !== '') {
-                // Modificado para adaptar bem caso tenha 1, 2, 3 ou mais combos
-                destaqueSection.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">${destaquesHTML}</div>`;
+                // Renderiza em uma linha rolável horizontalmente (estilo carrossel/swipe)
+                destaqueSection.innerHTML = `<div class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch">${destaquesHTML}</div>`;
             } else {
                 destaqueSection.innerHTML = '';
             }
