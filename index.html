@@ -356,7 +356,7 @@
             </div>
 
             <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <!-- Seção 1: Pratos (Exibição Dinâmica + Filtro do JSON) -->
+                <!-- Seção 1: Pratos -->
                 <div id="wrap-pratos">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha o(s) Prato(s)</label>
@@ -365,7 +365,7 @@
                     <div id="cb-pratos-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Seção 2: Adicionais (Exibido se qtd_adicionais > 0) -->
+                <!-- Seção 2: Adicionais -->
                 <div id="wrap-extras" class="hidden">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Inclusos</label>
@@ -374,7 +374,7 @@
                     <div id="cb-extras-list" class="space-y-2"></div>
                 </div>
                 
-                <!-- Seção 3: Bebidas Inclusas (Exibido se qtd_bebidas > 0) -->
+                <!-- Seção 3: Bebidas Inclusas -->
                 <div id="wrap-free-drinks" class="hidden">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">3. Bebida Inclusa</label>
@@ -383,7 +383,7 @@
                     <div id="cb-free-drinks-list" class="space-y-2"></div>
                 </div>
 
-                <!-- Seção 4: Bebidas Pagas (Turbinar - Sempre Visível) -->
+                <!-- Seção 4: Bebidas Pagas -->
                 <div id="wrap-paid-drinks" class="pt-2">
                     <div class="flex flex-col mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60" id="title-paid-drinks">Turbinar Pedido (Opcional)</label>
@@ -489,9 +489,7 @@
         const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
         let lastDataHash = "";
         let globalCarouselInterval = null;
-
         let globalPeekTimeout = null;
-        let isPeeking = false;
 
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
@@ -558,7 +556,6 @@
                 const comboItem = data[key];
                 const badgeText = comboItem.badge || 'Promoção';
                 
-                // MÁGICA: Agora TODOS os combos abrem o mesmo modal dinâmico, sem precisar checar o nome da chave.
                 const onClickFunction = `openBuilderModal('${key}')`;
 
                 const imagensHTML = comboItem.imagens && comboItem.imagens.length > 0 
@@ -596,7 +593,7 @@
             if (destaquesHTML !== '') {
                 destaqueSection.innerHTML = `
                     <div class="relative group">
-                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" ontouchstart="cancelPeek()" onmousedown="cancelPeek()">
+                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch">
                             ${destaquesHTML}
                         </div>
                     </div>
@@ -702,54 +699,31 @@
             startGlobalCarousels();
         }
 
-        function easeInOutCubic(t, b, c, d) {
-            t /= d/2;
-            if (t < 1) return c/2*t*t*t + b;
-            t -= 2;
-            return c/2*(t*t*t + 2) + b;
-        }
-
-        function customSmoothScroll(element, change, duration, isReturn = false) {
-            if (!isPeeking) return;
-            const start = element.scrollLeft;
-            const startTime = performance.now();
-            element.classList.remove('snap-x', 'snap-mandatory');
-
-            function animateScroll(currentTime) {
-                if (!isPeeking) return; 
-                const timeElapsed = currentTime - startTime;
-                if (timeElapsed < duration) {
-                    element.scrollLeft = easeInOutCubic(timeElapsed, start, change, duration);
-                    requestAnimationFrame(animateScroll);
-                } else {
-                    element.scrollLeft = start + change; 
-                    if (!isReturn) {
-                        setTimeout(() => { customSmoothScroll(element, -change, duration, true); }, 300); 
-                    } else {
-                        setTimeout(() => {
-                            if (isPeeking) element.classList.add('snap-x', 'snap-mandatory');
-                            isPeeking = false;
-                        }, 50);
-                    }
-                }
-            }
-            requestAnimationFrame(animateScroll);
-        }
-
+        // --- SISTEMA INTELIGENTE DE "PEEK" NATIVO (SUAVE E SEM BRIGAR COM O DEDO) ---
         function peekCarousel() {
             const carousel = document.getElementById('combos-carousel');
-            if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
-            if (carousel.scrollLeft > 10) return;
-            isPeeking = true;
-            customSmoothScroll(carousel, 80, 800, false);
-        }
-
-        function cancelPeek() {
-            if (isPeeking) {
-                isPeeking = false;
-                const carousel = document.getElementById('combos-carousel');
-                if (carousel) carousel.classList.add('snap-x', 'snap-mandatory');
-            }
+            // Só executa se o carrossel existir, se couber rolagem, e se o cliente já não tiver arrastado
+            if (!carousel || carousel.scrollWidth <= carousel.clientWidth || carousel.scrollLeft > 10) return;
+            
+            // Remove o "ímã" temporariamente para a animação não brigar com o navegador
+            carousel.classList.remove('snap-mandatory');
+            
+            // Rolagem suave usando a ferramenta nativa do próprio celular (leve e perfeita)
+            carousel.scrollTo({ left: 80, behavior: 'smooth' });
+            
+            // Espera a rolagem de ida terminar (800ms) e então avalia se deve voltar
+            setTimeout(() => {
+                // Inteligência: Só volta se o cliente não tiver arrastado pra mais longe nesse meio tempo!
+                if (carousel && carousel.scrollLeft < 150) {
+                    carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                }
+                
+                // Só devolve o "ímã" (snap) depois que ele já parou, para não dar solavanco
+                setTimeout(() => {
+                    if (carousel) carousel.classList.add('snap-mandatory');
+                }, 600);
+                
+            }, 800);
         }
 
         function getThumb(item) {
@@ -904,12 +878,10 @@
         }
 
         function confirmBuilder() {
-            // Validações Dinâmicas baseadas nas regras do JSON
             if (cbState.pratosCount !== comboRules.qtd_pratos) return showToast(`Você precisa selecionar ${comboRules.qtd_pratos} prato(s)!`, true);
             if (cbState.extrasCount !== comboRules.qtd_adicionais) return showToast(`Selecione seus ${comboRules.qtd_adicionais} adicionais grátis!`, true);
             if (cbState.freeDrinksCount !== comboRules.qtd_bebidas) return showToast(`Selecione sua(s) ${comboRules.qtd_bebidas} bebida(s) grátis!`, true);
 
-            // Monta o texto de detalhes inteligente
             let arrPratos = [], arrExtras = [], arrDrinks = [];
             for (let key in cbState.pratos) if (cbState.pratos[key] > 0) arrPratos.push(`${cbState.pratos[key]}x ${key.split('+')[0].trim()}`);
             for (let key in cbState.extras) if (cbState.extras[key] > 0) arrExtras.push(`${cbState.extras[key]}x ${key}`);
@@ -922,7 +894,6 @@
 
             addToCart(activeComboData.titulo || activeComboData.nome, cbState.basePrice, detailsArr.join(' | '), 'main');
 
-            // Adiciona as bebidas extras pagas como itens separados no carrinho
             for (let key in cbState.paidDrinks) {
                 let drink = cbState.paidDrinks[key];
                 if (drink.count > 0) {
