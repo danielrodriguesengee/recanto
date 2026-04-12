@@ -203,13 +203,16 @@
         .animate-pop-in {
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        @keyframes bounceX {
+        @keyframes bounceRight {
             0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-5px); }
+            50% { transform: translateX(4px); }
         }
-        .animate-bounce-x {
-            animation: bounceX 1.5s infinite ease-in-out;
+        @keyframes bounceLeft {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-4px); }
         }
+        .animate-bounce-right { animation: bounceRight 1.5s infinite ease-in-out; }
+        .animate-bounce-left { animation: bounceLeft 1.5s infinite ease-in-out; }
     </style>
 </head>
 <body> 
@@ -678,11 +681,18 @@
 
             if (destaquesHTML !== '') {
                 // Renderiza em uma linha rolável horizontalmente (estilo carrossel/swipe)
-                // Se tiver mais de um combo, adiciona o indicador de arraste (setinha animada e interativa)
                 const hasMultipleCombos = comboKeys.length > 1;
-                const swipeIndicator = hasMultipleCombos ? `
-                    <button id="swipe-indicator" onclick="document.getElementById('combos-carousel').scrollBy({ left: 320, behavior: 'smooth' })" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-700 z-30 focus:outline-none hover:opacity-90">
-                        <div class="theme-bg-nav backdrop-blur-md border border-r-0 theme-border rounded-l-full py-3 px-2 pl-3 flex items-center justify-center animate-bounce-x active:scale-95 transition-transform" style="box-shadow: -4px 0 15px var(--shadow-color);">
+                const swipeIndicators = hasMultipleCombos ? `
+                    <!-- Botão Esquerda (Inicia oculto) -->
+                    <button id="swipe-left" onclick="document.getElementById('combos-carousel').scrollBy({ left: -320, behavior: 'smooth' })" class="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-300 z-30 focus:outline-none hover:opacity-90 opacity-0 pointer-events-none">
+                        <div class="theme-bg-nav backdrop-blur-md border border-l-0 theme-border rounded-r-full py-3 px-2 pr-3 flex items-center justify-center animate-bounce-left active:scale-95 transition-transform" style="box-shadow: 4px 0 15px var(--shadow-color);">
+                            <i class="fas fa-chevron-left theme-brand-red text-xs -mr-1"></i>
+                            <i class="fas fa-chevron-left theme-text-primary text-xs opacity-40"></i>
+                        </div>
+                    </button>
+                    <!-- Botão Direita -->
+                    <button id="swipe-right" onclick="document.getElementById('combos-carousel').scrollBy({ left: 320, behavior: 'smooth' })" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-300 z-30 focus:outline-none hover:opacity-90">
+                        <div class="theme-bg-nav backdrop-blur-md border border-r-0 theme-border rounded-l-full py-3 px-2 pl-3 flex items-center justify-center animate-bounce-right active:scale-95 transition-transform" style="box-shadow: -4px 0 15px var(--shadow-color);">
                             <i class="fas fa-chevron-right theme-text-primary text-xs opacity-40"></i>
                             <i class="fas fa-chevron-right theme-brand-red text-xs -ml-1"></i>
                         </div>
@@ -691,10 +701,10 @@
 
                 destaqueSection.innerHTML = `
                     <div class="relative group">
-                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onscroll="const ind = document.getElementById('swipe-indicator'); if(ind) ind.classList.add('opacity-0', 'pointer-events-none');">
+                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onscroll="handleCarouselScroll(this)">
                             ${destaquesHTML}
                         </div>
-                        ${swipeIndicator}
+                        ${swipeIndicators}
                     </div>
                 `;
             } else {
@@ -1231,6 +1241,26 @@
                     imgs[nextIndex].classList.add('opacity-100');
                 });
             }, 3000); 
+        }
+
+        function handleCarouselScroll(el) {
+            const leftBtn = document.getElementById('swipe-left');
+            const rightBtn = document.getElementById('swipe-right');
+            if (!leftBtn || !rightBtn) return;
+
+            // Se rolou pelo menos 10px para o lado, mostra a seta ESQUERDA
+            if (el.scrollLeft > 10) {
+                leftBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                leftBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+
+            // Se chegou no final (com tolerância de 10px pra evitar bug de zoom do celular), esconde a seta DIREITA
+            if (Math.ceil(el.scrollLeft + el.clientWidth) >= el.scrollWidth - 10) {
+                rightBtn.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                rightBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
         }
 
         function formatPrice(value) {
