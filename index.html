@@ -486,11 +486,9 @@
         let lastDataHash = "";
         let globalCarouselInterval = null;
         
-        // Controle de Animação - Armazenando os IDs para poder destruir os timers
+        // Controle de Animação - Solução robusta de UX
         let globalPeekTimeout = null;
-        let peekReturnTimeoutId = null;
-        let peekSnapTimeoutId = null;
-        let hasUserInteracted = false;
+        let userInteracted = false;
 
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
@@ -590,17 +588,20 @@
             });
 
             if (destaquesHTML !== '') {
-                // Eventos adicionados: onpointerdown, ontouchstart, onwheel e onscroll para matar o timeout de forma infalível
                 destaqueSection.innerHTML = `
                     <div class="relative group">
-                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-proximity no-scrollbar items-stretch" onpointerdown="cancelPeek()" ontouchstart="cancelPeek()" onwheel="cancelPeek()" onscroll="if(this.scrollLeft > 80) cancelPeek()">
+                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onmousedown="userInteracted = true" ontouchstart="userInteracted = true">
                             ${destaquesHTML}
                         </div>
                     </div>
                 `;
-                if (comboKeys.length > 1) {
+                
+                // Desativa o peek no Desktop e aciona com segurança no Mobile
+                if (comboKeys.length > 1 && window.innerWidth < 768) {
                     clearTimeout(globalPeekTimeout);
-                    globalPeekTimeout = setTimeout(peekCarousel, 1500);
+                    globalPeekTimeout = setTimeout(() => {
+                        if (!userInteracted) peekCarousel();
+                    }, 1500);
                 }
             } else {
                 destaqueSection.innerHTML = '';
@@ -699,46 +700,38 @@
             startGlobalCarousels();
         }
 
-        // --- SISTEMA DE PEEK À PROVA DE BALAS ---
+        // --- SISTEMA DE PEEK CORRIGIDO E ROBUSTO ---
         function peekCarousel() {
-            const carousel = document.getElementById('combos-carousel');
-            if (!carousel || carousel.scrollWidth <= carousel.clientWidth || hasUserInteracted) return;
-
-            // Tira o imã pra rolar suave
-            carousel.classList.remove('snap-proximity');
-            
-            // Empurra 80px pra frente
-            carousel.scrollTo({ left: 80, behavior: 'smooth' });
-
-            // Agenda a volta pra daqui a 800ms (dando tempo de ir e parar)
-            peekReturnTimeoutId = setTimeout(() => {
-                if (hasUserInteracted) return; // Checagem final de segurança antes de voltar
-                
-                carousel.scrollTo({ left: 0, behavior: 'smooth' });
-
-                // Devolve o imã depois que ele terminar de voltar
-                peekSnapTimeoutId = setTimeout(() => {
-                    if (carousel && !hasUserInteracted) carousel.classList.add('snap-proximity');
-                }, 500);
-
-            }, 800);
-        }
-
-        function cancelPeek() {
-            // Bloqueia qualquer tentativa futura da animação de mexer na tela
-            hasUserInteracted = true;
-            
-            // DESTRÓI OS TIMERS (É ISSO QUE RESOLVE O PUXÃO)
-            clearTimeout(globalPeekTimeout);
-            clearTimeout(peekReturnTimeoutId);
-            clearTimeout(peekSnapTimeoutId);
+            if (userInteracted) return;
 
             const carousel = document.getElementById('combos-carousel');
-            if (carousel) {
-                carousel.classList.add('snap-mandatory');
-            }
-        }
+            if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
 
+            // Remove o snap temporariamente para deslizar suave
+            carousel.classList.remove('snap-mandatory', 'snap-x');
+            
+            carousel.scrollTo({
+                left: 80,
+                behavior: 'smooth'
+            });
+
+            setTimeout(() => {
+                if (!userInteracted) {
+                    carousel.scrollTo({
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Restaura o snap após a volta
+                    setTimeout(() => {
+                        if (!userInteracted && carousel) carousel.classList.add('snap-mandatory', 'snap-x');
+                    }, 500);
+                } else {
+                    // Se interagiu no meio do caminho, devolve o snap na hora
+                    if (carousel) carousel.classList.add('snap-mandatory', 'snap-x');
+                }
+            }, 1200);
+        }
 
         function getThumb(item) {
             if (item.imagens && item.imagens.length > 0) return item.imagens[0];
