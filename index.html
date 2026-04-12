@@ -203,16 +203,6 @@
         .animate-pop-in {
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        @keyframes bounceRight {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(4px); }
-        }
-        @keyframes bounceLeft {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-4px); }
-        }
-        .animate-bounce-right { animation: bounceRight 1.5s infinite ease-in-out; }
-        .animate-bounce-left { animation: bounceLeft 1.5s infinite ease-in-out; }
     </style>
 </head>
 <body> 
@@ -573,6 +563,10 @@
         let lastDataHash = "";
         let globalCarouselInterval = null;
 
+        // Controle da Animação Peek (Arraste automático)
+        let globalPeekTimeout = null;
+        let isPeeking = false;
+
         // Adiciona o ano atual automaticamente no copyright
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
@@ -680,33 +674,21 @@
             });
 
             if (destaquesHTML !== '') {
-                // Renderiza em uma linha rolável horizontalmente (estilo carrossel/swipe)
-                const hasMultipleCombos = comboKeys.length > 1;
-                const swipeIndicators = hasMultipleCombos ? `
-                    <!-- Botão Esquerda (Inicia oculto) -->
-                    <button id="swipe-left" onclick="document.getElementById('combos-carousel').scrollBy({ left: -320, behavior: 'smooth' })" class="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-300 z-30 focus:outline-none hover:opacity-90 opacity-0 pointer-events-none">
-                        <div class="theme-bg-nav backdrop-blur-md border border-l-0 theme-border rounded-r-full py-3 px-2 pr-3 flex items-center justify-center animate-bounce-left active:scale-95 transition-transform" style="box-shadow: 4px 0 15px var(--shadow-color);">
-                            <i class="fas fa-chevron-left theme-brand-red text-xs -mr-1"></i>
-                            <i class="fas fa-chevron-left theme-text-primary text-xs opacity-40"></i>
-                        </div>
-                    </button>
-                    <!-- Botão Direita -->
-                    <button id="swipe-right" onclick="document.getElementById('combos-carousel').scrollBy({ left: 320, behavior: 'smooth' })" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer transition-opacity duration-300 z-30 focus:outline-none hover:opacity-90">
-                        <div class="theme-bg-nav backdrop-blur-md border border-r-0 theme-border rounded-l-full py-3 px-2 pl-3 flex items-center justify-center animate-bounce-right active:scale-95 transition-transform" style="box-shadow: -4px 0 15px var(--shadow-color);">
-                            <i class="fas fa-chevron-right theme-text-primary text-xs opacity-40"></i>
-                            <i class="fas fa-chevron-right theme-brand-red text-xs -ml-1"></i>
-                        </div>
-                    </button>
-                ` : '';
-
+                // Renderiza em uma linha rolável horizontalmente, com eventos nativos para cancelar a animação se o usuário tocar na tela (UX perfeita)
                 destaqueSection.innerHTML = `
                     <div class="relative group">
-                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" onscroll="handleCarouselScroll(this)">
+                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" ontouchstart="cancelPeek()" onmousedown="cancelPeek()">
                             ${destaquesHTML}
                         </div>
-                        ${swipeIndicators}
                     </div>
                 `;
+                
+                // Se houver mais de um combo, dispara o timeout para dar aquela "espiadinha" para o lado
+                if (comboKeys.length > 1) {
+                    clearTimeout(globalPeekTimeout);
+                    globalPeekTimeout = setTimeout(peekCarousel, 1500);
+                }
+
             } else {
                 destaqueSection.innerHTML = '';
             }
@@ -811,6 +793,44 @@
 
             startGlobalCarousels();
         }
+
+        // --- SISTEMA INTELIGENTE DE "PEEK" (ESPIADINHA E VOLTA) ---
+        function peekCarousel() {
+            const carousel = document.getElementById('combos-carousel');
+            // Se o carrossel não existe ou se tudo já cabe na tela, não precisa animar
+            if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
+            
+            isPeeking = true;
+            
+            // Remove as classes de snap temporariamente para não brigar com a animação suave
+            carousel.classList.remove('snap-x', 'snap-mandatory');
+            
+            // Arrastada suave para a direita (mostrando que tem itens)
+            carousel.scrollTo({ left: 60, behavior: 'smooth' });
+            
+            // Aguarda o final da rolagem e volta
+            setTimeout(() => {
+                if (!isPeeking) return; // Se o cliente interrompeu, aborta
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                
+                // Retorna o snap (imã) natural aos cards
+                setTimeout(() => {
+                    if (!isPeeking) return;
+                    carousel.classList.add('snap-x', 'snap-mandatory');
+                    isPeeking = false;
+                }, 500);
+            }, 600); // tempo para "olhar" e voltar
+        }
+
+        // Caso o usuário arraste a tela no meio do "Peek", devolve o controle manual na mesma hora
+        function cancelPeek() {
+            if (isPeeking) {
+                isPeeking = false;
+                const carousel = document.getElementById('combos-carousel');
+                if (carousel) carousel.classList.add('snap-x', 'snap-mandatory');
+            }
+        }
+
 
         // --- SISTEMA DE UI UNIFICADA DOS COMBOS (FUNÇÕES HELPERS) ---
         function getThumb(item) {
@@ -1241,26 +1261,6 @@
                     imgs[nextIndex].classList.add('opacity-100');
                 });
             }, 3000); 
-        }
-
-        function handleCarouselScroll(el) {
-            const leftBtn = document.getElementById('swipe-left');
-            const rightBtn = document.getElementById('swipe-right');
-            if (!leftBtn || !rightBtn) return;
-
-            // Se rolou pelo menos 10px para o lado, mostra a seta ESQUERDA
-            if (el.scrollLeft > 10) {
-                leftBtn.classList.remove('opacity-0', 'pointer-events-none');
-            } else {
-                leftBtn.classList.add('opacity-0', 'pointer-events-none');
-            }
-
-            // Se chegou no final (com tolerância de 10px pra evitar bug de zoom do celular), esconde a seta DIREITA
-            if (Math.ceil(el.scrollLeft + el.clientWidth) >= el.scrollWidth - 10) {
-                rightBtn.classList.add('opacity-0', 'pointer-events-none');
-            } else {
-                rightBtn.classList.remove('opacity-0', 'pointer-events-none');
-            }
         }
 
         function formatPrice(value) {
