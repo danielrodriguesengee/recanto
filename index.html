@@ -47,25 +47,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        const currentHost = window.location.hostname;
-        const allowedHosts = ['recantodostrogonoff.netlify.app', 'localhost', '127.0.0.1'];
-        
-        if (allowedHosts.some(host => currentHost.includes(host))) {
-            await OneSignal.init({
-              appId: "acb89e44-781e-4ea6-b349-cd1ead5999c3",
-              safari_web_id: "web.onesignal.auto.2cb21d9d-922f-420a-8137-99f511b7fc1b",
-              notifyButton: { enable: true },
-              allowLocalhostAsSecureOrigin: true,
-            });
-        }
-      });
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -165,7 +146,6 @@
             border-color: var(--brand-red);
         }
 
-        /* Classe de zebrado dinâmico (Claro/Escuro) */
         .zebra-row:nth-child(even) { background-color: var(--bg-body); }
         .zebra-row:nth-child(odd) { background-color: var(--bg-card); }
         
@@ -213,10 +193,13 @@
 
     <header class="relative h-56 md:h-72 overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-body)] via-transparent to-black/20 transition-colors duration-300 z-10"></div>
-        <div class="absolute inset-0 bg-[url('image/capa.webp')] bg-cover bg-center opacity-10"></div>
+        <div class="absolute inset-0 bg-gray-200 bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.webp" alt="Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
+            <!-- Usando ícone como placeholder para logo -->
+            <div class="h-24 w-24 md:h-32 md:w-32 bg-brand-red rounded-full flex items-center justify-center text-white mb-4 shadow-xl">
+                 <i class="fas fa-utensils text-4xl md:text-5xl"></i>
+            </div>
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm transition-opacity duration-300">
@@ -357,7 +340,7 @@
             <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
                 <div>
                     <h3 class="text-xl font-serif font-bold theme-text-primary" id="sc-modal-title">Montar Combo</h3>
-                    <p class="theme-text-secondary text-xs mt-1">Prato + Adicional + Bebida</p>
+                    <p class="theme-text-secondary text-xs mt-1" id="sc-modal-subtitle">Prato + Adicional + Bebida</p>
                 </div>
                 <div class="text-right">
                     <span id="modal-combo-preco" class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 0,00</span>
@@ -366,7 +349,7 @@
 
             <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
                 <!-- Passo 1 -->
-                <div>
+                <div id="sc-step-1">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha o Prato</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-pratos-counter">0/1 Escolhido</span>
@@ -375,7 +358,7 @@
                 </div>
                 
                 <!-- Passo 2 -->
-                <div>
+                <div id="sc-step-2">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Escolha o Adicional</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-extras-counter">0/1 Escolhido</span>
@@ -384,7 +367,7 @@
                 </div>
                 
                 <!-- Passo 3 -->
-                <div>
+                <div id="sc-step-3">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">3. Bebida Grátis</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="sc-drinks-counter">0/1 Escolhida</span>
@@ -399,7 +382,7 @@
         </div>
     </div>
 
-    <!-- MODAL COMBO CASAL / MULTIPLO (AGORA DINÂMICO PELO JSON) -->
+    <!-- MODAL COMBO CASAL / MULTIPLO (DINÂMICO PELO JSON) -->
     <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
@@ -415,15 +398,13 @@
             </div>
 
             <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <!-- Passo 1: Pratos Dinâmicos (Escolhido Pelo Cliente e Filtrado Pelo JSON) -->
+                <!-- Passo 1: Pratos -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha seus Pratos</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-pratos-counter">0/2 Escolhidos</span>
                     </div>
-                    <div id="modal-cc-pratos" class="space-y-2">
-                        <!-- Preenchido via JavaScript -->
-                    </div>
+                    <div id="modal-cc-pratos" class="space-y-2"></div>
                 </div>
 
                 <!-- Passo 2: Adicionais -->
@@ -519,27 +500,18 @@
         </div>
     </div>
 
-    <!-- MODAL DE INFORMAÇÕES (ESTILO GOOD PIZZA - ADAPTADO AO TEMA) -->
+    <!-- MODAL DE INFORMAÇÕES -->
     <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeInfoModal()"></div>
         <div class="theme-bg-body border theme-border w-full max-w-md shadow-2xl relative z-10 animate-pop-in flex flex-col overflow-hidden rounded-xl">
-            
-            <!-- Cabeçalho com linha vermelha -->
             <div class="p-4 theme-bg-card border-t-4 border-[#7a121a] shadow-sm z-20">
                 <h3 id="info-modal-title" class="text-lg theme-text-primary font-bold">Título</h3>
             </div>
-            
-            <!-- Subtítulo -->
             <div class="px-5 py-3">
                 <p id="info-modal-subtitle" class="text-[13px] font-bold theme-text-secondary uppercase tracking-wider"></p>
             </div>
-
-            <!-- Lista Zebrada Dinâmica -->
             <div id="info-modal-list" class="max-h-[50vh] overflow-y-auto px-5 pb-5">
-                <!-- Preenchido via JS -->
             </div>
-
-            <!-- Botão Fechar -->
             <div class="p-4 theme-bg-card flex justify-center border-t theme-border">
                 <button onclick="closeInfoModal()" class="w-full max-w-[200px] theme-bg-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition">
                     Fechar
@@ -570,10 +542,9 @@
         let globalPeekTimeout = null;
         let isPeeking = false;
 
-        // Adiciona o ano atual automaticamente no copyright
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // --- ESTADOS DOS COMBOS (Agora dinâmicos e guiados pelo JSON) ---
+        // --- ESTADOS DOS COMBOS (Guiados pelo JSON) ---
         let activeComboData = null; 
         
         let scState = {
@@ -584,18 +555,115 @@
 
         let ccState = {
             basePrice: 0,
-            pratos: {}, pratosCount: 0, // Agora o cliente ESCOLHE os pratos
+            pratos: {}, pratosCount: 0, 
             extras: {}, extrasCount: 0,
             drinks: {}, drinksTotal: 0
         };
 
         let cart = [];
 
+        // FALLBACK DO JSON (Caso a API falhe, garantimos que o sistema funcione com os dados enviados pelo utilizador)
+        const mockDataFallback = {
+          "configuracoes": {
+            "loja_aberta": 0,
+            "mensagem_aberto": "Aberto agora",
+            "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴",
+            "tempo_entrega": "Entrega 45-60 min",
+            "localizacao": "Arcos, MG",
+            "titulos": {
+              "pratos": "NOSSO CARDÁPIO",
+              "adicionais": "TURBINE SEU PEDIDO",
+              "bebidas": "REFRIS E SUCOS"
+            },
+            "pagamento_modal": [
+              { "icone": "fab fa-pix text-teal-500", "texto": "PIX Online" },
+              { "icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Crédito" },
+              { "icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Débito" },
+              { "icone": "fas fa-money-bill-wave text-green-500", "texto": "Dinheiro" }
+            ],
+            "taxas_modal": [
+              "Área Urbana: Sem taxas, Chuchu 😉",
+              "Retirada: Em 30min"
+            ],
+            "horarios_modal": [
+              "Seg, das 10:20 às 14:00 e 18:00 às 23:30",
+              "Ter, das 10:20 às 14:00 e 18:00 às 23:30",
+              "Qua, das 10:20 às 14:00",
+              "Qui, das 10:20 às 14:00 e 18:00 às 23:30",
+              "Sex, das 10:20 às 14:00 e 18:00 às 23:30",
+              "Sab, das 10:20 às 14:00 e 18:00 às 23:30",
+              "Dom, das 10:20 às 14:00 e 18:00 às 23:30"
+            ]
+          },
+          "combos": [
+            {
+              "id": "combo_super",
+              "ordem": 1,
+              "nome": "Super Combo",
+              "badge": "O Mais Vendido 🏆",
+              "titulo": "Super Combo: Strogonoff ou Lasanha + 1 Adicional + 1 Bebida Grátis",
+              "descricao": "Escolha qualquer prato + 1 adicional + 1 bebida grátis. Acompanha salada e batata palha crocante da casa.",
+              "preco_de": 46.0,
+              "preco_por": 39.9,
+              "imagens": ["image/combo6.webp", "image/combo7.webp"],
+              "disponivel": 1,
+              "regras": { "qtd_pratos": 1, "qtd_adicionais": 1, "qtd_bebidas": 1 }
+            },
+            {
+              "id": "combo_casal_strogonoff",
+              "ordem": 2,
+              "badge": "Ideal para casal ❤️",
+              "titulo": "Combo Casal: 2 Strogonoffs + 2 Adicionais Grátis",
+              "descricao": "O combo perfeito! Leve 2 Strogonoffs Tradicionais de Frango (com todos os acompanhamentos) e escolha 2 adicionais de brinde por nossa conta 😉.",
+              "preco_de": 90.0,
+              "preco_por": 60.0,
+              "imagens": ["image/cc1.webp", "image/cc2.webp"],
+              "disponivel": 1,
+              "regras": { "qtd_pratos": 2, "qtd_adicionais": 2, "qtd_bebidas": 0, "filtro_pratos": ["Strogonoff De Frango Cremoso + Acompanhamentos"] }
+            },
+            {
+              "id": "combo_casal_lasanha",
+              "ordem": 3,
+              "badge": "Especial Lasanha 💥",
+              "titulo": "Combo Duplo: 2 Lasanhas de Strogonoff + 2 Adicionais Grátis",
+              "descricao": "Exclusivo para os fãs de lasanhas! Leve 2 Lasanhas de Strogonoff e escolha 2 adicionais de por nossa conta 😉.",
+              "preco_de": 100.0,
+              "preco_por": 70.0,
+              "imagens": ["image/cc3.webp", "image/cc4.webp"],
+              "disponivel": 1,
+              "regras": { "qtd_pratos": 2, "qtd_adicionais": 2, "qtd_bebidas": 0, "filtro_pratos": ["Lasanha De Strogonoff + Acompanhamentos"] }
+            }
+          ],
+          "pratos": [
+            { "nome": "Strogonoff De Frango Cremoso + Acompanhamentos", "descricao": "Zero Amido! Peito de frango e molho cremoso de verdade. Acompanham arroz soltinho, salada e batata palha crocante da casa.", "preco": 30.0, "imagens": ["image/strogonoff1.webp", "image/strogonoff2.webp"], "disponivel": 0, "tipo": "main" },
+            { "nome": "Lasanha De Strogonoff + Acompanhamentos", "descricao": "Lasanha recheada com Strogonoff + mussarela, presunto e molho branco. Acompanha salada e batata palha crocante da casa.", "preco": 35.0, "imagens": ["image/lasanha1.webp", "image/lasanha2.webp"], "disponivel": 1, "tipo": "main" }
+          ],
+          "adicionais": [
+            { "nome": "Chuva de Bacon", "display": "Bacon Crispy", "subtitulo": "Chuva de Bacon", "preco": 8.0, "imagem": "image/bacon.webp", "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png", "icone": "🥓", "disponivel": 1, "tipo": "extra" },
+            { "nome": "Catupiry Original", "display": "Catupiry", "subtitulo": "Talagada", "preco": 10.0, "imagem": "image/catupiry.webp", "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png", "icone": "🧀", "disponivel": 1, "tipo": "extra" },
+            { "nome": "Calabresa", "display": "Calabresa", "subtitulo": "Fritinha Fritinha", "preco": 8.0, "imagem": "image/calabresa.webp", "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png", "icone": "🍖", "disponivel": 0, "tipo": "extra" }
+          ],
+          "bebidas": [
+            { "nome": "Coca-Cola Lata", "preco": 6.0, "imagem": "image/coca.webp", "disponivel": 1, "tipo": "drink" },
+            { "nome": "Coca-Cola Zero Lata", "preco": 6.0, "imagem": "image/cocazero.webp", "disponivel": 1, "tipo": "drink" },
+            { "nome": "Guaraná Lata", "preco": 6.0, "imagem": "image/guarana.webp", "disponivel": 1, "tipo": "drink" },
+            { "nome": "Água com Gás", "preco": 4.0, "imagem": "image/aguagas.webp", "disponivel": 1, "tipo": "drink" },
+            { "nome": "Água sem Gás", "preco": 4.0, "imagem": "image/agua.webp", "disponivel": 1, "tipo": "drink" }
+          ]
+        };
+
         // --- FETCH DADOS E POLLING ---
         async function carregarDadosDoBanco() {
             try {
-                const response = await fetch(`${DATA_URL}?t=${new Date().getTime()}`);
-                const data = await response.json();
+                let data;
+                try {
+                    const response = await fetch(`${DATA_URL}?t=${new Date().getTime()}`);
+                    if (!response.ok) throw new Error('API failed');
+                    data = await response.json();
+                } catch(e) {
+                    console.warn("Utilizando dados de fallback devido a falha na API.", e);
+                    data = mockDataFallback; 
+                }
                 
                 const currentDataHash = JSON.stringify(data);
                 if (currentDataHash !== lastDataHash) {
@@ -604,14 +672,15 @@
                     lastDataHash = currentDataHash;
                 }
             } catch (e) {
-                console.error('Erro ao buscar dados do cardápio:', e);
+                console.error('Erro ao processar dados do cardápio:', e);
             }
         }
 
-        // --- RENDERIZAÇÃO DINÂMICA (SEM F5) ---
+        // --- RENDERIZAÇÃO DINÂMICA ---
         function renderizarInterface(data) {
-            // 1. Status da Loja
-            globalStoreStatus = data.configuracoes.loja_aberta;
+            // 1. Status da Loja (lê 1 ou 0 do JSON novo)
+            globalStoreStatus = data.configuracoes.loja_aberta === 1 || data.configuracoes.loja_aberta === true;
+            
             const statusContainer = document.getElementById('store-status-container');
             const statusIcon = document.getElementById('status-icon');
             const statusText = document.getElementById('status-text');
@@ -635,21 +704,21 @@
                 if (data.configuracoes.titulos.bebidas) document.getElementById('titulo-bebidas').innerText = data.configuracoes.titulos.bebidas;
             }
 
-            // 2. Renderizar Destaques 
+            // 2. Renderizar Destaques (Agora lê o Array "combos")
             const destaqueSection = document.getElementById('destaque');
             let destaquesHTML = '';
 
-            const comboKeys = Object.keys(data).filter(key => key.startsWith('combo') && data[key].disponivel);
+            const combosAtivos = data.combos ? data.combos.filter(c => c.disponivel) : [];
 
-            comboKeys.forEach(key => {
-                const comboItem = data[key];
+            // Ordenar por 'ordem' (opcional, já que está no JSON)
+            combosAtivos.sort((a, b) => (a.ordem || 0) - (b.ordem || 0)).forEach(comboItem => {
                 
-                // Abre o modal de casal apenas se a chave tiver casal ou se nas regras do JSON tiver pedindo mais de 1 prato.
-                const isMultiplo = key.includes('casal') || (comboItem.regras && comboItem.regras.qtd_pratos > 1);
+                // Abre o modal de casal se o ID incluir "casal" ou se as regras pedem > 1 prato.
+                const isMultiplo = comboItem.id.includes('casal') || (comboItem.regras && comboItem.regras.qtd_pratos > 1);
                 
                 const badgeText = comboItem.badge || (isMultiplo ? 'Ideal para Dois' : 'Mais Pedido');
                 const icon = isMultiplo ? 'fa-heart' : 'fa-plus';
-                const onClickFunction = isMultiplo ? `openComboCasalModal('${key}')` : `openComboModal('${key}')`;
+                const onClickFunction = isMultiplo ? `openComboCasalModal('${comboItem.id}')` : `openComboModal('${comboItem.id}')`;
 
                 const imagensHTML = comboItem.imagens && comboItem.imagens.length > 0 
                     ? comboItem.imagens.map((img, i) => 
@@ -691,12 +760,10 @@
                         </div>
                     </div>
                 `;
-                
-                if (comboKeys.length > 1) {
+                if (combosAtivos.length > 1) {
                     clearTimeout(globalPeekTimeout);
                     globalPeekTimeout = setTimeout(peekCarousel, 1500);
                 }
-
             } else {
                 destaqueSection.innerHTML = '';
             }
@@ -739,7 +806,6 @@
 
             // 4. Renderizar Adicionais da Página Principal
             const listaAdicionais = document.getElementById('lista-adicionais');
-            
             listaAdicionais.innerHTML = data.adicionais.map(adc => {
                 const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')"` : '';
                 const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
@@ -769,7 +835,6 @@
 
             // 5. Renderizar Bebidas da Página Principal
             const listaBebidas = document.getElementById('lista-bebidas');
-
             listaBebidas.innerHTML = data.bebidas.map(bebida => {
                 const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')"` : '';
                 const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
@@ -811,14 +876,12 @@
 
         function customSmoothScroll(element, change, duration, isReturn = false) {
             if (!isPeeking) return;
-            
             const start = element.scrollLeft;
             const startTime = performance.now();
             element.classList.remove('snap-x', 'snap-mandatory');
 
             function animateScroll(currentTime) {
                 if (!isPeeking) return; 
-                
                 const timeElapsed = currentTime - startTime;
                 
                 if (timeElapsed < duration) {
@@ -826,11 +889,8 @@
                     requestAnimationFrame(animateScroll);
                 } else {
                     element.scrollLeft = start + change; 
-                    
                     if (!isReturn) {
-                        setTimeout(() => {
-                            customSmoothScroll(element, -change, duration, true);
-                        }, 300); 
+                        setTimeout(() => { customSmoothScroll(element, -change, duration, true); }, 300); 
                     } else {
                         setTimeout(() => {
                             if (isPeeking) element.classList.add('snap-x', 'snap-mandatory');
@@ -859,7 +919,6 @@
             }
         }
 
-
         // --- SISTEMA DE UI UNIFICADA DOS COMBOS (FUNÇÕES HELPERS) ---
         function getThumb(item) {
             if (item.imagens && item.imagens.length > 0) return item.imagens[0];
@@ -873,7 +932,6 @@
             const disabledClass = !isAvailable ? 'opacity-50 grayscale pointer-events-none' : '';
             const displayPrice = !isAvailable ? '<span class="text-red-500">Esgotado</span>' : priceText;
             
-            // Construção inteligente dos botões + e -
             let clickFnMinus = '';
             let clickFnPlus = '';
             
@@ -912,12 +970,26 @@
             </div>`;
         }
 
-        // --- FUNCIONALIDADES DO SUPER COMBO (1 PRATO, 1 EXTRA, 1 BEBIDA) ---
-        function openComboModal(comboKey) {
-            if (!globalData || !globalData[comboKey]) return;
-            activeComboData = globalData[comboKey];
+        // --- FUNCIONALIDADES DO SUPER COMBO (DINÂMICO CONFORME O JSON) ---
+        function openComboModal(comboId) {
+            if (!globalData || !globalData.combos) return;
+            activeComboData = globalData.combos.find(c => c.id === comboId);
+            if (!activeComboData) return;
             
             document.getElementById('sc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
+            
+            // Subtítulo dinâmico
+            const pLimit = activeComboData.regras?.qtd_pratos || 1;
+            const eLimit = activeComboData.regras?.qtd_adicionais || 1;
+            const dLimit = activeComboData.regras?.qtd_bebidas || 1;
+            
+            const pText = pLimit > 0 ? `${pLimit} Prato${pLimit > 1 ? 's' : ''}` : '';
+            const eText = eLimit > 0 ? `${eLimit} Adicional${eLimit > 1 ? 'is' : ''}` : '';
+            const dText = dLimit > 0 ? `${dLimit} Bebida${dLimit > 1 ? 's' : ''}` : '';
+            
+            const subTexts = [pText, eText, dText].filter(Boolean).join(' + ');
+            document.getElementById('sc-modal-subtitle').innerText = subTexts;
+            
             document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(activeComboData.preco_por)}`;
 
             scState = {
@@ -937,6 +1009,12 @@
         }
 
         function updateScItem(category, nome, delta) {
+            const limit = {
+                'pratos': activeComboData.regras?.qtd_pratos || 1,
+                'extras': activeComboData.regras?.qtd_adicionais || 1,
+                'drinks': activeComboData.regras?.qtd_bebidas || 1
+            }[category];
+
             const config = {
                 'pratos': { stateObj: scState.pratos, countProp: 'pratosCount' },
                 'extras': { stateObj: scState.extras, countProp: 'extrasCount' },
@@ -945,8 +1023,8 @@
 
             let current = config.stateObj[nome] || 0;
             
-            if (delta > 0 && scState[config.countProp] >= 1) {
-                return showToast(`Você só pode escolher 1 item nesta categoria!`, true);
+            if (delta > 0 && scState[config.countProp] >= limit) {
+                return showToast(`Você só pode escolher ${limit} item(ns) nesta categoria!`, true);
             }
             if (delta < 0 && current <= 0) return;
 
@@ -956,16 +1034,30 @@
         }
 
         function renderSuperComboLists() {
+            const pLimit = activeComboData.regras?.qtd_pratos || 1;
+            const eLimit = activeComboData.regras?.qtd_adicionais || 1;
+            const dLimit = activeComboData.regras?.qtd_bebidas || 1;
+
             const cats = [
-                { id: 'sc-pratos-counter', count: scState.pratosCount },
-                { id: 'sc-extras-counter', count: scState.extrasCount },
-                { id: 'sc-drinks-counter', count: scState.drinksCount }
+                { id: 'sc-pratos-counter', count: scState.pratosCount, limit: pLimit, step: 'sc-step-1' },
+                { id: 'sc-extras-counter', count: scState.extrasCount, limit: eLimit, step: 'sc-step-2' },
+                { id: 'sc-drinks-counter', count: scState.drinksCount, limit: dLimit, step: 'sc-step-3' }
             ];
+
             cats.forEach(c => {
                 const el = document.getElementById(c.id);
+                const step = document.getElementById(c.step);
+                
+                if (c.limit <= 0) {
+                    if (step) step.classList.add('hidden');
+                    return;
+                } else {
+                    if (step) step.classList.remove('hidden');
+                }
+
                 if(el) {
-                    el.innerText = `${c.count}/1 Escolhido`;
-                    if(c.count === 1) {
+                    el.innerText = `${c.count}/${c.limit} Escolhido${c.limit > 1 ? 's' : ''}`;
+                    if(c.count === c.limit) {
                         el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600');
                     } else {
                         el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600');
@@ -975,40 +1067,52 @@
 
             const pratosHtml = globalData.pratos.map(prato => {
                 const count = scState.pratos[prato.nome] || 0;
-                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= 1, 'Incluso', getThumb(prato), 0, prato.disponivel);
+                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= pLimit, 'Incluso', getThumb(prato), 0, prato.disponivel);
             }).join('');
             document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
 
             const extrasHtml = globalData.adicionais.map(adc => {
                 const count = scState.extras[adc.display] || 0;
-                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= 1, 'Incluso', getThumb(adc), 0, adc.disponivel);
+                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= eLimit, 'Incluso', getThumb(adc), 0, adc.disponivel);
             }).join('');
             document.getElementById('modal-combo-extras').innerHTML = extrasHtml;
 
             const drinksHtml = globalData.bebidas.map(bebida => {
                 const count = scState.drinks[bebida.nome] || 0;
-                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= 1, 'Incluso', getThumb(bebida), 0, bebida.disponivel);
+                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= dLimit, 'Incluso', getThumb(bebida), 0, bebida.disponivel);
             }).join('');
             document.getElementById('modal-combo-bebidas').innerHTML = drinksHtml;
         }
 
         function confirmCombo() {
-            if (scState.pratosCount !== 1 || scState.extrasCount !== 1 || scState.drinksCount !== 1) {
-                return showToast('Selecione 1 item de cada categoria!', true);
+            const pLimit = activeComboData.regras?.qtd_pratos || 1;
+            const eLimit = activeComboData.regras?.qtd_adicionais || 1;
+            const dLimit = activeComboData.regras?.qtd_bebidas || 1;
+
+            if (scState.pratosCount !== pLimit || scState.extrasCount !== eLimit || scState.drinksCount !== dLimit) {
+                return showToast('Complete os itens em cada categoria do combo!', true);
             }
 
-            const prato = Object.keys(scState.pratos).find(k => scState.pratos[k] > 0);
-            const extra = Object.keys(scState.extras).find(k => scState.extras[k] > 0);
-            const drink = Object.keys(scState.drinks).find(k => scState.drinks[k] > 0);
+            let pratosArr = [];
+            for (let k in scState.pratos) if (scState.pratos[k] > 0) pratosArr.push(`${scState.pratos[k]}x ${k}`);
+            
+            let extraArr = [];
+            for (let k in scState.extras) if (scState.extras[k] > 0) extraArr.push(`${scState.extras[k]}x ${k}`);
+            
+            let drinkArr = [];
+            for (let k in scState.drinks) if (scState.drinks[k] > 0) drinkArr.push(`${scState.drinks[k]}x ${k}`);
 
-            addToCart(activeComboData.titulo || activeComboData.nome, activeComboData.preco_por, `${prato} | ${extra} | Bebida: ${drink}`, 'main');
+            const detailsCombo = `Pratos: ${pratosArr.join(' + ')} | Extra: ${extraArr.join(' + ')} | Bebida: ${drinkArr.join(' + ')}`;
+
+            addToCart(activeComboData.titulo || activeComboData.nome, activeComboData.preco_por, detailsCombo, 'main');
             closeComboModal();
         }
 
-        // --- FUNCIONALIDADES DO COMBO CASAL / MULTIPLOS (BUILDER GUIADO PELO JSON) ---
-        function openComboCasalModal(comboKey) {
-            if (!globalData || !globalData[comboKey]) return;
-            activeComboData = globalData[comboKey];
+        // --- FUNCIONALIDADES DO COMBO CASAL / MULTIPLOS ---
+        function openComboCasalModal(comboId) {
+            if (!globalData || !globalData.combos) return;
+            activeComboData = globalData.combos.find(c => c.id === comboId);
+            if (!activeComboData) return;
             
             document.getElementById('cc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
             
@@ -1146,7 +1250,7 @@
             for (let key in ccState.drinks) {
                 let drink = ccState.drinks[key];
                 if (drink.count > 0) {
-                    for(let i=0; i<drink.count; i++) addToCart(key, drink.price, `Add via ${activeComboData.nome || 'Combo Casal'}`, 'drink');
+                    for(let i=0; i<drink.count; i++) addToCart(key, drink.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink');
                 }
             }
             closeComboCasalModal();
@@ -1280,11 +1384,11 @@
         // --- INIT GERAL ---
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 1000); 
+            setInterval(carregarDadosDoBanco, 5000); 
         });
 
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
+            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
         }
 
         function toggleTheme() {
