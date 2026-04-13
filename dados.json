@@ -62,12 +62,12 @@
       "regras": {
         "qtd_pratos": 2,
         "qtd_adicionais": 2,
-        "qtd_bebidas": 0,
+        "qtd_bebidas": 1,
         "filtro_pratos": ["Strogonoff De Frango Cremoso + Acompanhamentos"]
       }
     },
     {
-      "id": "combo_casal_lasanha",
+      "id": "combo_lasanha",
       "ordem": 3,
       "badge": "Especial Lasanha 💥",
       "titulo": "Combo Duplo: 2 Lasanhas de Strogonoff + 2 Adicionais Grátis",
@@ -79,7 +79,7 @@
       "regras": {
         "qtd_pratos": 2,
         "qtd_adicionais": 2,
-        "qtd_bebidas": 0,
+        "qtd_bebidas": 1,
         "filtro_pratos": ["Lasanha De Strogonoff + Acompanhamentos"]
       }
     }
@@ -91,7 +91,7 @@
       "descricao": "Zero Amido! Peito de frango e molho cremoso de verdade. Acompanham arroz soltinho, salada e batata palha crocante da casa.",
       "preco": 30.0,
       "imagens": ["image/strogonoff1.webp", "image/strogonoff2.webp"],
-      "disponivel": 0,
+      "disponivel": 1,
       "tipo": "main"
     },
     {
