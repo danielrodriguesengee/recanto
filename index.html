@@ -2,18 +2,48 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Removido o user-scalable=no para permitir o zoom e melhorar acessibilidade -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recanto do Strogonoff | Pedido Online</title>
     
     <!-- ======================================================= -->
-    <!-- SEO BÁSICO (Otimização para o Google) -->
+    <!-- SEO & DADOS ESTRUTURADOS (Schema.org) -->
     <!-- ======================================================= -->
     <meta name="description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida. Peça já o seu!">
-    <meta name="keywords" content="strogonoff, arcos mg, delivery, restaurante, comida, almoço, jantar, recanto do strogonoff, pedido online">
     <meta name="author" content="Recanto do Strogonoff">
 
+    <!-- Schema.org JSON-LD para Restaurantes (Rich Snippets no Google) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Recanto do Strogonoff",
+      "image": "https://recantodostrogonoff.netlify.app/image/wpp.webp",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "R. Juca Dias, 196, São Judas",
+        "addressLocality": "Arcos",
+        "addressRegion": "MG",
+        "addressCountry": "BR"
+      },
+      "telephone": "+5537984243487",
+      "servesCuisine": "Brasileira, Strogonoff",
+      "url": "https://recantodostrogonoff.netlify.app/",
+      "priceRange": "$$"
+    }
+    </script>
+
+    <!-- Google Analytics (Exemplo de Placeholder sugerido pela auditoria) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEU_ID_AQUI"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SEU_ID_AQUI');
+    </script> -->
+
     <!-- ======================================================= -->
-    <!-- OPEN GRAPH / PREVIEW PARA WHATSAPP, INSTAGRAM E REDES SOCIAIS -->
+    <!-- OPEN GRAPH / PREVIEW -->
     <!-- ======================================================= -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://recantodostrogonoff.netlify.app/">
@@ -29,7 +59,6 @@
     <meta name="twitter:title" content="Recanto do Strogonoff | Pedido Online">
     <meta name="twitter:description" content="O autêntico Strogonoff em Arcos! Molho cremoso de verdade, batata palha artesanal e entrega rápida.">
     <meta name="twitter:image" content="https://recantodostrogonoff.netlify.app/image/wpp.webp">
-    <!-- ======================================================= -->
     
     <!-- OTIMIZAÇÕES DE PERFORMANCE -->
     <link rel="preload" as="image" href="image/capa.webp" fetchpriority="high">
@@ -47,14 +76,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- CONFIGURAÇÃO ONESIGNAL (PUSH NOTIFICATIONS) -->
+    <!-- CONFIGURAÇÃO ONESIGNAL -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       OneSignalDeferred.push(async function(OneSignal) {
         const currentHost = window.location.hostname;
         const allowedHosts = ['recantodostrogonoff.netlify.app', 'localhost', '127.0.0.1'];
-        
         if (allowedHosts.some(host => currentHost.includes(host))) {
             await OneSignal.init({
               appId: "acb89e44-781e-4ea6-b349-cd1ead5999c3",
@@ -68,10 +96,10 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <style>
-        /* VARIÁVEIS DE TEMA */
+        /* VARIÁVEIS DE TEMA - Contraste melhorado segundo WCAG 2.1 */
         :root {
             --bg-body: #fdfbf7;
             --bg-card: #ffffff;
@@ -79,7 +107,7 @@
             --bg-header-section: #f9fafb;
             --border-color: #e5e0d8;
             --text-primary: #1a1a1a;
-            --text-secondary: #666666;
+            --text-secondary: #4a4a4a; /* Escurecido de #666 para melhor contraste */
             --brand-red: #63121a;
             --brand-cream: #f2ead5;
             --input-bg: #f4f4f5;
@@ -99,7 +127,7 @@
             --bg-header-section: #222222;
             --border-color: #2a2a2a;
             --text-primary: #f2ead5;
-            --text-secondary: rgba(242, 234, 213, 0.6);
+            --text-secondary: rgba(255, 255, 255, 0.75); /* Clareado no modo escuro para contraste */
             --brand-red: #63121a;
             --input-bg: #1c1c1c;
             --input-border: #333;
@@ -165,7 +193,6 @@
             border-color: var(--brand-red);
         }
 
-        /* Classe de zebrado dinâmico (Claro/Escuro) */
         .zebra-row:nth-child(even) { background-color: var(--bg-body); }
         .zebra-row:nth-child(odd) { background-color: var(--bg-card); }
         
@@ -206,8 +233,10 @@
     </style>
 </head>
 <body> 
+    <!-- Inserção de H1 Oculto estruturalmente para acessibilidade e SEO Semântico -->
+    <h1 class="sr-only">Recanto do Strogonoff - Pedido Online em Arcos, MG</h1>
 
-    <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors">
+    <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors" aria-label="Alternar tema claro e escuro">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
 
@@ -216,7 +245,7 @@
         <div class="absolute inset-0 bg-[url('image/capa.webp')] bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.webp" alt="Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
+            <img src="image/logo.webp" alt="Logo do Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm transition-opacity duration-300">
@@ -226,7 +255,7 @@
         </div>
     </header>
 
-    <nav class="sticky top-0 z-30 theme-bg-nav backdrop-blur-sm border-b theme-border py-3 transition-colors duration-300 shadow-sm">
+    <nav class="sticky top-0 z-30 theme-bg-nav backdrop-blur-sm border-b theme-border py-3 transition-colors duration-300 shadow-sm" aria-label="Navegação de Categorias">
         <div class="flex justify-start md:justify-center overflow-x-auto no-scrollbar gap-2 px-4 whitespace-nowrap" id="nav-container">
             <a href="#destaque" onclick="setActiveNav(this)" class="nav-link active px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Destaques</a>
             <a href="#pratos" onclick="setActiveNav(this)" class="nav-link inactive px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Pratos</a>
@@ -236,7 +265,6 @@
     </nav>
 
     <main class="max-w-3xl mx-auto px-4 py-6 space-y-10">
-        <!-- CONTAINERS DINÂMICOS -->
         <section id="destaque" class="scroll-mt-24 section-spy"></section>
         
         <section id="pratos" class="scroll-mt-24 section-spy">
@@ -258,7 +286,7 @@
         <section id="bebidas" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
-                <span id="titulo-bebidas" class="uppercase">Bebidas</span>
+                <span id="titulo-bebidas" class="uppercase">Bebidas<span class="sr-only">, </span></span>
             </h2>
             <div class="theme-bg-card border theme-border rounded-xl divide-y theme-border divide-opacity-10 overflow-hidden shadow-soft">
                 <div class="p-3 theme-bg-header text-xs font-bold uppercase tracking-wider theme-text-secondary transition-colors duration-300">
@@ -269,38 +297,34 @@
         </section>
     </main>
 
-    <!-- BARRA DE INFORMAÇÕES (RODAPÉ) - ADAPTADO AO TEMA -->
+    <!-- BARRA DE INFORMAÇÕES (RODAPÉ) -->
     <footer class="w-full theme-bg-card border-t theme-border py-6 mt-4 transition-colors duration-300">
         <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 text-xs">
-            
             <button onclick="openInfoModal('pagamento')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
-                <i class="fas fa-dollar-sign theme-bg-body border theme-border rounded-full w-6 h-6 flex items-center justify-center text-xs"></i> 
+                <i class="fas fa-dollar-sign theme-bg-body border theme-border rounded-full w-6 h-6 flex items-center justify-center text-xs" aria-hidden="true"></i> 
                 Formas de pagamento
             </button>
-
             <button onclick="openInfoModal('taxas')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
-                <i class="fas fa-map-marker-alt text-lg"></i> 
+                <i class="fas fa-map-marker-alt text-lg" aria-hidden="true"></i> 
                 Taxas e locais de entrega
             </button>
-
             <button onclick="openInfoModal('horarios')" class="flex items-center gap-2 theme-text-primary hover:opacity-70 transition font-medium">
-                <i class="far fa-clock text-lg"></i> 
+                <i class="far fa-clock text-lg" aria-hidden="true"></i> 
                 Horários de funcionamento
             </button>
-            
         </div>
     </footer>
 
-    <!-- COPYRIGHT & CONTATOS MINIMALISTA -->
+    <!-- COPYRIGHT & CONTATOS -->
     <div class="w-full theme-bg-body border-t theme-border pt-8 pb-4 text-center text-[10px] sm:text-xs theme-text-secondary opacity-80">
         <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
-            <p class="font-medium tracking-wide">RECANTO DO STROGONOFF</p>
+            <p class="font-medium tracking-wide text-sm theme-text-primary">RECANTO DO STROGONOFF</p>
             <p>CNPJ: 65.655.282/0001-00</p>
             <p>📍 R. Juca Dias, 196, São Judas - Arcos, MG</p>
-            <div class="flex items-center justify-center gap-4 mt-1">
-                <a href="mailto:recantodostrogonoff@gmail.com" class="hover:theme-text-primary transition"><i class="far fa-envelope"></i> recantodostrogonoff@gmail.com</a>
+            <div class="flex items-center justify-center gap-4 mt-1 text-sm">
+                <a href="mailto:recantodostrogonoff@gmail.com" class="hover:theme-text-primary transition" aria-label="Enviar E-mail"><i class="far fa-envelope"></i> recantodostrogonoff@gmail.com</a>
                 <span class="w-1 h-1 rounded-full bg-gray-400"></span>
-                <a href="https://wa.me/5537984243487" target="_blank" class="hover:theme-text-primary transition"><i class="fab fa-whatsapp"></i> (37) 98424-3487</a>
+                <a href="tel:+5537984243487" class="hover:theme-text-primary transition" aria-label="Ligar via telefone"><i class="fab fa-whatsapp"></i> (37) 98424-3487</a>
             </div>
             <p class="mt-4 pt-4 border-t theme-border border-dashed opacity-60">
                 &copy; <span id="current-year"></span> Recanto do Strogonoff. Todos os direitos reservados.
@@ -326,10 +350,10 @@
     </div>
 
     <!-- DRAWER DO CARRINHO -->
-    <div id="cart-drawer" class="fixed inset-y-0 right-0 w-full md:w-[400px] theme-bg-body border-l theme-border shadow-2xl z-[60] flex flex-col transition-transform duration-300 ease-in-out translate-x-full">
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 w-full md:w-[400px] theme-bg-body border-l theme-border shadow-2xl z-[60] flex flex-col transition-transform duration-300 ease-in-out translate-x-full" role="dialog" aria-modal="true" aria-labelledby="cart-title">
         <div class="p-5 border-b theme-border flex justify-between items-center theme-bg-card">
-            <h2 class="text-xl font-serif font-bold theme-text-primary">Sua Sacola</h2>
-            <button onclick="closeCartDrawer()" class="theme-text-secondary hover:theme-text-primary transition p-2">
+            <h2 id="cart-title" class="text-xl font-serif font-bold theme-text-primary">Sua Sacola</h2>
+            <button onclick="closeCartDrawer()" class="theme-text-secondary hover:theme-text-primary transition p-2" aria-label="Fechar Sacola">
                 <i class="fas fa-times text-lg"></i>
             </button>
         </div>
@@ -346,14 +370,12 @@
         </div>
     </div>
 
-    <!-- OVERLAY GERAL -->
     <div id="overlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/80 z-[55] hidden modal-overlay transition-opacity"></div>
 
-    <!-- MODAL SUPER COMBO (UNIFICADO E DINÂMICO) -->
-    <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4">
+    <!-- MODAL SUPER COMBO -->
+    <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
-            
             <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
                 <div>
                     <h3 class="text-xl font-serif font-bold theme-text-primary" id="sc-modal-title">Montar Combo</h3>
@@ -363,9 +385,7 @@
                     <span id="modal-combo-preco" class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 0,00</span>
                 </div>
             </div>
-
             <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <!-- Passo 1 -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha o Prato</label>
@@ -373,8 +393,6 @@
                     </div>
                     <div id="modal-combo-pratos" class="space-y-2"></div>
                 </div>
-                
-                <!-- Passo 2 -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Escolha o Adicional</label>
@@ -382,8 +400,6 @@
                     </div>
                     <div id="modal-combo-extras" class="space-y-2"></div>
                 </div>
-                
-                <!-- Passo 3 -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0" id="sc-drinks-label">3. Bebida Inclusa</label>
@@ -392,18 +408,16 @@
                     <div id="modal-combo-bebidas" class="space-y-2"></div>
                 </div>
             </div>
-
             <button onclick="confirmCombo()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
                 Adicionar à Sacola
             </button>
         </div>
     </div>
 
-    <!-- MODAL COMBO CASAL / MULTIPLO (AGORA DINÂMICO PELO JSON) -->
-    <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
+    <!-- MODAL COMBO CASAL / MULTIPLO -->
+    <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
-            
             <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
                 <div>
                     <h3 class="text-xl font-serif font-bold theme-text-primary" id="cc-modal-title">Combo Casal</h3>
@@ -413,20 +427,14 @@
                     <span id="modal-cc-preco" class="block theme-price font-bold text-xl"><span class="text-xs font-bold">R$</span> 0,00</span>
                 </div>
             </div>
-
             <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <!-- Passo 1: Pratos Dinâmicos -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">1. Escolha seus Pratos</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-pratos-counter">0/2 Escolhidos</span>
                     </div>
-                    <div id="modal-cc-pratos" class="space-y-2">
-                        <!-- Preenchido via JavaScript -->
-                    </div>
+                    <div id="modal-cc-pratos" class="space-y-2"></div>
                 </div>
-
-                <!-- Passo 2: Adicionais -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Inclusos</label>
@@ -434,8 +442,6 @@
                     </div>
                     <div id="modal-cc-extras" class="space-y-2"></div>
                 </div>
-
-                <!-- Passo 3: Bebidas -->
                 <div class="pt-2">
                     <div class="flex justify-between items-end mb-3">
                         <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0" id="cc-drinks-label">3. Turbinar Pedido (Opcional)</label>
@@ -444,71 +450,75 @@
                     <div id="modal-cc-drinks" class="space-y-2"></div>
                 </div>
             </div>
-
             <button onclick="confirmComboCasal()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
                 Adicionar à Sacola
             </button>
         </div>
     </div>
 
-    <!-- MODAL CHECKOUT OTIMIZADO PARA MOBILE -->
-    <div id="checkout-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4">
+    <!-- MODAL CHECKOUT - FORMULÁRIOS SEMÂNTICOS -->
+    <div id="checkout-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
         <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors max-h-[95vh] overflow-y-auto no-scrollbar">
-            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary p-2">
+            <button type="button" onclick="closeCheckoutModal()" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary p-2" aria-label="Fechar Checkout">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 class="text-xl font-serif font-bold mb-6 theme-text-primary text-center">Finalizar Pedido</h3>
+            <h3 id="checkout-title" class="text-xl font-serif font-bold mb-6 theme-text-primary text-center">Finalizar Pedido</h3>
+            
             <form id="checkout-form" onsubmit="event.preventDefault(); finalizeOrder();" class="space-y-4">
                 <div><input type="text" id="client-name" required class="input-min border-b" placeholder="Seu Nome *"></div>
                 <div><input type="tel" id="client-phone" required class="input-min border-b" placeholder="Seu WhatsApp (DDD) *"></div>
                 <div><textarea id="client-address" required rows="1" class="input-min border-b resize-none" placeholder="Endereço de Entrega (Ex: Rua, N°, Bairro) *"></textarea></div>
                 <div><textarea id="client-obs" rows="2" class="input-min border-b resize-none" placeholder="Observações (Ex: Sem salada, capricha no molho...)"></textarea></div>
                 
-                <!-- SELETOR DE TALHERES VISUAL -->
-                <div class="pt-2">
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">Precisa de talher? *</label>
+                <!-- SELETOR DE TALHERES SEMÂNTICO (FIELDSET/RADIO) -->
+                <fieldset class="pt-2">
+                    <legend class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 opacity-80">Precisa de talher? *</legend>
                     <div class="grid grid-cols-2 gap-3">
-                        <button type="button" onclick="selectCutlery('Sim')" id="btn-cutlery-Sim" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
+                        <label id="lbl-cutlery-Sim" class="cutlery-lbl cursor-pointer py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
+                            <input type="radio" name="client-cutlery" value="Sim" onchange="selectCutlery('Sim')" class="sr-only" required>
                             <i class="fas fa-utensils text-gray-400"></i> Sim
-                        </button>
-                        <button type="button" onclick="selectCutlery('Não')" id="btn-cutlery-Não" class="cutlery-btn py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
+                        </label>
+                        <label id="lbl-cutlery-Não" class="cutlery-lbl cursor-pointer py-3 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-2 shadow-sm">
+                            <input type="radio" name="client-cutlery" value="Não" onchange="selectCutlery('Não')" class="sr-only" required>
                             <i class="fas fa-ban text-gray-400"></i> Não
-                        </button>
+                        </label>
                     </div>
-                    <input type="hidden" id="client-cutlery" required>
-                </div>
+                </fieldset>
                 
-                <!-- SELETOR DE PAGAMENTO VISUAL -->
-                <div class="pt-2">
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 block opacity-80">Forma de Pagamento *</label>
+                <!-- SELETOR DE PAGAMENTO SEMÂNTICO (FIELDSET/RADIO) -->
+                <fieldset class="pt-2">
+                    <legend class="text-xs font-bold theme-text-secondary uppercase tracking-widest mb-3 opacity-80">Forma de Pagamento *</legend>
                     <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="selectPayment('Pix')" id="btn-payment-Pix" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                        <label id="lbl-payment-Pix" class="payment-lbl cursor-pointer py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                            <input type="radio" name="payment-method" value="Pix" onchange="selectPayment('Pix')" class="sr-only" required>
                             <i class="fab fa-pix text-xl text-teal-500 mb-1 transition-colors"></i> Pix
-                        </button>
-                        <button type="button" onclick="selectPayment('Cartão')" id="btn-payment-Cartão" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                        </label>
+                        <label id="lbl-payment-Cartão" class="payment-lbl cursor-pointer py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                            <input type="radio" name="payment-method" value="Cartão" onchange="selectPayment('Cartão')" class="sr-only" required>
                             <i class="fas fa-credit-card text-xl text-blue-500 mb-1 transition-colors"></i> Cartão
-                        </button>
-                        <button type="button" onclick="selectPayment('Dinheiro')" id="btn-payment-Dinheiro" class="payment-btn py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                        </label>
+                        <label id="lbl-payment-Dinheiro" class="payment-lbl cursor-pointer py-3 px-1 rounded-xl border theme-border font-bold theme-text-primary transition-all hover:bg-black/5 dark:hover:bg-white/5 flex flex-col items-center justify-center gap-1 text-xs shadow-sm">
+                            <input type="radio" name="payment-method" value="Dinheiro" onchange="selectPayment('Dinheiro')" class="sr-only" required>
                             <i class="fas fa-money-bill-wave text-xl text-green-500 mb-1 transition-colors"></i> Dinheiro
-                        </button>
+                        </label>
                     </div>
-                    <input type="hidden" id="payment-method" required>
-                </div>
+                </fieldset>
 
                 <div id="change-input-group" class="hidden pt-2">
                     <input type="text" id="change-for" class="input-min border-b bg-green-50 dark:bg-green-900/10 text-green-800 dark:text-green-200 placeholder-green-600/50" placeholder="Troco para quanto? (Ex: 50)">
                 </div>
+                
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg flex items-center justify-center gap-2 transition text-center focus:ring-4 focus:ring-green-400">
+                    <span>Enviar no WhatsApp</span>
+                    <i class="fab fa-whatsapp"></i>
+                </button>
             </form>
-            <button onclick="finalizeOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl mt-8 shadow-lg flex items-center justify-center gap-2 transition text-center">
-                <span>Enviar no WhatsApp</span>
-                <i class="fab fa-whatsapp"></i>
-            </button>
         </div>
     </div>
 
     <!-- MODAL SUCESSO -->
-    <div id="success-modal" class="fixed inset-0 z-[90] hidden items-center justify-center p-4">
+    <div id="success-modal" class="fixed inset-0 z-[90] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm"></div>
         <div class="theme-bg-card w-full max-w-sm rounded-2xl p-8 relative z-10 border theme-border animate-pop-in text-center shadow-2xl">
             <div class="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4 text-green-500">
@@ -520,27 +530,17 @@
         </div>
     </div>
 
-    <!-- MODAL DE INFORMAÇÕES (ESTILO GOOD PIZZA - ADAPTADO AO TEMA) -->
-    <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <!-- MODAL DE INFORMAÇÕES EXTRAS -->
+    <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeInfoModal()"></div>
         <div class="theme-bg-body border theme-border w-full max-w-md shadow-2xl relative z-10 animate-pop-in flex flex-col overflow-hidden rounded-xl">
-            
-            <!-- Cabeçalho com linha vermelha -->
             <div class="p-4 theme-bg-card border-t-4 border-[#7a121a] shadow-sm z-20">
                 <h3 id="info-modal-title" class="text-lg theme-text-primary font-bold">Título</h3>
             </div>
-            
-            <!-- Subtítulo -->
             <div class="px-5 py-3">
                 <p id="info-modal-subtitle" class="text-[13px] font-bold theme-text-secondary uppercase tracking-wider"></p>
             </div>
-
-            <!-- Lista Zebrada Dinâmica -->
-            <div id="info-modal-list" class="max-h-[50vh] overflow-y-auto px-5 pb-5">
-                <!-- Preenchido via JS -->
-            </div>
-
-            <!-- Botão Fechar -->
+            <div id="info-modal-list" class="max-h-[50vh] overflow-y-auto px-5 pb-5"></div>
             <div class="p-4 theme-bg-card flex justify-center border-t theme-border">
                 <button onclick="closeInfoModal()" class="w-full max-w-[200px] theme-bg-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition">
                     Fechar
@@ -550,7 +550,7 @@
     </div>
 
     <!-- TOAST -->
-    <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[90] translate-y-[-200%] transition-transform duration-300">
+    <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[90] translate-y-[-200%] transition-transform duration-300" role="alert" aria-live="assertive">
         <div class="theme-bg-red text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2">
             <i class="fas fa-check-circle text-white"></i>
             <span id="toast-msg">Adicionado!</span>
@@ -566,52 +566,31 @@
         const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
         let lastDataHash = "";
         let globalCarouselInterval = null;
-
-        // Controle da Animação Peek (Arraste automático)
         let globalPeekTimeout = null;
         let isPeeking = false;
 
-        // Adiciona o ano atual automaticamente no copyright
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // --- ESTADOS DOS COMBOS (Dinâmicos guiados pelo JSON) ---
         let activeComboData = null; 
-        
-        let scState = {
-            pratos: {}, pratosCount: 0,
-            extras: {}, extrasCount: 0,
-            drinks: {}, drinksCount: 0
-        };
-
-        let ccState = {
-            basePrice: 0,
-            pratos: {}, pratosCount: 0, 
-            extras: {}, extrasCount: 0,
-            drinks: {}, drinksCount: 0 
-        };
-
+        let scState = { pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
+        let ccState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
         let cart = [];
 
-        // --- FETCH DADOS E POLLING ---
         async function carregarDadosDoBanco() {
             try {
                 const response = await fetch(`${DATA_URL}?t=${new Date().getTime()}`);
                 const data = await response.json();
-                
                 const currentDataHash = JSON.stringify(data);
                 if (currentDataHash !== lastDataHash) {
                     globalData = data;
                     renderizarInterface(data);
                     lastDataHash = currentDataHash;
                 }
-            } catch (e) {
-                console.error('Erro ao buscar dados do cardápio:', e);
-            }
+            } catch (e) { console.error('Erro ao buscar dados:', e); }
         }
 
-        // --- RENDERIZAÇÃO DINÂMICA (SEM F5) ---
+        // --- RENDERIZAÇÃO ---
         function renderizarInterface(data) {
-            // 1. Status da Loja
             globalStoreStatus = data.configuracoes.loja_aberta;
             const statusContainer = document.getElementById('store-status-container');
             const statusIcon = document.getElementById('status-icon');
@@ -629,50 +608,43 @@
                 statusContainer.classList.add('opacity-70');
             }
 
-            // Títulos dinâmicos pelo JSON
             if (data.configuracoes && data.configuracoes.titulos) {
                 if (data.configuracoes.titulos.pratos) document.getElementById('titulo-pratos').innerText = data.configuracoes.titulos.pratos;
                 if (data.configuracoes.titulos.adicionais) document.getElementById('titulo-adicionais').innerText = data.configuracoes.titulos.adicionais;
-                if (data.configuracoes.titulos.bebidas) document.getElementById('titulo-bebidas').innerText = data.configuracoes.titulos.bebidas;
+                if (data.configuracoes.titulos.bebidas) document.getElementById('titulo-bebidas').innerHTML = `${data.configuracoes.titulos.bebidas}<span class="sr-only">, </span>`;
             }
 
-            // 2. Renderizar Destaques 
             const destaqueSection = document.getElementById('destaque');
             let destaquesHTML = '';
-
             const combosDisponiveis = data.combos ? data.combos.filter(c => c.disponivel) : [];
 
             combosDisponiveis.forEach(comboItem => {
                 const isMultiplo = comboItem.id.includes('casal') || (comboItem.regras && comboItem.regras.qtd_pratos > 1);
-                
                 const badgeText = comboItem.badge || (isMultiplo ? 'Ideal para Dois' : 'Mais Pedido');
                 const icon = isMultiplo ? 'fa-heart' : 'fa-plus';
                 const onClickFunction = isMultiplo ? `openComboCasalModal('${comboItem.id}')` : `openComboModal('${comboItem.id}')`;
 
+                // ATENÇÃO: Adição de Alt Text nas Imagens do Javascript (Acessibilidade)
                 const imagensHTML = comboItem.imagens && comboItem.imagens.length > 0 
                     ? comboItem.imagens.map((img, i) => 
-                        `<img src="${img}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                        `<img src="${img}" alt="Foto de destaque do ${comboItem.titulo || comboItem.nome}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                       ).join('')
-                    : `<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-image text-4xl"></i></div>`;
+                    : `<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400" aria-hidden="true"><i class="fas fa-image text-4xl"></i></div>`;
 
                 destaquesHTML += `
                     <div class="flex-none w-[85vw] sm:w-[320px] snap-center theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300 flex flex-col">
                         <div class="absolute top-3 left-3 theme-bg-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">${badgeText}</div>
-                        <div onclick="${onClickFunction}" class="cursor-pointer flex flex-col h-full">
-                            <div class="h-48 overflow-hidden relative bg-gray-100 carousel-container">
-                                ${imagensHTML}
-                            </div>
+                        <div onclick="${onClickFunction}" class="cursor-pointer flex flex-col h-full" role="button" aria-label="Montar ${comboItem.titulo || comboItem.nome}">
+                            <div class="h-48 overflow-hidden relative bg-gray-100 carousel-container">${imagensHTML}</div>
                             <div class="p-5 relative z-20 flex flex-col flex-1">
                                 <h2 class="font-serif text-xl font-bold theme-text-primary mb-2 text-[#63121a]">${comboItem.titulo || comboItem.nome}</h2>
                                 <p class="theme-text-secondary text-xs leading-relaxed mb-4 flex-1">${comboItem.descricao}</p>
                                 <div class="flex justify-between items-end pt-4 border-t theme-border border-dashed">
                                     <div class="flex flex-col">
                                         ${comboItem.preco_de ? `<span class="text-xs text-red-500 line-through opacity-80"><span class="text-[10px]">R$</span> ${formatPrice(comboItem.preco_de)}</span>` : ''}
-                                        <span class="text-xl font-bold theme-price flex items-baseline gap-1">
-                                            <span class="text-xs font-bold">R$</span> ${formatPrice(comboItem.preco_por)}
-                                        </span>
+                                        <span class="text-xl font-bold theme-price flex items-baseline gap-1"><span class="text-xs font-bold">R$</span> ${formatPrice(comboItem.preco_por)}</span>
                                     </div>
-                                    <button class="btn-add-theme text-[10px] font-bold uppercase px-3 py-2 rounded transition flex items-center gap-1">
+                                    <button class="btn-add-theme text-[10px] font-bold uppercase px-3 py-2 rounded transition flex items-center gap-1" aria-hidden="true">
                                         <i class="fas ${icon} text-[8px]"></i> Montar
                                     </button>
                                 </div>
@@ -682,40 +654,29 @@
             });
 
             if (destaquesHTML !== '') {
-                destaqueSection.innerHTML = `
-                    <div class="relative group">
-                        <div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" ontouchstart="cancelPeek()" onmousedown="cancelPeek()">
-                            ${destaquesHTML}
-                        </div>
-                    </div>
-                `;
-                
+                destaqueSection.innerHTML = `<div class="relative group"><div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" ontouchstart="cancelPeek()" onmousedown="cancelPeek()">${destaquesHTML}</div></div>`;
                 if (combosDisponiveis.length > 1) {
                     clearTimeout(globalPeekTimeout);
                     globalPeekTimeout = setTimeout(peekCarousel, 1500);
                 }
-
             } else {
                 destaqueSection.innerHTML = '';
             }
 
-            // 3. Renderizar Pratos Principais
             const listaPratos = document.getElementById('lista-pratos');
             listaPratos.innerHTML = data.pratos.map(prato => {
-                const disponivelAttr = prato.disponivel ? `onclick="addToCart('${prato.nome}', ${prato.preco}, '', '${prato.tipo}')"` : '';
+                const disponivelAttr = prato.disponivel ? `onclick="addToCart('${prato.nome}', ${prato.preco}, '', '${prato.tipo}')" role="button" aria-label="Adicionar ${prato.nome}"` : '';
                 const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
                 
                 const imagensPratoHTML = prato.imagens && prato.imagens.length > 0
-                    ? prato.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
-                    : `<img src="${prato.imagem || ''}" loading="lazy" class="w-full h-full object-cover absolute inset-0">`;
+                    ? prato.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${prato.nome}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
+                    : `<img src="${prato.imagem || ''}" alt="Foto de ${prato.nome}" loading="lazy" class="w-full h-full object-cover absolute inset-0">`;
 
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex gap-4 group ${indisponivelClass} relative overflow-hidden">
                     ${!prato.disponivel ? '<div class="absolute inset-0 bg-white/40 backdrop-blur-[1px] z-10 flex items-center justify-center"><span class="bg-black/80 text-white text-xs font-bold px-3 py-1 rounded shadow-lg uppercase tracking-wider">Esgotado</span></div>' : ''}
                     <div class="w-24 h-24 rounded-lg overflow-hidden theme-border border flex-shrink-0 bg-gray-100 relative">
-                        <div class="w-full h-full group-hover:scale-110 transition duration-500 relative carousel-container">
-                            ${imagensPratoHTML}
-                        </div>
+                        <div class="w-full h-full group-hover:scale-110 transition duration-500 relative carousel-container">${imagensPratoHTML}</div>
                     </div>
                     <div class="flex-1 flex flex-col justify-between py-1">
                         <div>
@@ -725,64 +686,54 @@
                         <div class="flex justify-between items-end mt-2">
                             <div class="flex flex-col">
                                 ${prato.preco_de ? `<span class="text-[10px] text-red-500 line-through opacity-80 h-3 leading-none block">R$ ${formatPrice(prato.preco_de)}</span>` : ''}
-                                <span class="font-bold theme-price text-lg flex items-baseline gap-1 leading-none ${prato.preco_de ? 'mt-1' : ''}">
-                                    <span class="text-xs font-bold">R$</span> ${formatPrice(prato.preco)}
-                                </span>
+                                <span class="font-bold theme-price text-lg flex items-baseline gap-1 leading-none ${prato.preco_de ? 'mt-1' : ''}"><span class="text-xs font-bold">R$</span> ${formatPrice(prato.preco)}</span>
                             </div>
-                            ${prato.disponivel ? '<span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition">+</span>' : ''}
+                            ${prato.disponivel ? '<span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition" aria-hidden="true">+</span>' : ''}
                         </div>
                     </div>
                 </div>`;
             }).join('');
 
-            // 4. Renderizar Adicionais
             const listaAdicionais = document.getElementById('lista-adicionais');
             listaAdicionais.innerHTML = data.adicionais.map(adc => {
-                const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')"` : '';
+                const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')" role="button" aria-label="Adicionar ${adc.display}"` : '';
                 const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
                 
                 const imagensAdcHTML = adc.imagens && adc.imagens.length > 0
-                    ? adc.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
-                    : `<img src="${adc.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
+                    ? adc.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${adc.display}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
+                    : `<img src="${adc.imagem || ''}" alt="Foto de ${adc.display}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
 
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex items-center gap-3 transition ${indisponivelClass} relative">
                     ${!adc.disponivel ? '<div class="absolute right-2 top-2"><span class="bg-red-600/10 text-red-600 border border-red-600/20 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Esgotado</span></div>' : ''}
-                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 flex-shrink-0 relative carousel-container">
-                        ${imagensAdcHTML}
-                    </div>
+                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 flex-shrink-0 relative carousel-container">${imagensAdcHTML}</div>
                     <div class="flex-1">
                         <h3 class="font-bold text-xs theme-text-primary">${adc.display}</h3>
                         <span class="text-[10px] theme-text-secondary block">${adc.subtitulo}</span>
                         <div class="flex flex-col mt-1">
                             ${adc.preco_de ? `<span class="text-[9px] text-red-500 line-through opacity-80 leading-none block">R$ ${formatPrice(adc.preco_de)}</span>` : ''}
-                            <span class="font-bold theme-price text-sm flex items-baseline gap-1 leading-none ${adc.preco_de ? 'mt-0.5' : ''}">
-                                <span class="text-[10px]">R$</span> ${formatPrice(adc.preco)}
-                            </span>
+                            <span class="font-bold theme-price text-sm flex items-baseline gap-1 leading-none ${adc.preco_de ? 'mt-0.5' : ''}"><span class="text-[10px]">R$</span> ${formatPrice(adc.preco)}</span>
                         </div>
                     </div>
                 </div>`;
             }).join('');
 
-            // 5. Renderizar Bebidas
             const listaBebidas = document.getElementById('lista-bebidas');
             listaBebidas.innerHTML = data.bebidas.map(bebida => {
-                const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')"` : '';
+                const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')" role="button" aria-label="Adicionar ${bebida.nome}"` : '';
                 const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
 
                 const imagensBebidaHTML = bebida.imagens && bebida.imagens.length > 0
-                    ? bebida.imagens.map((img, i) => `<img src="${img}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
-                    : `<img src="${bebida.imagem || ''}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
+                    ? bebida.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${bebida.nome}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
+                    : `<img src="${bebida.imagem || ''}" alt="Foto de ${bebida.nome}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
 
                 return `
                 <div ${disponivelAttr} class="flex items-center justify-between p-4 transition ${indisponivelClass}">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 relative flex-shrink-0 carousel-container">
-                            ${imagensBebidaHTML}
-                        </div>
+                        <div class="w-10 h-10 relative flex-shrink-0 carousel-container">${imagensBebidaHTML}</div>
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             ${bebida.nome}
-                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Tem mas acabou 😅</span>' : ''}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou 😅</span>' : ''}
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
@@ -790,7 +741,7 @@
                             ${bebida.preco_de ? `<span class="text-[9px] text-red-500 line-through opacity-80 leading-none mb-0.5">R$ ${formatPrice(bebida.preco_de)}</span>` : ''}
                             <span class="theme-price font-bold text-sm flex items-baseline gap-1 leading-none"><span class="text-[10px]">R$</span> ${formatPrice(bebida.preco)}</span>
                         </div>
-                        ${bebida.disponivel ? '<i class="fas fa-plus-circle theme-brand-red text-lg"></i>' : ''}
+                        ${bebida.disponivel ? '<i class="fas fa-plus-circle theme-brand-red text-lg" aria-hidden="true"></i>' : ''}
                     </div>
                 </div>`;
             }).join('');
@@ -798,39 +749,27 @@
             startGlobalCarousels();
         }
 
+        // --- SISTEMAS DE PEAK / CARROUSEL ---
         function easeInOutCubic(t, b, c, d) {
             t /= d/2;
             if (t < 1) return c/2*t*t*t + b;
-            t -= 2;
-            return c/2*(t*t*t + 2) + b;
+            t -= 2; return c/2*(t*t*t + 2) + b;
         }
 
         function customSmoothScroll(element, change, duration, isReturn = false) {
             if (!isPeeking) return;
-            
-            const start = element.scrollLeft;
-            const startTime = performance.now();
+            const start = element.scrollLeft; const startTime = performance.now();
             element.classList.remove('snap-x', 'snap-mandatory');
-
             function animateScroll(currentTime) {
                 if (!isPeeking) return; 
-                
                 const timeElapsed = currentTime - startTime;
-                
                 if (timeElapsed < duration) {
                     element.scrollLeft = easeInOutCubic(timeElapsed, start, change, duration);
                     requestAnimationFrame(animateScroll);
                 } else {
                     element.scrollLeft = start + change; 
-                    
-                    if (!isReturn) {
-                        setTimeout(() => { customSmoothScroll(element, -change, duration, true); }, 300); 
-                    } else {
-                        setTimeout(() => {
-                            if (isPeeking) element.classList.add('snap-x', 'snap-mandatory');
-                            isPeeking = false;
-                        }, 50);
-                    }
+                    if (!isReturn) { setTimeout(() => customSmoothScroll(element, -change, duration, true), 300); } 
+                    else { setTimeout(() => { if (isPeeking) element.classList.add('snap-x', 'snap-mandatory'); isPeeking = false; }, 50); }
                 }
             }
             requestAnimationFrame(animateScroll);
@@ -840,21 +779,12 @@
             const carousel = document.getElementById('combos-carousel');
             if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
             if (carousel.scrollLeft > 10) return;
-            
-            isPeeking = true;
-            customSmoothScroll(carousel, 80, 800, false);
+            isPeeking = true; customSmoothScroll(carousel, 80, 800, false);
         }
-
         function cancelPeek() {
-            if (isPeeking) {
-                isPeeking = false;
-                const carousel = document.getElementById('combos-carousel');
-                if (carousel) carousel.classList.add('snap-x', 'snap-mandatory');
-            }
+            if (isPeeking) { isPeeking = false; const c = document.getElementById('combos-carousel'); if (c) c.classList.add('snap-x', 'snap-mandatory'); }
         }
 
-
-        // --- SISTEMA DE UI UNIFICADA DOS COMBOS (FUNÇÕES HELPERS) ---
         function getThumb(item) {
             if (item.imagens && item.imagens.length > 0) return item.imagens[0];
             if (item.imagem) return item.imagem;
@@ -867,31 +797,20 @@
             const disabledClass = !isAvailable ? 'opacity-50 grayscale pointer-events-none' : '';
             const displayPrice = !isAvailable ? '<span class="text-red-500">Esgotado</span>' : priceText;
             
-            let clickFnMinus = '';
-            let clickFnPlus = '';
-            
+            let clickFnMinus = ''; let clickFnPlus = '';
             if (comboType === 'sc') {
-                clickFnMinus = `updateScItem('${category}', '${nome}', -1)`;
-                clickFnPlus = `updateScItem('${category}', '${nome}', 1)`;
+                clickFnMinus = `updateScItem('${category}', '${nome}', -1)`; clickFnPlus = `updateScItem('${category}', '${nome}', 1)`;
             } else if (comboType === 'cc') {
-                if (category === 'pratos') {
-                    clickFnMinus = `updateCcPrato('${nome}', -1)`;
-                    clickFnPlus = `updateCcPrato('${nome}', 1)`;
-                } else if (category === 'extras') {
-                    clickFnMinus = `updateCcExtra('${nome}', -1)`;
-                    clickFnPlus = `updateCcExtra('${nome}', 1)`;
-                } else if (category === 'drinks') {
-                    // Independente de ser paga ou grátis, o controle de regras tratará internamente
-                    clickFnMinus = `updateCcDrink('${nome}', ${precoItem}, -1)`;
-                    clickFnPlus = `updateCcDrink('${nome}', ${precoItem}, 1)`;
-                }
+                if (category === 'pratos') { clickFnMinus = `updateCcPrato('${nome}', -1)`; clickFnPlus = `updateCcPrato('${nome}', 1)`; } 
+                else if (category === 'extras') { clickFnMinus = `updateCcExtra('${nome}', -1)`; clickFnPlus = `updateCcExtra('${nome}', 1)`; } 
+                else if (category === 'drinks') { clickFnMinus = `updateCcDrink('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcDrink('${nome}', ${precoItem}, 1)`; }
             }
 
             return `
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
-                        <img src="${thumbUrl}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                        <img src="${thumbUrl}" alt="Miniatura de ${nome}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
@@ -899,14 +818,14 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="${clickFnMinus}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold active:scale-90">-</button>
-                    <span class="text-xs font-bold w-4 text-center theme-text-primary">${count}</span>
-                    <button onclick="${clickFnPlus}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold active:scale-90 ${limitClass}">+</button>
+                    <button onclick="${clickFnMinus}" aria-label="Remover ${nome}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition font-bold active:scale-90">-</button>
+                    <span class="text-xs font-bold w-4 text-center theme-text-primary" aria-live="polite">${count}</span>
+                    <button onclick="${clickFnPlus}" aria-label="Adicionar ${nome}" class="w-6 h-6 flex items-center justify-center rounded-full border theme-border theme-text-primary hover:bg-green-50 dark:hover:bg-green-900/20 transition font-bold active:scale-90 ${limitClass}">+</button>
                 </div>
             </div>`;
         }
 
-        // --- FUNCIONALIDADES DO SUPER COMBO (Totalmente Baseado no JSON) ---
+        // --- SUPER COMBO ---
         function openComboModal(comboId) {
             if (!globalData || !globalData.combos) return;
             activeComboData = globalData.combos.find(c => c.id === comboId);
@@ -914,26 +833,17 @@
             
             document.getElementById('sc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
             document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(activeComboData.preco_por)}`;
-
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
             document.getElementById('sc-modal-subtitle').innerText = `${maxP} Prato(s) + ${maxE} Adicional(is) + ${maxD} Bebida(s)`;
 
-            scState = {
-                pratos: {}, pratosCount: 0,
-                extras: {}, extrasCount: 0,
-                drinks: {}, drinksCount: 0
-            };
+            scState = { pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
 
-            // AUTO-SELEÇÃO: Se houver apenas 1 prato no filtro, seleciona-o automaticamente
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length === 1) {
                 const singleDishName = activeComboData.regras.filtro_pratos[0];
                 const dishData = globalData.pratos.find(p => p.nome === singleDishName);
-                if (dishData && dishData.disponivel) {
-                    scState.pratos[singleDishName] = maxP;
-                    scState.pratosCount = maxP;
-                }
+                if (dishData && dishData.disponivel) { scState.pratos[singleDishName] = maxP; scState.pratosCount = maxP; }
             }
 
             renderSuperComboLists();
@@ -942,98 +852,60 @@
         }
 
         function closeComboModal() {
-            const modal = document.getElementById('combo-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
+            document.getElementById('combo-modal').classList.add('hidden'); document.getElementById('combo-modal').classList.remove('flex');
         }
 
         function updateScItem(category, nome, delta) {
             const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
-
-            const config = {
-                'pratos': { stateObj: scState.pratos, countProp: 'pratosCount', max: maxPratos },
-                'extras': { stateObj: scState.extras, countProp: 'extrasCount', max: maxExtras },
-                'drinks': { stateObj: scState.drinks, countProp: 'drinksCount', max: maxDrinks }
-            }[category];
+            const config = { 'pratos': { stateObj: scState.pratos, countProp: 'pratosCount', max: maxPratos }, 'extras': { stateObj: scState.extras, countProp: 'extrasCount', max: maxExtras }, 'drinks': { stateObj: scState.drinks, countProp: 'drinksCount', max: maxDrinks } }[category];
 
             let current = config.stateObj[nome] || 0;
-            
-            if (delta > 0 && scState[config.countProp] >= config.max) {
-                return showToast(`Você só pode escolher ${config.max} item(ns) nesta categoria!`, true);
-            }
+            if (delta > 0 && scState[config.countProp] >= config.max) return showToast(`Você só pode escolher ${config.max} item(ns) nesta categoria!`, true);
             if (delta < 0 && current <= 0) return;
-
-            config.stateObj[nome] = current + delta;
-            scState[config.countProp] += delta;
+            config.stateObj[nome] = current + delta; scState[config.countProp] += delta;
             renderSuperComboLists();
         }
 
         function renderSuperComboLists() {
-            const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
-            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
-            const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
+            const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
 
             const cats = [
-                { id: 'sc-pratos-counter', count: scState.pratosCount, max: maxPratos },
-                { id: 'sc-extras-counter', count: scState.extrasCount, max: maxExtras },
-                { id: 'sc-drinks-counter', count: scState.drinksCount, max: maxDrinks }
+                { id: 'sc-pratos-counter', count: scState.pratosCount, max: maxP },
+                { id: 'sc-extras-counter', count: scState.extrasCount, max: maxE },
+                { id: 'sc-drinks-counter', count: scState.drinksCount, max: maxD }
             ];
 
             cats.forEach(c => {
                 const el = document.getElementById(c.id);
                 if(el) {
                     el.innerText = `${c.count}/${c.max} Escolhido${c.max > 1 ? 's' : ''}`;
-                    if(c.count === c.max && c.max > 0) {
-                        el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600');
-                    } else {
-                        el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600');
-                    }
+                    if(c.count === c.max && c.max > 0) { el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600'); } 
+                    else { el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600'); }
                 }
             });
 
-            // Filtro dinâmico de pratos se existir na regra
             let pratosPermitidos = globalData.pratos;
-            if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) {
-                pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome));
-            }
+            if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
 
-            const pratosHtml = pratosPermitidos.map(prato => {
-                const count = scState.pratos[prato.nome] || 0;
-                return buildCounterRow('sc', 'pratos', prato.nome, count, scState.pratosCount >= maxPratos, 'Incluso', getThumb(prato), 0, prato.disponivel);
-            }).join('');
-            document.getElementById('modal-combo-pratos').innerHTML = pratosHtml;
-
-            const extrasHtml = globalData.adicionais.map(adc => {
-                const count = scState.extras[adc.display] || 0;
-                return buildCounterRow('sc', 'extras', adc.display, count, scState.extrasCount >= maxExtras, 'Incluso', getThumb(adc), 0, adc.disponivel);
-            }).join('');
-            document.getElementById('modal-combo-extras').innerHTML = extrasHtml;
-
-            const drinksHtml = globalData.bebidas.map(bebida => {
-                const count = scState.drinks[bebida.nome] || 0;
-                return buildCounterRow('sc', 'drinks', bebida.nome, count, scState.drinksCount >= maxDrinks, 'Incluso', getThumb(bebida), 0, bebida.disponivel);
-            }).join('');
-            document.getElementById('modal-combo-bebidas').innerHTML = drinksHtml;
+            document.getElementById('modal-combo-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('sc', 'pratos', p.nome, scState.pratos[p.nome]||0, scState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
+            document.getElementById('modal-combo-extras').innerHTML = globalData.adicionais.map(a => buildCounterRow('sc', 'extras', a.display, scState.extras[a.display]||0, scState.extrasCount>=maxE, 'Incluso', getThumb(a), 0, a.disponivel)).join('');
+            document.getElementById('modal-combo-bebidas').innerHTML = globalData.bebidas.map(b => buildCounterRow('sc', 'drinks', b.nome, scState.drinks[b.nome]||0, scState.drinksCount>=maxD, 'Incluso', getThumb(b), 0, b.disponivel)).join('');
         }
 
         function confirmCombo() {
-            const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
-            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
-            const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
+            const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
 
-            if (scState.pratosCount !== maxPratos || scState.extrasCount !== maxExtras || scState.drinksCount !== maxDrinks) {
-                return showToast('Por favor, selecione as quantidades exatas do combo!', true);
-            }
+            if (scState.pratosCount !== maxP || scState.extrasCount !== maxE || scState.drinksCount !== maxD) return showToast('Por favor, selecione as quantidades exatas do combo!', true);
 
-            let pratosArr = [];
-            for (let key in scState.pratos) { if(scState.pratos[key] > 0) pratosArr.push(`${scState.pratos[key]}x ${key}`); }
-
-            let extraArr = [];
-            for (let key in scState.extras) { if(scState.extras[key] > 0) extraArr.push(`${scState.extras[key]}x ${key}`); }
-
-            let drinksArr = [];
-            for (let key in scState.drinks) { if(scState.drinks[key] > 0) drinksArr.push(`${scState.drinks[key]}x ${key}`); }
+            let pratosArr = []; for (let key in scState.pratos) { if(scState.pratos[key] > 0) pratosArr.push(`${scState.pratos[key]}x ${key}`); }
+            let extraArr = []; for (let key in scState.extras) { if(scState.extras[key] > 0) extraArr.push(`${scState.extras[key]}x ${key}`); }
+            let drinksArr = []; for (let key in scState.drinks) { if(scState.drinks[key] > 0) drinksArr.push(`${scState.drinks[key]}x ${key}`); }
 
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
             if(extraArr.length > 0) detailsCombo += ` | Adicionais: ${extraArr.join(' + ')}`;
@@ -1043,488 +915,306 @@
             closeComboModal();
         }
 
-        // --- FUNCIONALIDADES DO COMBO CASAL / MULTIPLOS (Totalmente Baseado no JSON) ---
+        // --- COMBO CASAL / MULTIPLO ---
         function openComboCasalModal(comboId) {
             if (!globalData || !globalData.combos) return;
             activeComboData = globalData.combos.find(c => c.id === comboId);
             if (!activeComboData) return;
             
             document.getElementById('cc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
-            
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             
             let subtitleText = `${maxP} Pratos + ${maxE} Adicionais Grátis`;
             if(maxD > 0) subtitleText += ` + ${maxD} Bebida(s) Inclusa(s)`;
-            
             document.getElementById('cc-modal-subtitle').innerText = subtitleText;
 
             ccState.basePrice = activeComboData.preco_por;
-            ccState.pratos = {}; ccState.pratosCount = 0;
-            ccState.extras = {}; ccState.extrasCount = 0;
-            ccState.drinks = {}; ccState.drinksCount = 0;
+            ccState = { basePrice: activeComboData.preco_por, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
 
-            // AUTO-SELEÇÃO: Se houver apenas 1 prato no filtro, seleciona-o automaticamente
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length === 1) {
                 const singleDishName = activeComboData.regras.filtro_pratos[0];
                 const dishData = globalData.pratos.find(p => p.nome === singleDishName);
-                if (dishData && dishData.disponivel) {
-                    ccState.pratos[singleDishName] = maxP;
-                    ccState.pratosCount = maxP;
-                }
+                if (dishData && dishData.disponivel) { ccState.pratos[singleDishName] = maxP; ccState.pratosCount = maxP; }
             }
 
-            renderComboCasalLists();
-            updateComboCasalTotal();
-
-            document.getElementById('combo-casal-modal').classList.remove('hidden');
-            document.getElementById('combo-casal-modal').classList.add('flex');
+            renderComboCasalLists(); updateComboCasalTotal();
+            const modal = document.getElementById('combo-casal-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
 
-        function closeComboCasalModal() {
-            document.getElementById('combo-casal-modal').classList.add('hidden');
-            document.getElementById('combo-casal-modal').classList.remove('flex');
-        }
+        function closeComboCasalModal() { document.getElementById('combo-casal-modal').classList.add('hidden'); document.getElementById('combo-casal-modal').classList.remove('flex'); }
 
         function updateCcPrato(nome, delta) {
             const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
             let current = ccState.pratos[nome] || 0;
-            
             if (delta > 0 && ccState.pratosCount >= maxPratos) return showToast(`Você já escolheu os seus ${maxPratos} pratos!`, true);
             if (delta < 0 && current <= 0) return;
-
-            ccState.pratos[nome] = current + delta;
-            ccState.pratosCount += delta;
+            ccState.pratos[nome] = current + delta; ccState.pratosCount += delta;
             renderComboCasalLists();
         }
 
         function updateCcExtra(nome, delta) {
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             let current = ccState.extras[nome] || 0;
-            
             if (delta > 0 && ccState.extrasCount >= maxExtras) return showToast(`Você já escolheu seus ${maxExtras} adicionais grátis!`, true);
             if (delta < 0 && current <= 0) return;
-
-            ccState.extras[nome] = current + delta;
-            ccState.extrasCount += delta;
+            ccState.extras[nome] = current + delta; ccState.extrasCount += delta;
             renderComboCasalLists();
         }
 
         function updateCcDrink(nome, preco, delta) {
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
-            
             if (maxDrinks > 0) {
-                // Modo: Bebida Inclusa pelo JSON
                 let current = ccState.drinks[nome] || 0;
                 if (delta > 0 && ccState.drinksCount >= maxDrinks) return showToast(`Você já escolheu sua(s) ${maxDrinks} bebida(s) inclusa(s)!`, true);
                 if (delta < 0 && current <= 0) return;
-
-                ccState.drinks[nome] = current + delta;
-                ccState.drinksCount += delta;
+                ccState.drinks[nome] = current + delta; ccState.drinksCount += delta;
             } else {
-                // Modo: Bebida Paga (Opcional)
                 let current = ccState.drinks[nome] || { count: 0, price: preco };
                 if (delta < 0 && current.count <= 0) return;
-
                 current.count += delta;
-                if (current.count === 0) delete ccState.drinks[nome];
-                else ccState.drinks[nome] = current;
+                if (current.count === 0) delete ccState.drinks[nome]; else ccState.drinks[nome] = current;
                 updateComboCasalTotal(); 
             }
             renderComboCasalLists();
         }
 
         function renderComboCasalLists() {
-            // Lógica dos Pratos
-            const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
-            const pratosCounterText = document.getElementById('cc-pratos-counter');
-            pratosCounterText.innerText = `${ccState.pratosCount}/${maxPratos} Escolhidos`;
-            if(ccState.pratosCount === maxPratos && maxPratos > 0) {
-                pratosCounterText.classList.remove('theme-bg-red'); pratosCounterText.classList.add('bg-green-600');
-            } else {
-                pratosCounterText.classList.add('theme-bg-red'); pratosCounterText.classList.remove('bg-green-600');
-            }
+            const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
+            const cP = document.getElementById('cc-pratos-counter'); cP.innerText = `${ccState.pratosCount}/${maxP} Escolhidos`;
+            cP.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.pratosCount === maxP && maxP > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
 
-            // Filtro inteligente do JSON
             let pratosPermitidos = globalData.pratos;
-            if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) {
-                pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome));
-            }
+            if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
+            document.getElementById('modal-cc-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('cc', 'pratos', p.nome, ccState.pratos[p.nome]||0, ccState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
 
-            const pratosCasalHtml = pratosPermitidos.map(prato => {
-                const count = ccState.pratos[prato.nome] || 0;
-                return buildCounterRow('cc', 'pratos', prato.nome, count, ccState.pratosCount >= maxPratos, 'Incluso', getThumb(prato), 0, prato.disponivel);
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
+            const cE = document.getElementById('cc-extras-counter'); cE.innerText = `${ccState.extrasCount}/${maxE} Escolhidos`;
+            cE.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.extrasCount === maxE && maxE > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
+            document.getElementById('modal-cc-extras').innerHTML = globalData.adicionais.map(a => buildCounterRow('cc', 'extras', a.display, ccState.extras[a.display]||0, ccState.extrasCount>=maxE, 'Grátis', getThumb(a), 0, a.disponivel)).join('');
+
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
+            const labelD = document.getElementById('cc-drinks-label'); const cD = document.getElementById('cc-drinks-counter');
+            if (maxD > 0) {
+                labelD.innerText = "3. Bebidas Inclusas"; cD.style.display = 'block'; cD.innerText = `${ccState.drinksCount}/${maxD} Escolhida(s)`;
+                cD.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.drinksCount === maxD ? 'bg-green-600' : 'theme-bg-red'}`;
+            } else { labelD.innerText = "3. Turbinar Pedido (Opcional)"; cD.style.display = 'none'; }
+            
+            document.getElementById('modal-cc-drinks').innerHTML = globalData.bebidas.map(b => {
+                if (maxD > 0) return buildCounterRow('cc', 'drinks', b.nome, ccState.drinks[b.nome]||0, ccState.drinksCount>=maxD, 'Incluso', getThumb(b), b.preco, b.disponivel);
+                else return buildCounterRow('cc', 'drinks', b.nome, (ccState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
             }).join('');
-            document.getElementById('modal-cc-pratos').innerHTML = pratosCasalHtml;
-
-            // Lógica dos Extras
-            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
-            const extraCounterText = document.getElementById('cc-extras-counter');
-            extraCounterText.innerText = `${ccState.extrasCount}/${maxExtras} Escolhidos`;
-            if(ccState.extrasCount === maxExtras && maxExtras > 0) {
-                extraCounterText.classList.remove('theme-bg-red'); extraCounterText.classList.add('bg-green-600');
-            } else {
-                extraCounterText.classList.add('theme-bg-red'); extraCounterText.classList.remove('bg-green-600');
-            }
-
-            const extrasHtml = globalData.adicionais.map(adc => {
-                const count = ccState.extras[adc.display] || 0;
-                return buildCounterRow('cc', 'extras', adc.display, count, ccState.extrasCount >= maxExtras, 'Grátis', getThumb(adc), 0, adc.disponivel);
-            }).join('');
-            document.getElementById('modal-cc-extras').innerHTML = extrasHtml;
-
-            // Lógica de Bebidas Adaptativa (Inclusas vs Pagas)
-            const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
-            const drinksLabel = document.getElementById('cc-drinks-label');
-            const drinksCounterText = document.getElementById('cc-drinks-counter');
-
-            if (maxDrinks > 0) {
-                drinksLabel.innerText = "3. Bebidas Inclusas";
-                drinksCounterText.style.display = 'block';
-                drinksCounterText.innerText = `${ccState.drinksCount}/${maxDrinks} Escolhida(s)`;
-                if(ccState.drinksCount === maxDrinks) {
-                    drinksCounterText.classList.remove('theme-bg-red'); drinksCounterText.classList.add('bg-green-600');
-                } else {
-                    drinksCounterText.classList.add('theme-bg-red'); drinksCounterText.classList.remove('bg-green-600');
-                }
-            } else {
-                drinksLabel.innerText = "3. Turbinar Pedido (Opcional)";
-                drinksCounterText.style.display = 'none';
-            }
-
-            const drinksHtml = globalData.bebidas.map(bebida => {
-                if (maxDrinks > 0) {
-                    const count = ccState.drinks[bebida.nome] || 0;
-                    return buildCounterRow('cc', 'drinks', bebida.nome, count, ccState.drinksCount >= maxDrinks, 'Incluso', getThumb(bebida), bebida.preco, bebida.disponivel);
-                } else {
-                    const count = (ccState.drinks[bebida.nome] || {count: 0}).count;
-                    return buildCounterRow('cc', 'drinks', bebida.nome, count, false, `+ R$ ${formatPrice(bebida.preco)}`, getThumb(bebida), bebida.preco, bebida.disponivel);
-                }
-            }).join('');
-            document.getElementById('modal-cc-drinks').innerHTML = drinksHtml;
         }
 
         function updateComboCasalTotal() {
             let drinksCost = 0;
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
-            
-            // Só cobra a bebida do Combo Casal se o limite for 0 (Opcionais pagas).
-            if (maxDrinks === 0) {
-                for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price;
-            }
-            
-            let total = ccState.basePrice + drinksCost;
-            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(total)}`;
+            if (maxDrinks === 0) { for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price; }
+            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(ccState.basePrice + drinksCost)}`;
         }
 
         function confirmComboCasal() {
-            const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
-            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
-            const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
+            const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
 
-            if (ccState.pratosCount !== maxPratos) return showToast(`Você precisa escolher seus ${maxPratos} pratos!`, true);
-            if (ccState.extrasCount !== maxExtras) return showToast(`Você precisa escolher os seus ${maxExtras} adicionais!`, true);
-            if (maxDrinks > 0 && ccState.drinksCount !== maxDrinks) return showToast(`Você precisa escolher sua(s) ${maxDrinks} bebida(s)!`, true);
+            if (ccState.pratosCount !== maxP) return showToast(`Você precisa escolher seus ${maxP} pratos!`, true);
+            if (ccState.extrasCount !== maxE) return showToast(`Você precisa escolher os seus ${maxE} adicionais!`, true);
+            if (maxD > 0 && ccState.drinksCount !== maxD) return showToast(`Você precisa escolher sua(s) ${maxD} bebida(s)!`, true);
 
-            let pratosArr = [];
-            for (let key in ccState.pratos) { if (ccState.pratos[key] > 0) pratosArr.push(`${ccState.pratos[key]}x ${key}`); }
-
-            let extraArr = [];
-            for (let key in ccState.extras) { if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`); }
-
-            let drinksArr = [];
-            if (maxDrinks > 0) {
-                for (let key in ccState.drinks) { if (ccState.drinks[key] > 0) drinksArr.push(`${ccState.drinks[key]}x ${key}`); }
-            }
+            let pratosArr = []; for (let key in ccState.pratos) { if (ccState.pratos[key] > 0) pratosArr.push(`${ccState.pratos[key]}x ${key}`); }
+            let extraArr = []; for (let key in ccState.extras) { if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`); }
+            let drinksArr = []; if (maxD > 0) { for (let key in ccState.drinks) { if (ccState.drinks[key] > 0) drinksArr.push(`${ccState.drinks[key]}x ${key}`); } }
 
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
             if(extraArr.length > 0) detailsCombo += ` | Adicionais: ${extraArr.join(' + ')}`;
             if(drinksArr.length > 0) detailsCombo += ` | Bebidas: ${drinksArr.join(' + ')}`;
 
             addToCart(activeComboData.titulo || activeComboData.nome, ccState.basePrice, detailsCombo, 'main');
-
-            // Se as bebidas foram pagas à parte (maxDrinks = 0), lança individualmente no carrinho
-            if (maxDrinks === 0) {
-                for (let key in ccState.drinks) {
-                    let drink = ccState.drinks[key];
-                    if (drink.count > 0) {
-                        for(let i=0; i<drink.count; i++) addToCart(key, drink.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink');
-                    }
-                }
+            if (maxD === 0) {
+                for (let key in ccState.drinks) { let d = ccState.drinks[key]; if (d.count > 0) { for(let i=0; i<d.count; i++) addToCart(key, d.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink'); } }
             }
             closeComboCasalModal();
         }
 
-        // --- SISTEMA DE FORMULÁRIO DO CHECKOUT (VISUAL) ---
+        // --- LÓGICA DE FORMULÁRIO SEMÂNTICO DE RADIO BUTTONS ---
         function selectCutlery(value) {
-            document.getElementById('client-cutlery').value = value;
-            document.querySelectorAll('.cutlery-btn').forEach(btn => {
-                btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
-                btn.classList.add('theme-border', 'theme-text-primary');
-                btn.style.borderColor = ''; btn.style.backgroundColor = ''; btn.style.color = '';
-                
-                const icon = btn.querySelector('i');
-                if(icon) {
-                    icon.classList.remove('text-white');
-                    icon.classList.add('text-gray-400');
-                }
+            document.querySelectorAll('.cutlery-lbl').forEach(lbl => {
+                lbl.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
+                lbl.classList.add('theme-border', 'theme-text-primary');
+                lbl.style.borderColor = ''; lbl.style.backgroundColor = ''; lbl.style.color = '';
+                const icon = lbl.querySelector('i');
+                if(icon) { icon.classList.remove('text-white'); icon.classList.add('text-gray-400'); }
             });
-            const activeBtn = document.getElementById(`btn-cutlery-${value}`);
-            activeBtn.classList.remove('theme-border', 'theme-text-primary');
-            activeBtn.classList.add('theme-border-red');
-            activeBtn.style.borderColor = 'var(--brand-red)';
-            activeBtn.style.backgroundColor = 'var(--brand-red)';
-            activeBtn.style.color = 'white';
-            
-            const activeIcon = activeBtn.querySelector('i');
-            if(activeIcon) {
-                activeIcon.classList.remove('text-gray-400');
-                activeIcon.classList.add('text-white');
+            const activeLbl = document.getElementById(`lbl-cutlery-${value}`);
+            if(activeLbl) {
+                activeLbl.classList.remove('theme-border', 'theme-text-primary');
+                activeLbl.classList.add('theme-border-red');
+                activeLbl.style.borderColor = 'var(--brand-red)';
+                activeLbl.style.backgroundColor = 'var(--brand-red)';
+                activeLbl.style.color = 'white';
+                const activeIcon = activeLbl.querySelector('i');
+                if(activeIcon) { activeIcon.classList.remove('text-gray-400'); activeIcon.classList.add('text-white'); }
             }
         }
 
         function selectPayment(value) {
-            document.getElementById('payment-method').value = value;
-            document.querySelectorAll('.payment-btn').forEach(btn => {
-                btn.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
-                btn.classList.add('theme-border', 'theme-text-primary');
-                btn.style.borderColor = ''; btn.style.backgroundColor = ''; btn.style.color = '';
-                
-                const icon = btn.querySelector('i');
+            document.querySelectorAll('.payment-lbl').forEach(lbl => {
+                lbl.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
+                lbl.classList.add('theme-border', 'theme-text-primary');
+                lbl.style.borderColor = ''; lbl.style.backgroundColor = ''; lbl.style.color = '';
+                const icon = lbl.querySelector('i');
                 if(icon) {
                     icon.classList.remove('text-white');
-                    if (btn.id.includes('Pix')) icon.classList.add('text-teal-500');
-                    if (btn.id.includes('Cartão')) icon.classList.add('text-blue-500');
-                    if (btn.id.includes('Dinheiro')) icon.classList.add('text-green-500');
+                    if (lbl.id.includes('Pix')) icon.classList.add('text-teal-500');
+                    if (lbl.id.includes('Cartão')) icon.classList.add('text-blue-500');
+                    if (lbl.id.includes('Dinheiro')) icon.classList.add('text-green-500');
                 }
             });
             
-            const activeBtn = document.getElementById(`btn-payment-${value}`);
-            activeBtn.classList.remove('theme-border', 'theme-text-primary');
-            activeBtn.classList.add('theme-border-red');
-            activeBtn.style.borderColor = 'var(--brand-red)';
-            activeBtn.style.backgroundColor = 'var(--brand-red)';
-            activeBtn.style.color = 'white';
-            
-            const activeIcon = activeBtn.querySelector('i');
-            if(activeIcon) {
-                activeIcon.classList.remove('text-teal-500', 'text-blue-500', 'text-green-500');
-                activeIcon.classList.add('text-white');
+            const activeLbl = document.getElementById(`lbl-payment-${value}`);
+            if(activeLbl) {
+                activeLbl.classList.remove('theme-border', 'theme-text-primary');
+                activeLbl.classList.add('theme-border-red');
+                activeLbl.style.borderColor = 'var(--brand-red)';
+                activeLbl.style.backgroundColor = 'var(--brand-red)';
+                activeLbl.style.color = 'white';
+                const activeIcon = activeLbl.querySelector('i');
+                if(activeIcon) {
+                    activeIcon.classList.remove('text-teal-500', 'text-blue-500', 'text-green-500');
+                    activeIcon.classList.add('text-white');
+                }
             }
-            
             toggleChangeInput();
         }
 
         function toggleChangeInput() {
-            document.getElementById('change-input-group').classList.toggle('hidden', document.getElementById('payment-method').value !== 'Dinheiro');
+            const paymentInput = document.querySelector('input[name="payment-method"]:checked');
+            document.getElementById('change-input-group').classList.toggle('hidden', !(paymentInput && paymentInput.value === 'Dinheiro'));
         }
 
-        // --- SISTEMA DE INFORMAÇÕES EXTRAS (MODAL FOOTER) ---
+        // --- SISTEMA DE INFORMAÇÕES EXTRAS ---
         function openInfoModal(type) {
             const conf = (globalData && globalData.configuracoes) ? globalData.configuracoes : {};
-            
             const titleEl = document.getElementById('info-modal-title');
             const subtitleEl = document.getElementById('info-modal-subtitle');
             const listEl = document.getElementById('info-modal-list');
-            
             let html = '';
 
             if (type === 'pagamento') {
-                titleEl.innerText = 'Formas de pagamento';
-                subtitleEl.innerText = 'As seguintes formas de pagamento são aceitas:';
+                titleEl.innerText = 'Formas de pagamento'; subtitleEl.innerText = 'As seguintes formas de pagamento são aceitas:';
                 const itens = conf.pagamento_modal || [
-                    {"icone": "fab fa-pix text-teal-500", "texto": "PIX Online"},
-                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Crédito"},
-                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Débito"},
-                    {"icone": "fas fa-money-bill-wave text-green-500", "texto": "Dinheiro"}
+                    {"icone": "fab fa-pix text-teal-500", "texto": "PIX Online"}, {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Crédito"},
+                    {"icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Débito"}, {"icone": "fas fa-money-bill-wave text-green-500", "texto": "Dinheiro"}
                 ];
-                html = itens.map(item => `
-                    <div class="zebra-row px-5 py-3 flex items-center gap-3 border-b theme-border last:border-0">
-                        <i class="${item.icone} text-lg w-6 text-center drop-shadow-sm"></i>
-                        <span class="text-sm theme-text-primary font-medium">${item.texto}</span>
-                    </div>
-                `).join('');
+                html = itens.map(i => `<div class="zebra-row px-5 py-3 flex items-center gap-3 border-b theme-border last:border-0"><i class="${i.icone} text-lg w-6 text-center drop-shadow-sm"></i><span class="text-sm theme-text-primary font-medium">${i.texto}</span></div>`).join('');
             } else if (type === 'taxas') {
-                titleEl.innerText = 'Taxas e locais de entrega';
-                subtitleEl.innerText = 'Entregamos nos seguintes locais:';
-                const itens = conf.taxas_modal || [
-                    "Centro: Entrega Grátis",
-                    "Demais bairros: Consultar (R$ 4,00 a R$ 8,00)"
-                ];
-                html = itens.map(item => `
-                    <div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">
-                        ${item}
-                    </div>
-                `).join('');
+                titleEl.innerText = 'Taxas e locais de entrega'; subtitleEl.innerText = 'Entregamos nos seguintes locais:';
+                const itens = conf.taxas_modal || [ "Centro: Entrega Grátis", "Demais bairros: Consultar (R$ 4,00 a R$ 8,00)" ];
+                html = itens.map(i => `<div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">${i}</div>`).join('');
             } else if (type === 'horarios') {
-                titleEl.innerText = 'Horários de Funcionamento';
-                subtitleEl.innerText = 'Abrimos nos seguintes dias e horários:';
-                const itens = conf.horarios_modal || [
-                    "Segunda-feira: Fechado",
-                    "Ter a Dom: das 18:00hs às 23:00hs"
-                ];
-                html = itens.map(item => `
-                    <div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">
-                        ${item}
-                    </div>
-                `).join('');
+                titleEl.innerText = 'Horários de Funcionamento'; subtitleEl.innerText = 'Abrimos nos seguintes dias e horários:';
+                const itens = conf.horarios_modal || [ "Segunda-feira: Fechado", "Ter a Dom: das 18:00hs às 23:00hs" ];
+                html = itens.map(i => `<div class="zebra-row px-5 py-3 text-sm theme-text-primary font-medium border-b theme-border last:border-0">${i}</div>`).join('');
             }
-
             listEl.innerHTML = html;
-            document.getElementById('info-modal').classList.remove('hidden');
-            document.getElementById('info-modal').classList.add('flex');
+            document.getElementById('info-modal').classList.remove('hidden'); document.getElementById('info-modal').classList.add('flex');
         }
 
-        function closeInfoModal() {
-            document.getElementById('info-modal').classList.add('hidden');
-            document.getElementById('info-modal').classList.remove('flex');
-        }
+        function closeInfoModal() { document.getElementById('info-modal').classList.add('hidden'); document.getElementById('info-modal').classList.remove('flex'); }
 
-        // --- INIT GERAL ---
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarDadosDoBanco();
-            setInterval(carregarDadosDoBanco, 1000); 
-        });
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
-        }
+        document.addEventListener('DOMContentLoaded', () => { carregarDadosDoBanco(); setInterval(carregarDadosDoBanco, 1000); });
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js')); }
 
         function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('theme-icon');
+            const body = document.body; const icon = document.getElementById('theme-icon');
             body.classList.toggle('dark-mode'); 
             icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
         }
 
         function setActiveNav(element) {
-            document.querySelectorAll('.nav-link').forEach(el => {
-                el.classList.remove('active');
-                el.classList.add('inactive');
-            });
-            element.classList.add('active');
-            element.classList.remove('inactive');
+            document.querySelectorAll('.nav-link').forEach(el => { el.classList.remove('active'); el.classList.add('inactive'); });
+            element.classList.add('active'); element.classList.remove('inactive');
         }
 
         window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section'); const navLinks = document.querySelectorAll('.nav-link');
             let current = '';
             sections.forEach(s => { if (pageYOffset >= (s.offsetTop - 150)) current = s.getAttribute('id'); });
-            navLinks.forEach(link => {
-                link.classList.remove('active'); link.classList.add('inactive');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active'); link.classList.remove('inactive');
-                }
-            });
+            navLinks.forEach(l => { l.classList.remove('active'); l.classList.add('inactive'); if (l.getAttribute('href').includes(current)) { l.classList.add('active'); l.classList.remove('inactive'); } });
         });
 
         function startGlobalCarousels() {
             if (globalCarouselInterval) clearInterval(globalCarouselInterval);
             globalCarouselInterval = setInterval(() => {
-                document.querySelectorAll('.carousel-container').forEach(container => {
-                    const imgs = container.querySelectorAll('.carousel-img');
-                    if (imgs.length <= 1) return;
-                    let currentIndex = Array.from(imgs).findIndex(img => img.classList.contains('opacity-100'));
-                    if (currentIndex === -1) currentIndex = 0;
-                    imgs[currentIndex].classList.remove('opacity-100');
-                    imgs[currentIndex].classList.add('opacity-0');
-                    const nextIndex = (currentIndex + 1) % imgs.length;
-                    imgs[nextIndex].classList.remove('opacity-0');
-                    imgs[nextIndex].classList.add('opacity-100');
+                document.querySelectorAll('.carousel-container').forEach(c => {
+                    const imgs = c.querySelectorAll('.carousel-img'); if (imgs.length <= 1) return;
+                    let curr = Array.from(imgs).findIndex(img => img.classList.contains('opacity-100')); if (curr === -1) curr = 0;
+                    imgs[curr].classList.remove('opacity-100'); imgs[curr].classList.add('opacity-0');
+                    const next = (curr + 1) % imgs.length; imgs[next].classList.remove('opacity-0'); imgs[next].classList.add('opacity-100');
                 });
             }, 3000); 
         }
 
-        function formatPrice(value) {
-            return value % 1 === 0 ? value.toString() : value.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-        }
+        function formatPrice(value) { return value % 1 === 0 ? value.toString() : value.toLocaleString('pt-BR', { minimumFractionDigits: 2 }); }
 
         function addToCart(name, price, details = '', type = 'other') {
-            if (type === 'extra' && !cart.some(i => i.type === 'main')) {
-                return showToast('Ops! Adicione um prato antes do adicional 🥓', true);
-            }
-            cart.push({ name, price, details, type });
-            updateCartUI();
-            showToast(`${name} adicionado`);
-            if (navigator.vibrate) navigator.vibrate(30);
+            if (type === 'extra' && !cart.some(i => i.type === 'main')) return showToast('Ops! Adicione um prato antes do adicional 🥓', true);
+            cart.push({ name, price, details, type }); updateCartUI(); showToast(`${name} adicionado`); if (navigator.vibrate) navigator.vibrate(30);
         }
 
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
 
         function updateCartUI() {
-            const bar = document.getElementById('cart-bar');
-            const container = document.getElementById('cart-items-container');
-            if (cart.length > 0) bar.classList.remove('translate-y-full');
-            else { bar.classList.add('translate-y-full'); closeCartDrawer(); }
-
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            const formattedTotal = formatPrice(total);
-            document.getElementById('cart-total').innerHTML = `<span class="text-sm font-bold">R$</span> ${formattedTotal}`;
-            document.getElementById('cart-bar-total').innerHTML = `<span class="text-xs font-bold">R$</span> ${formattedTotal}`;
+            const bar = document.getElementById('cart-bar'); const container = document.getElementById('cart-items-container');
+            if (cart.length > 0) bar.classList.remove('translate-y-full'); else { bar.classList.add('translate-y-full'); closeCartDrawer(); }
+            const total = cart.reduce((acc, item) => acc + item.price, 0); const ft = formatPrice(total);
+            document.getElementById('cart-total').innerHTML = `<span class="text-sm font-bold">R$</span> ${ft}`;
+            document.getElementById('cart-bar-total').innerHTML = `<span class="text-xs font-bold">R$</span> ${ft}`;
             document.getElementById('cart-bar-count').textContent = `${cart.length} item${cart.length !== 1 ? 's' : ''}`;
 
             container.innerHTML = cart.length === 0 ? `<div class="text-center theme-text-secondary py-10 opacity-50">Sacola vazia</div>` : 
                 cart.map((item, index) => `
                     <div class="flex justify-between items-start py-2 border-b theme-border border-opacity-10 last:border-0">
-                        <div>
-                            <div class="theme-text-primary font-medium text-sm">${item.name}</div>
-                            ${item.details ? `<div class="text-[10px] theme-text-secondary mt-1 leading-tight">${item.details}</div>` : ''}
-                            <div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1">
-                                <span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}
-                            </div>
-                        </div>
-                        <button onclick="removeFromCart(${index})" class="theme-text-secondary hover:text-red-500 p-2"><i class="fas fa-trash-alt"></i></button>
+                        <div><div class="theme-text-primary font-medium text-sm">${item.name}</div>${item.details ? `<div class="text-[10px] theme-text-secondary mt-1 leading-tight">${item.details}</div>` : ''}<div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1"><span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}</div></div>
+                        <button onclick="removeFromCart(${index})" aria-label="Remover item da sacola" class="theme-text-secondary hover:text-red-500 p-2"><i class="fas fa-trash-alt"></i></button>
                     </div>`).join('');
         }
 
-        function openCartDrawer() {
-            document.getElementById('cart-drawer').classList.remove('translate-x-full');
-            document.getElementById('overlay').classList.remove('hidden');
-        }
-        function closeCartDrawer() {
-            document.getElementById('cart-drawer').classList.add('translate-x-full');
-            document.getElementById('overlay').classList.add('hidden');
-        }
+        function openCartDrawer() { document.getElementById('cart-drawer').classList.remove('translate-x-full'); document.getElementById('overlay').classList.remove('hidden'); }
+        function closeCartDrawer() { document.getElementById('cart-drawer').classList.add('translate-x-full'); document.getElementById('overlay').classList.add('hidden'); }
 
         function openCheckoutModal() {
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
-            closeCartDrawer();
-            const modal = document.getElementById('checkout-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            closeCartDrawer(); const modal = document.getElementById('checkout-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
         }
-        
-        function closeCheckoutModal() {
-            const modal = document.getElementById('checkout-modal');
-            modal.classList.add('hidden'); modal.classList.remove('flex');
-        }
+        function closeCheckoutModal() { const modal = document.getElementById('checkout-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
 
         function formatPhoneNumber(phone) {
-            const cleaned = ('' + phone).replace(/\D/g, '');
-            const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/) || cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+            const cleaned = ('' + phone).replace(/\D/g, ''); const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/) || cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
             return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
         }
 
         function finalizeOrder() {
+            const form = document.getElementById('checkout-form');
+            // Validação Nativa Semântica 
+            if (!form.reportValidity()) return; 
+
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
-            const name = document.getElementById('client-name').value, 
-                  phone = document.getElementById('client-phone').value, 
-                  address = document.getElementById('client-address').value, 
-                  obs = document.getElementById('client-obs').value, 
-                  cutlery = document.getElementById('client-cutlery').value,
-                  payment = document.getElementById('payment-method').value, 
+            const name = document.getElementById('client-name').value, phone = document.getElementById('client-phone').value, 
+                  address = document.getElementById('client-address').value, obs = document.getElementById('client-obs').value, 
+                  cutlery = document.querySelector('input[name="client-cutlery"]:checked')?.value,
+                  payment = document.querySelector('input[name="payment-method"]:checked')?.value, 
                   change = document.getElementById('change-for').value;
-                  
-            if(!name || !phone || !address || !cutlery || !payment) return showToast('Por favor, preencha os campos obrigatórios (*) para finalizar seu pedido! 😊', true);
 
             let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n*RESUMO DO PEDIDO:*\n`;
             cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
             
             if(obs) text += `📝 *OBSERVAÇÕES:*\n${obs}\n\n`;
             text += `🍴 *TALHERES:* ${cutlery}\n\n`;
-            
             text += `💰 *TOTAL: R$ ${cart.reduce((acc, i) => acc + i.price, 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n💳 *PAGAMENTO:* ${payment}${change ? ` (Troco p/ ${change})` : ''}`;
 
             window.open(`https://api.whatsapp.com/send?phone=5537984243487&text=${encodeURIComponent(text)}`, '_blank');
@@ -1535,12 +1225,10 @@
         function closeSuccessModal() { document.getElementById('success-modal').classList.add('hidden'); document.getElementById('success-modal').classList.remove('flex'); }
 
         function showToast(msg, isError = false) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
+            const toast = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
             toast.querySelector('div').className = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 ${isError ? 'bg-red-600' : 'theme-bg-red'}`;
             toast.querySelector('i').className = `text-white fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}`;
-            toast.classList.remove('translate-y-[-200%]');
-            setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
+            toast.classList.remove('translate-y-[-200%]'); setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
         }
     </script>
 </body>

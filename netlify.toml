@@ -1,0 +1,20 @@
+# Este arquivo aplica os Headers de Segurança baseados em boas práticas (ex: Content-Security-Policy e Proteção contra Frame/XSS).
+# Basta enviar este arquivo na raiz do seu repositório/pasta do Netlify.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Força a conexão HTTPS para navegadores
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    
+    # Previne que seu site seja encapsulado em um iframe de domínio desconhecido (Clickjacking)
+    X-Frame-Options = "DENY"
+    
+    # Impede que o navegador tente descobrir o MIME type (mime sniffing), forçando a execução da extensão declarada
+    X-Content-Type-Options = "nosniff"
+    
+    # Proteção embutida contra ataques XSS (embora navegadores modernos usem CSP, esse header é legado seguro)
+    X-XSS-Protection = "1; mode=block"
+    
+    # Controla as informações passadas junto com os links quando um usuário clica e sai do seu site
+    Referrer-Policy = "strict-origin-when-cross-origin"
