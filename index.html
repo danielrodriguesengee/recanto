@@ -320,7 +320,7 @@
         <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
             <p class="font-medium tracking-wide text-sm theme-text-primary">RECANTO DO STROGONOFF</p>
             <p>CNPJ: 65.655.282/0001-00</p>
-            <p>📍 São Judas - Arcos/MG</p>
+            <p>📍 R. Juca Dias, 196, São Judas - Arcos, MG</p>
             <div class="flex items-center justify-center gap-4 mt-1 text-sm">
                 <a href="mailto:recantodostrogonoff@gmail.com" class="hover:theme-text-primary transition" aria-label="Enviar E-mail"><i class="far fa-envelope"></i> recantodostrogonoff@gmail.com</a>
                 <span class="w-1 h-1 rounded-full bg-gray-400"></span>
@@ -572,7 +572,7 @@
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         let activeComboData = null; 
-        let scState = { pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
+        let scState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
         let ccState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
         let cart = [];
 
@@ -733,7 +733,7 @@
                         <div class="w-10 h-10 relative flex-shrink-0 carousel-container">${imagensBebidaHTML}</div>
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             ${bebida.nome}
-                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Tem mas acabou 😅</span>' : ''}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou 😅</span>' : ''}
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
@@ -799,10 +799,10 @@
             
             let clickFnMinus = ''; let clickFnPlus = '';
             if (comboType === 'sc') {
-                clickFnMinus = `updateScItem('${category}', '${nome}', -1)`; clickFnPlus = `updateScItem('${category}', '${nome}', 1)`;
+                clickFnMinus = `updateScItem('${category}', '${nome}', -1, ${precoItem})`; clickFnPlus = `updateScItem('${category}', '${nome}', 1, ${precoItem})`;
             } else if (comboType === 'cc') {
                 if (category === 'pratos') { clickFnMinus = `updateCcPrato('${nome}', -1)`; clickFnPlus = `updateCcPrato('${nome}', 1)`; } 
-                else if (category === 'extras') { clickFnMinus = `updateCcExtra('${nome}', -1)`; clickFnPlus = `updateCcExtra('${nome}', 1)`; } 
+                else if (category === 'extras') { clickFnMinus = `updateCcExtra('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcExtra('${nome}', ${precoItem}, 1)`; } 
                 else if (category === 'drinks') { clickFnMinus = `updateCcDrink('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcDrink('${nome}', ${precoItem}, 1)`; }
             }
 
@@ -836,9 +836,13 @@
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
-            document.getElementById('sc-modal-subtitle').innerText = `${maxP} Prato(s) + ${maxE} Adicional(is) + ${maxD} Bebida(s)`;
+            
+            let subtitleText = `${maxP} Prato(s)`;
+            if(maxE > 0) subtitleText += ` + ${maxE} Adicional(is)`;
+            if(maxD > 0) subtitleText += ` + ${maxD} Bebida(s)`;
+            document.getElementById('sc-modal-subtitle').innerText = subtitleText;
 
-            scState = { pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
+            scState = { basePrice: activeComboData.preco_por, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
 
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length === 1) {
                 const singleDishName = activeComboData.regras.filtro_pratos[0];
@@ -846,7 +850,7 @@
                 if (dishData && dishData.disponivel) { scState.pratos[singleDishName] = maxP; scState.pratosCount = maxP; }
             }
 
-            renderSuperComboLists();
+            renderSuperComboLists(); updateScTotal();
             const modal = document.getElementById('combo-modal');
             modal.classList.remove('hidden'); modal.classList.add('flex');
         }
@@ -855,17 +859,37 @@
             document.getElementById('combo-modal').classList.add('hidden'); document.getElementById('combo-modal').classList.remove('flex');
         }
 
-        function updateScItem(category, nome, delta) {
+        function updateScItem(category, nome, delta, precoItem = 0) {
             const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
-            const config = { 'pratos': { stateObj: scState.pratos, countProp: 'pratosCount', max: maxPratos }, 'extras': { stateObj: scState.extras, countProp: 'extrasCount', max: maxExtras }, 'drinks': { stateObj: scState.drinks, countProp: 'drinksCount', max: maxDrinks } }[category];
+            const max = category === 'pratos' ? maxPratos : (category === 'extras' ? maxExtras : maxDrinks);
+            const countProp = category + 'Count';
 
-            let current = config.stateObj[nome] || 0;
-            if (delta > 0 && scState[config.countProp] >= config.max) return showToast(`Você só pode escolher ${config.max} item(ns) nesta categoria!`, true);
-            if (delta < 0 && current <= 0) return;
-            config.stateObj[nome] = current + delta; scState[config.countProp] += delta;
+            if (max > 0) {
+                let current = scState[category][nome] || 0;
+                if (delta > 0 && scState[countProp] >= max) return showToast(`Você só pode escolher ${max} item(ns) nesta categoria!`, true);
+                if (delta < 0 && current <= 0) return;
+                scState[category][nome] = current + delta; scState[countProp] += delta;
+            } else {
+                let current = scState[category][nome] || { count: 0, price: precoItem };
+                if (delta < 0 && current.count <= 0) return;
+                current.count += delta;
+                if (current.count === 0) delete scState[category][nome]; else scState[category][nome] = current;
+                updateScTotal();
+            }
             renderSuperComboLists();
+        }
+
+        function updateScTotal() {
+            let extraCost = 0; let drinksCost = 0;
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
+            
+            if (maxE === 0) { for (let key in scState.extras) extraCost += scState.extras[key].count * scState.extras[key].price; }
+            if (maxD === 0) { for (let key in scState.drinks) drinksCost += scState.drinks[key].count * scState.drinks[key].price; }
+            
+            document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(scState.basePrice + extraCost + drinksCost)}`;
         }
 
         function renderSuperComboLists() {
@@ -873,27 +897,39 @@
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
 
-            const cats = [
-                { id: 'sc-pratos-counter', count: scState.pratosCount, max: maxP },
-                { id: 'sc-extras-counter', count: scState.extrasCount, max: maxE },
-                { id: 'sc-drinks-counter', count: scState.drinksCount, max: maxD }
-            ];
-
-            cats.forEach(c => {
-                const el = document.getElementById(c.id);
-                if(el) {
-                    el.innerText = `${c.count}/${c.max} Escolhido${c.max > 1 ? 's' : ''}`;
-                    if(c.count === c.max && c.max > 0) { el.classList.remove('theme-bg-red'); el.classList.add('bg-green-600'); } 
-                    else { el.classList.add('theme-bg-red'); el.classList.remove('bg-green-600'); }
-                }
-            });
+            const cP = document.getElementById('sc-pratos-counter'); 
+            cP.innerText = `${scState.pratosCount}/${maxP} Escolhido${maxP > 1 ? 's' : ''}`;
+            cP.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${scState.pratosCount === maxP && maxP > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
 
             let pratosPermitidos = globalData.pratos;
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
-
             document.getElementById('modal-combo-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('sc', 'pratos', p.nome, scState.pratos[p.nome]||0, scState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
-            document.getElementById('modal-combo-extras').innerHTML = globalData.adicionais.map(a => buildCounterRow('sc', 'extras', a.display, scState.extras[a.display]||0, scState.extrasCount>=maxE, 'Incluso', getThumb(a), 0, a.disponivel)).join('');
-            document.getElementById('modal-combo-bebidas').innerHTML = globalData.bebidas.map(b => buildCounterRow('sc', 'drinks', b.nome, scState.drinks[b.nome]||0, scState.drinksCount>=maxD, 'Incluso', getThumb(b), 0, b.disponivel)).join('');
+
+            const labelE = document.querySelector('#sc-extras-counter').previousElementSibling;
+            const cE = document.getElementById('sc-extras-counter'); 
+            if (maxE > 0) {
+                labelE.innerText = "2. Escolha o Adicional"; cE.style.display = 'block'; cE.innerText = `${scState.extrasCount}/${maxE} Escolhido${maxE > 1 ? 's' : ''}`;
+                cE.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${scState.extrasCount === maxE ? 'bg-green-600' : 'theme-bg-red'}`;
+            } else {
+                labelE.innerText = "2. Turbinar Pedido (Opcional)"; cE.style.display = 'none';
+            }
+            document.getElementById('modal-combo-extras').innerHTML = globalData.adicionais.map(a => {
+                if (maxE > 0) return buildCounterRow('sc', 'extras', a.display, scState.extras[a.display]||0, scState.extrasCount>=maxE, 'Incluso', getThumb(a), a.preco, a.disponivel);
+                else return buildCounterRow('sc', 'extras', a.display, (scState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
+            }).join('');
+
+            const labelD = document.getElementById('sc-drinks-label'); 
+            const cD = document.getElementById('sc-drinks-counter');
+            if (maxD > 0) {
+                labelD.innerText = "3. Bebida Inclusa"; cD.style.display = 'block'; cD.innerText = `${scState.drinksCount}/${maxD} Escolhida(s)`;
+                cD.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${scState.drinksCount === maxD ? 'bg-green-600' : 'theme-bg-red'}`;
+            } else {
+                labelD.innerText = "3. Sugestão de Bebidas (Opcional)"; cD.style.display = 'none';
+            }
+            document.getElementById('modal-combo-bebidas').innerHTML = globalData.bebidas.map(b => {
+                if (maxD > 0) return buildCounterRow('sc', 'drinks', b.nome, scState.drinks[b.nome]||0, scState.drinksCount>=maxD, 'Incluso', getThumb(b), b.preco, b.disponivel);
+                else return buildCounterRow('sc', 'drinks', b.nome, (scState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
+            }).join('');
         }
 
         function confirmCombo() {
@@ -901,17 +937,26 @@
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
 
-            if (scState.pratosCount !== maxP || scState.extrasCount !== maxE || scState.drinksCount !== maxD) return showToast('Por favor, selecione as quantidades exatas do combo!', true);
+            if (scState.pratosCount !== maxP) return showToast('Por favor, selecione seu prato!', true);
+            if (maxE > 0 && scState.extrasCount !== maxE) return showToast('Por favor, selecione seu adicional incluso!', true);
+            if (maxD > 0 && scState.drinksCount !== maxD) return showToast('Por favor, selecione sua bebida inclusa!', true);
 
             let pratosArr = []; for (let key in scState.pratos) { if(scState.pratos[key] > 0) pratosArr.push(`${scState.pratos[key]}x ${key}`); }
-            let extraArr = []; for (let key in scState.extras) { if(scState.extras[key] > 0) extraArr.push(`${scState.extras[key]}x ${key}`); }
-            let drinksArr = []; for (let key in scState.drinks) { if(scState.drinks[key] > 0) drinksArr.push(`${scState.drinks[key]}x ${key}`); }
+            let extraArr = []; if (maxE > 0) { for (let key in scState.extras) { if(scState.extras[key] > 0) extraArr.push(`${scState.extras[key]}x ${key}`); } }
+            let drinksArr = []; if (maxD > 0) { for (let key in scState.drinks) { if(scState.drinks[key] > 0) drinksArr.push(`${scState.drinks[key]}x ${key}`); } }
 
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
             if(extraArr.length > 0) detailsCombo += ` | Adicionais: ${extraArr.join(' + ')}`;
             if(drinksArr.length > 0) detailsCombo += ` | Bebidas: ${drinksArr.join(' + ')}`;
 
-            addToCart(activeComboData.titulo || activeComboData.nome, activeComboData.preco_por, detailsCombo, 'main');
+            addToCart(activeComboData.titulo || activeComboData.nome, scState.basePrice, detailsCombo, 'main');
+            
+            if (maxE === 0) {
+                for (let key in scState.extras) { let e = scState.extras[key]; if (e.count > 0) { for(let i=0; i<e.count; i++) addToCart(key, e.price, `Add via ${activeComboData.nome || 'Combo'}`, 'extra'); } }
+            }
+            if (maxD === 0) {
+                for (let key in scState.drinks) { let d = scState.drinks[key]; if (d.count > 0) { for(let i=0; i<d.count; i++) addToCart(key, d.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink'); } }
+            }
             closeComboModal();
         }
 
@@ -955,12 +1000,20 @@
             renderComboCasalLists();
         }
 
-        function updateCcExtra(nome, delta) {
+        function updateCcExtra(nome, preco, delta) {
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
-            let current = ccState.extras[nome] || 0;
-            if (delta > 0 && ccState.extrasCount >= maxExtras) return showToast(`Você já escolheu seus ${maxExtras} adicionais grátis!`, true);
-            if (delta < 0 && current <= 0) return;
-            ccState.extras[nome] = current + delta; ccState.extrasCount += delta;
+            if (maxExtras > 0) {
+                let current = ccState.extras[nome] || 0;
+                if (delta > 0 && ccState.extrasCount >= maxExtras) return showToast(`Você já escolheu seus ${maxExtras} adicionais grátis!`, true);
+                if (delta < 0 && current <= 0) return;
+                ccState.extras[nome] = current + delta; ccState.extrasCount += delta;
+            } else {
+                let current = ccState.extras[nome] || { count: 0, price: preco };
+                if (delta < 0 && current.count <= 0) return;
+                current.count += delta;
+                if (current.count === 0) delete ccState.extras[nome]; else ccState.extras[nome] = current;
+                updateComboCasalTotal();
+            }
             renderComboCasalLists();
         }
 
@@ -991,9 +1044,19 @@
             document.getElementById('modal-cc-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('cc', 'pratos', p.nome, ccState.pratos[p.nome]||0, ccState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
 
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
-            const cE = document.getElementById('cc-extras-counter'); cE.innerText = `${ccState.extrasCount}/${maxE} Escolhidos`;
-            cE.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.extrasCount === maxE && maxE > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
-            document.getElementById('modal-cc-extras').innerHTML = globalData.adicionais.map(a => buildCounterRow('cc', 'extras', a.display, ccState.extras[a.display]||0, ccState.extrasCount>=maxE, 'Grátis', getThumb(a), 0, a.disponivel)).join('');
+            const labelE = document.querySelector('#cc-extras-counter').previousElementSibling;
+            const cE = document.getElementById('cc-extras-counter'); 
+            if (maxE > 0) {
+                labelE.innerText = "2. Adicionais Inclusos"; cE.style.display = 'block'; cE.innerText = `${ccState.extrasCount}/${maxE} Escolhidos`;
+                cE.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.extrasCount === maxE && maxE > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
+            } else {
+                labelE.innerText = "2. Turbinar Pedido (Opcional)"; cE.style.display = 'none';
+            }
+            
+            document.getElementById('modal-cc-extras').innerHTML = globalData.adicionais.map(a => {
+                if (maxE > 0) return buildCounterRow('cc', 'extras', a.display, ccState.extras[a.display]||0, ccState.extrasCount>=maxE, 'Grátis', getThumb(a), a.preco, a.disponivel);
+                else return buildCounterRow('cc', 'extras', a.display, (ccState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
+            }).join('');
 
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             const labelD = document.getElementById('cc-drinks-label'); const cD = document.getElementById('cc-drinks-counter');
@@ -1009,10 +1072,14 @@
         }
 
         function updateComboCasalTotal() {
-            let drinksCost = 0;
+            let extrasCost = 0; let drinksCost = 0;
+            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
+            
+            if (maxExtras === 0) { for (let key in ccState.extras) extrasCost += ccState.extras[key].count * ccState.extras[key].price; }
             if (maxDrinks === 0) { for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price; }
-            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(ccState.basePrice + drinksCost)}`;
+            
+            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(ccState.basePrice + extrasCost + drinksCost)}`;
         }
 
         function confirmComboCasal() {
@@ -1021,11 +1088,11 @@
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
 
             if (ccState.pratosCount !== maxP) return showToast(`Você precisa escolher seus ${maxP} pratos!`, true);
-            if (ccState.extrasCount !== maxE) return showToast(`Você precisa escolher os seus ${maxE} adicionais!`, true);
+            if (maxE > 0 && ccState.extrasCount !== maxE) return showToast(`Você precisa escolher os seus ${maxE} adicionais!`, true);
             if (maxD > 0 && ccState.drinksCount !== maxD) return showToast(`Você precisa escolher sua(s) ${maxD} bebida(s)!`, true);
 
             let pratosArr = []; for (let key in ccState.pratos) { if (ccState.pratos[key] > 0) pratosArr.push(`${ccState.pratos[key]}x ${key}`); }
-            let extraArr = []; for (let key in ccState.extras) { if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`); }
+            let extraArr = []; if (maxE > 0) { for (let key in ccState.extras) { if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`); } }
             let drinksArr = []; if (maxD > 0) { for (let key in ccState.drinks) { if (ccState.drinks[key] > 0) drinksArr.push(`${ccState.drinks[key]}x ${key}`); } }
 
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
@@ -1033,6 +1100,10 @@
             if(drinksArr.length > 0) detailsCombo += ` | Bebidas: ${drinksArr.join(' + ')}`;
 
             addToCart(activeComboData.titulo || activeComboData.nome, ccState.basePrice, detailsCombo, 'main');
+            
+            if (maxE === 0) {
+                for (let key in ccState.extras) { let e = ccState.extras[key]; if (e.count > 0) { for(let i=0; i<e.count; i++) addToCart(key, e.price, `Add via ${activeComboData.nome || 'Combo'}`, 'extra'); } }
+            }
             if (maxD === 0) {
                 for (let key in ccState.drinks) { let d = ccState.drinks[key]; if (d.count > 0) { for(let i=0; i<d.count; i++) addToCart(key, d.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink'); } }
             }
