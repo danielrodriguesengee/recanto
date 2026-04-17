@@ -1,14 +1,14 @@
 {
   "configuracoes": {
-    "loja_aberta": 0,
+    "loja_aberta": 1,
     "mensagem_aberto": "Aberto agora",
     "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴",
     "tempo_entrega": "Entrega 45-60 min",
     "localizacao": "Arcos, MG",
     "titulos": {
-      "pratos": "NOSSO CARDÁPIO",
-      "adicionais": "TURBINE SEU PEDIDO",
-      "bebidas": "REFRIS E SUCOS"
+      "pratos": "PRATOS",
+      "adicionais": "TURBINE SEU STROGONOFF",
+      "bebidas": "BEBIDAS"
     },
     "pagamento_modal": [
       { "icone": "fab fa-pix text-teal-500", "texto": "PIX Online" },
@@ -21,14 +21,11 @@
       "Retirada: Em 30min"
     ],
     "horarios_modal": [
-      "Seg, das 10:20 às 14:00 e 18:00 às 23:30",
-      "Ter, das 10:20 às 14:00 e 18:00 às 23:30",
-      "Qua, das 10:20 às 14:00",
-      "Qui, das 10:20 às 14:00 e 18:00 às 23:30",
-      "Sex, das 10:20 às 14:00 e 18:00 às 23:30",
-      "Sab, das 10:20 às 14:00 e 18:00 às 23:30",
-      "Dom, das 10:20 às 14:00 e 18:00 às 23:30"
-    ]
+  "Seg, Ter, Qui, Sex, Sáb e Dom",
+  "10:20 – 14:00\n18:00 – 23:30",
+  "Qua",
+  "10:20 – 14:00"
+]
   },
 
   "combos": [
@@ -55,14 +52,14 @@
       "badge": "Ideal para casal ❤️",
       "titulo": "Combo Casal: 2 Strogonoffs + 2 Adicionais Grátis",
       "descricao": "O combo perfeito! Leve 2 Strogonoffs Tradicionais de Frango (com todos os acompanhamentos) e escolha 2 adicionais de brinde por nossa conta 😉.",
-      "preco_de": 90.0,
+      "preco_de": 80.0,
       "preco_por": 60.0,
       "imagens": ["image/cc1.webp", "image/cc2.webp"],
       "disponivel": 1,
       "regras": {
         "qtd_pratos": 2,
         "qtd_adicionais": 2,
-        "qtd_bebidas": 1,
+        "qtd_bebidas": 0,
         "filtro_pratos": ["Strogonoff De Frango Cremoso + Acompanhamentos"]
       }
     },
@@ -71,15 +68,15 @@
       "ordem": 3,
       "badge": "Especial Lasanha 💥",
       "titulo": "Combo Duplo: 2 Lasanhas de Strogonoff + 2 Adicionais Grátis",
-      "descricao": "Exclusivo para os fãs de lasanhas! Leve 2 Lasanhas de Strogonoff e escolha 2 adicionais de por nossa conta 😉.",
-      "preco_de": 100.0,
+      "descricao": "Exclusivo para os fãs de lasanhas! Leve 2 Lasanhas de Strogonoff e escolha 2 adicionais no 0800 💁‍♂️.",
+      "preco_de": 90.0,
       "preco_por": 70.0,
-      "imagens": ["image/cc3.webp", "image/cc4.webp"],
+      "imagens": ["image/cl1.webp", "image/cl2.webp", "image/cl3.webp"],
       "disponivel": 1,
       "regras": {
         "qtd_pratos": 2,
         "qtd_adicionais": 2,
-        "qtd_bebidas": 1,
+        "qtd_bebidas": 0,
         "filtro_pratos": ["Lasanha De Strogonoff + Acompanhamentos"]
       }
     }
@@ -135,14 +132,14 @@
       "imagem": "image/calabresa.webp",
       "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
       "icone": "🍖",
-      "disponivel": 0,
+      "disponivel": 1,
       "tipo": "extra"
     }
   ],
 
   "bebidas": [
     { "nome": "Coca-Cola Lata", "preco": 6.0, "imagem": "image/coca.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Coca-Cola Zero Lata", "preco": 6.0, "imagem": "image/cocazero.webp", "disponivel": 1, "tipo": "drink" },
+    { "nome": "Coca-Cola Zero Lata", "preco": 6.0, "imagem": "image/cocazero.webp", "disponivel": 0, "tipo": "drink" },
     { "nome": "Guaraná Lata", "preco": 6.0, "imagem": "image/guarana.webp", "disponivel": 1, "tipo": "drink" },
     { "nome": "Água com Gás", "preco": 4.0, "imagem": "image/aguagas.webp", "disponivel": 1, "tipo": "drink" },
     { "nome": "Água sem Gás", "preco": 4.0, "imagem": "image/agua.webp", "disponivel": 1, "tipo": "drink" }
