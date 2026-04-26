@@ -2,7 +2,6 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <!-- Removido o user-scalable=no para permitir o zoom e melhorar acessibilidade -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recanto do Strogonoff | Pedido Online</title>
     
@@ -33,18 +32,7 @@
     }
     </script>
 
-    <!-- Google Analytics (Exemplo de Placeholder sugerido pela auditoria) -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEU_ID_AQUI"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-SEU_ID_AQUI');
-    </script> -->
-
-    <!-- ======================================================= -->
     <!-- OPEN GRAPH / PREVIEW -->
-    <!-- ======================================================= -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://recantodostrogonoff.netlify.app/">
     <meta property="og:title" content="Recanto do Strogonoff | Pedido Online">
@@ -99,7 +87,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
     <style>
-        /* VARIÁVEIS DE TEMA - Contraste melhorado segundo WCAG 2.1 */
+        /* VARIÁVEIS DE TEMA */
         :root {
             --bg-body: #fdfbf7;
             --bg-card: #ffffff;
@@ -107,7 +95,7 @@
             --bg-header-section: #f9fafb;
             --border-color: #e5e0d8;
             --text-primary: #1a1a1a;
-            --text-secondary: #4a4a4a; /* Escurecido de #666 para melhor contraste */
+            --text-secondary: #4a4a4a;
             --brand-red: #63121a;
             --brand-cream: #f2ead5;
             --input-bg: #f4f4f5;
@@ -127,7 +115,7 @@
             --bg-header-section: #222222;
             --border-color: #2a2a2a;
             --text-primary: #f2ead5;
-            --text-secondary: rgba(255, 255, 255, 0.75); /* Clareado no modo escuro para contraste */
+            --text-secondary: rgba(255, 255, 255, 0.75); 
             --brand-red: #63121a;
             --input-bg: #1c1c1c;
             --input-border: #333;
@@ -233,7 +221,7 @@
     </style>
 </head>
 <body> 
-    <!-- Inserção de H1 Oculto estruturalmente para acessibilidade e SEO Semântico -->
+    <!-- H1 Oculto estruturalmente para acessibilidade e SEO Semântico -->
     <h1 class="sr-only">Recanto do Strogonoff - Pedido Online em Arcos, MG</h1>
 
     <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors" aria-label="Alternar tema claro e escuro">
@@ -1281,17 +1269,42 @@
                   payment = document.querySelector('input[name="payment-method"]:checked')?.value, 
                   change = document.getElementById('change-for').value;
 
-            // --- LÓGICA DE PREVISÃO DE ENTREGA (45 a 60 minutos a partir de AGORA) ---
-            const agora = new Date();
-            const minTime = new Date(agora.getTime() + 45 * 60000);
-            const maxTime = new Date(agora.getTime() + 60 * 60000);
+            // --- LÓGICA DE PREVISÃO DE ENTREGA INTELIGENTE VIA REGEX ---
+            // Captura o tempo de entrega do JSON, usando fallback caso não encontre
+            let tempoString = globalData?.configuracoes?.tempo_entrega || "45-60";
             
+            // Extrai absolutamente todos os números da string em uma array, ignorando letras (ex: "70 a 75 min" vira ["70", "75"])
+            let numerosExtraidos = tempoString.match(/\d+/g);
+            
+            let minMinutos = 45;
+            let maxMinutos = 60;
+
+            if (numerosExtraidos && numerosExtraidos.length > 0) {
+                // Converte pra inteiros e ordena do menor pro maior (para evitar erros se o cliente digitar "60-45")
+                let parsedNums = numerosExtraidos.map(n => parseInt(n, 10)).sort((a,b) => a - b);
+                
+                minMinutos = parsedNums[0];
+                // Se ele encontrar 2 ou mais números, o limite final é o maior deles. Se achar só 1, o limite final é igual ao inicial.
+                maxMinutos = parsedNums.length > 1 ? parsedNums[parsedNums.length - 1] : parsedNums[0];
+            }
+
+            const agora = new Date();
+            const minTime = new Date(agora.getTime() + minMinutos * 60000);
             const formatTime = (date) => date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const previsao = `${formatTime(minTime)} e ${formatTime(maxTime)}`;
+
+            let previsaoStr = "";
+            if (minMinutos === maxMinutos) {
+                // Se só tiver um número exato (Ex: "60min")
+                previsaoStr = `Por volta de ${formatTime(minTime)}`;
+            } else {
+                // Se tiver um intervalo (Ex: "45-60 min")
+                const maxTime = new Date(agora.getTime() + maxMinutos * 60000);
+                previsaoStr = `Entre ${formatTime(minTime)} e ${formatTime(maxTime)}`;
+            }
 
             let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n`;
             
-            text += `*PREVISÃO DE ENTREGA:*\n⏱️ Entre ${previsao}\n\n`;
+            text += `*PREVISÃO DE ENTREGA:*\n⏱️ ${previsaoStr}\n\n`;
             
             text += `*RESUMO DO PEDIDO:*\n`;
             cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
