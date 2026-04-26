@@ -320,7 +320,7 @@
         <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
             <p class="font-medium tracking-wide text-sm theme-text-primary">RECANTO DO STROGONOFF</p>
             <p>CNPJ: 65.655.282/0001-00</p>
-            <p>📍 R. Juca Dias, 196, São Judas - Arcos, MG</p>
+            <p>📍 São Judas - Arcos/MG</p>
             <div class="flex items-center justify-center gap-4 mt-1 text-sm">
                 <a href="mailto:recantodostrogonoff@gmail.com" class="hover:theme-text-primary transition" aria-label="Enviar E-mail"><i class="far fa-envelope"></i> recantodostrogonoff@gmail.com</a>
                 <span class="w-1 h-1 rounded-full bg-gray-400"></span>
@@ -624,7 +624,6 @@
                 const icon = isMultiplo ? 'fa-heart' : 'fa-plus';
                 const onClickFunction = isMultiplo ? `openComboCasalModal('${comboItem.id}')` : `openComboModal('${comboItem.id}')`;
 
-                // ATENÇÃO: Adição de Alt Text nas Imagens do Javascript (Acessibilidade)
                 const imagensHTML = comboItem.imagens && comboItem.imagens.length > 0 
                     ? comboItem.imagens.map((img, i) => 
                         `<img src="${img}" alt="Foto de destaque do ${comboItem.titulo || comboItem.nome}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
@@ -733,7 +732,7 @@
                         <div class="w-10 h-10 relative flex-shrink-0 carousel-container">${imagensBebidaHTML}</div>
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             ${bebida.nome}
-                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Acabou 😅</span>' : ''}
+                            ${!bebida.disponivel ? '<span class="bg-red-600/10 text-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Tem mas acabou 😅</span>' : ''}
                         </span>
                     </div>
                     <div class="flex items-center gap-3">
@@ -971,8 +970,9 @@
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             
-            let subtitleText = `${maxP} Pratos + ${maxE} Adicionais Grátis`;
-            if(maxD > 0) subtitleText += ` + ${maxD} Bebida(s) Inclusa(s)`;
+            let subtitleText = `${maxP} Pratos`;
+            if (maxE > 0) subtitleText += ` + ${maxE} Adicionais Grátis`;
+            if (maxD > 0) subtitleText += ` + ${maxD} Bebida(s) Inclusa(s)`;
             document.getElementById('cc-modal-subtitle').innerText = subtitleText;
 
             ccState.basePrice = activeComboData.preco_por;
@@ -1281,7 +1281,19 @@
                   payment = document.querySelector('input[name="payment-method"]:checked')?.value, 
                   change = document.getElementById('change-for').value;
 
-            let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n*RESUMO DO PEDIDO:*\n`;
+            // --- LÓGICA DE PREVISÃO DE ENTREGA (45 a 60 minutos a partir de AGORA) ---
+            const agora = new Date();
+            const minTime = new Date(agora.getTime() + 45 * 60000);
+            const maxTime = new Date(agora.getTime() + 60 * 60000);
+            
+            const formatTime = (date) => date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const previsao = `${formatTime(minTime)} e ${formatTime(maxTime)}`;
+
+            let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n`;
+            
+            text += `*PREVISÃO DE ENTREGA:*\n⏱️ Entre ${previsao}\n\n`;
+            
+            text += `*RESUMO DO PEDIDO:*\n`;
             cart.forEach(item => { text += `✅ *${item.name}*\n${item.details ? `   ↳ _${item.details}_\n` : ''}   R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`; });
             
             if(obs) text += `📝 *OBSERVAÇÕES:*\n${obs}\n\n`;
