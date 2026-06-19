@@ -1184,7 +1184,7 @@
 
         function closeInfoModal() { document.getElementById('info-modal').classList.add('hidden'); document.getElementById('info-modal').classList.remove('flex'); }
 
-        document.addEventListener('DOMContentLoaded', () => { carregarDadosDoBanco(); setInterval(carregarDadosDoBanco, 1000); });
+        document.addEventListener('DOMContentLoaded', () => { carregarDadosDoBanco(); setInterval(carregarDadosDoBanco, 30_1000); });
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js')); }
 
         function toggleTheme() {
