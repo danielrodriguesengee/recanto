@@ -7,81 +7,287 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Scrollbar customizada para o editor */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        
+        /* Scrollbar customizada */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #1f2937; }
-        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        
+        .json-area::-webkit-scrollbar-track { background: #1f2937; }
+        .json-area::-webkit-scrollbar-thumb { background: #4b5563; }
+        
+        /* Toggle Switch Animation */
+        .toggle-checkbox:checked { right: 0; border-color: #10B981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10B981; }
+        .toggle-checkbox { right: 0; z-index: 1; border-color: #e5e7eb; transition: all 0.3s; }
+        .toggle-label { background-color: #e5e7eb; transition: all 0.3s; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 h-screen flex flex-col font-sans">
+<body class="text-gray-800 h-screen flex flex-col">
 
-    <!-- Header -->
-    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-red-900 rounded flex items-center justify-center text-red-200">
-                <i class="fas fa-utensils"></i>
+    <!-- HEADER / BARRA SUPERIOR -->
+    <header class="bg-white border-b border-gray-200 p-4 flex flex-col sm:flex-row justify-between items-center shrink-0 gap-4 shadow-sm z-20 relative">
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
+            <div class="w-10 h-10 bg-[#63121a] rounded-xl flex items-center justify-center text-white shadow-md">
+                <i class="fas fa-store"></i>
             </div>
-            <h1 class="font-bold text-lg tracking-wide">Editor de Cardápio</h1>
+            <div>
+                <h1 class="font-bold text-lg text-gray-900 leading-tight">Painel Gerencial</h1>
+                <p class="text-xs text-gray-500 font-medium">Recanto do Strogonoff</p>
+            </div>
         </div>
-        <div class="flex gap-3">
-            <button onclick="carregarJSON()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded font-medium transition text-sm flex items-center gap-2">
-                <i class="fas fa-sync-alt"></i> Recarregar Original
+        <div class="flex gap-2 w-full sm:w-auto">
+            <button onclick="carregarJSON()" class="flex-1 sm:flex-none bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold transition text-sm flex items-center justify-center gap-2 border border-gray-200">
+                <i class="fas fa-sync-alt"></i> <span class="hidden sm:inline">Recarregar</span>
             </button>
-            <button onclick="salvarJSON()" id="btn-salvar" class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded font-bold transition text-sm flex items-center gap-2 shadow-lg">
-                <i class="fas fa-save"></i> Salvar no Banco
+            <button onclick="salvarJSON()" id="btn-salvar" class="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-bold transition text-sm flex items-center justify-center gap-2 shadow-lg shadow-green-600/20 active:scale-95">
+                <i class="fas fa-save"></i> Salvar Alterações
             </button>
         </div>
     </header>
 
-    <!-- Área de Notificação -->
-    <div id="status-bar" class="hidden px-4 py-2 text-sm font-medium text-center shrink-0 transition-colors"></div>
+    <!-- ÁREA DE NOTIFICAÇÃO (TOAST) -->
+    <div id="status-bar" class="hidden px-4 py-3 text-sm font-bold text-center shrink-0 transition-all z-10 shadow-md"></div>
 
-    <!-- Editor de Código -->
-    <main class="flex-1 p-4 flex flex-col relative">
-        <label for="json-editor" class="text-xs text-gray-400 uppercase tracking-widest mb-2 font-bold flex justify-between">
-            <span>Dados em formato JSON</span>
-            <span id="char-count" class="text-gray-500">0 caracteres</span>
-        </label>
-        <textarea id="json-editor" spellcheck="false" class="w-full flex-1 bg-gray-800 border border-gray-700 rounded-lg p-4 text-green-400 font-mono text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 resize-none"></textarea>
+    <!-- NAVEGAÇÃO DE ABAS -->
+    <div class="bg-white border-b border-gray-200 px-4 shrink-0 flex justify-center sm:justify-start">
+        <div class="flex space-x-8">
+            <button onclick="switchTab('visual')" id="tab-btn-visual" class="tab-btn border-b-2 py-4 px-1 text-sm font-bold border-[#63121a] text-[#63121a] transition-colors flex items-center gap-2">
+                <i class="fas fa-toggle-on"></i> Painel Rápido
+            </button>
+            <button onclick="switchTab('json')" id="tab-btn-json" class="tab-btn border-b-2 py-4 px-1 text-sm font-bold border-transparent text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-2">
+                <i class="fas fa-code"></i> Editor Avançado
+            </button>
+        </div>
+    </div>
+
+    <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
+    <main class="flex-1 overflow-hidden relative bg-gray-50">
+        
+        <!-- ========================================= -->
+        <!-- ABA 1: PAINEL VISUAL (BOTÕES LIGA/DESLIGA) -->
+        <!-- ========================================= -->
+        <div id="view-visual" class="h-full overflow-y-auto p-4 md:p-6 pb-20">
+            <div class="max-w-5xl mx-auto space-y-8" id="visual-content">
+                <!-- O conteúdo gerado pelo JavaScript entrará aqui -->
+                <div class="text-center py-20 text-gray-400">
+                    <i class="fas fa-spinner fa-spin text-3xl mb-3"></i>
+                    <p>Carregando painel...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================= -->
+        <!-- ABA 2: EDITOR JSON (CÓDIGO PURO) -->
+        <!-- ========================================= -->
+        <div id="view-json" class="h-full hidden flex-col p-4 bg-gray-900">
+            <div class="flex justify-between items-center mb-2 px-1">
+                <p class="text-xs text-gray-400 font-medium"><i class="fas fa-info-circle"></i> Edite preços, adicione itens ou altere imagens aqui.</p>
+                <span id="char-count" class="text-xs text-gray-500 font-mono bg-gray-800 px-2 py-1 rounded">0 chars</span>
+            </div>
+            <textarea id="json-editor" spellcheck="false" class="json-area w-full flex-1 bg-[#1e1e1e] border border-gray-700 rounded-xl p-4 text-[#4fc1ff] font-mono text-sm sm:text-base focus:outline-none focus:border-blue-500 shadow-inner resize-none leading-relaxed"></textarea>
+        </div>
+
     </main>
 
     <script>
+        // CONFIGURAÇÕES DO SUPABASE
         const SUPABASE_URL = "https://vyurqamjuzsichkoapdw.supabase.co/rest/v1/config?id=eq.1";
         const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM";
+        
+        let currentData = null; // Variável global que guarda os dados
         
         const editor = document.getElementById('json-editor');
         const statusBar = document.getElementById('status-bar');
         const btnSalvar = document.getElementById('btn-salvar');
 
-        // Atualiza contador de caracteres
+        // Atualiza contador de caracteres do Editor
         editor.addEventListener('input', () => {
-            document.getElementById('char-count').innerText = `${editor.value.length} caracteres`;
+            document.getElementById('char-count').innerText = `${editor.value.length} chars`;
         });
 
+        // Função de Mensagens
         function mostrarStatus(mensagem, tipo) {
-            statusBar.innerText = mensagem;
-            statusBar.className = `px-4 py-2 text-sm font-bold text-center shrink-0 transition-colors ${tipo === 'erro' ? 'bg-red-900 text-red-100' : 'bg-green-900 text-green-100'}`;
+            statusBar.innerHTML = mensagem;
+            statusBar.className = `px-4 py-3 text-sm font-bold text-center shrink-0 transition-all z-10 shadow-md ${tipo === 'erro' ? 'bg-red-600 text-white' : 'bg-green-500 text-white'}`;
             setTimeout(() => { statusBar.classList.add('hidden'); }, 5000);
         }
 
+        // ---------------------------------------------------------
+        // CONTROLE DE ABAS E SINCRONIZAÇÃO
+        // ---------------------------------------------------------
+        function switchTab(tabId) {
+            const btnVisual = document.getElementById('tab-btn-visual');
+            const btnJson = document.getElementById('tab-btn-json');
+            
+            // Reseta estilos
+            [btnVisual, btnJson].forEach(btn => {
+                btn.classList.remove('border-[#63121a]', 'text-[#63121a]');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+
+            // Esconde todas as views
+            document.getElementById('view-visual').classList.add('hidden');
+            document.getElementById('view-json').classList.add('hidden');
+
+            if (tabId === 'visual') {
+                btnVisual.classList.add('border-[#63121a]', 'text-[#63121a]');
+                btnVisual.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Tenta converter o que está no editor de volta para o Painel Visual
+                try {
+                    currentData = JSON.parse(editor.value);
+                    renderizarPainelVisual();
+                    document.getElementById('view-visual').classList.remove('hidden');
+                } catch (e) {
+                    alert("Atenção: O código no Editor Avançado contém erros (vírgula faltando, aspas quebradas, etc). Corrija antes de voltar ao painel visual.");
+                    switchTab('json'); // Força a voltar pro JSON
+                }
+            } else {
+                btnJson.classList.add('border-[#63121a]', 'text-[#63121a]');
+                btnJson.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Atualiza o texto do editor para refletir os botões clicados
+                editor.value = JSON.stringify(currentData, null, 4);
+                document.getElementById('view-json').classList.remove('hidden');
+                document.getElementById('view-json').classList.add('flex');
+                editor.dispatchEvent(new Event('input'));
+            }
+        }
+
+        // ---------------------------------------------------------
+        // CONSTRUTOR DO PAINEL VISUAL
+        // ---------------------------------------------------------
+        function criarToggleCard(label, isChecked, cat, idx, icone, subtitulo = "") {
+            return `
+            <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition duration-200">
+                <div class="flex items-center gap-4 overflow-hidden pr-4">
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 shrink-0">
+                        <i class="fas ${icone}"></i>
+                    </div>
+                    <div class="flex flex-col truncate">
+                        <span class="font-bold text-gray-800 text-sm truncate">${label}</span>
+                        ${subtitulo ? `<span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold truncate">${subtitulo}</span>` : ''}
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input type="checkbox" class="sr-only peer toggle-action" ${isChecked ? 'checked' : ''} data-cat="${cat}" data-idx="${idx}">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
+                </label>
+            </div>`;
+        }
+
+        function renderizarPainelVisual() {
+            const container = document.getElementById('visual-content');
+            if (!currentData) return;
+
+            let html = '';
+
+            // 1. STATUS GERAL DA LOJA
+            html += `
+                <div class="mb-8">
+                    <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-door-open"></i> Funcionamento</h2>
+                    <div class="p-1 bg-white rounded-3xl shadow-sm border border-gray-200">
+                        <div class="flex items-center justify-between p-4 md:p-6 rounded-2xl ${currentData.configuracoes.loja_aberta ? 'bg-green-50 border border-green-100' : 'bg-red-50 border border-red-100'} transition-colors duration-300">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl text-white shadow-md ${currentData.configuracoes.loja_aberta ? 'bg-green-500' : 'bg-red-500'} transition-colors duration-300">
+                                    <i class="fas ${currentData.configuracoes.loja_aberta ? 'fa-store' : 'fa-store-slash'}"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-lg ${currentData.configuracoes.loja_aberta ? 'text-green-800' : 'text-red-800'}">Loja ${currentData.configuracoes.loja_aberta ? 'Aberta' : 'Fechada'}</span>
+                                    <span class="text-xs ${currentData.configuracoes.loja_aberta ? 'text-green-600' : 'text-red-600'} opacity-80">${currentData.configuracoes.loja_aberta ? 'Recebendo pedidos normalmente' : 'Clientes não podem finalizar pedido'}</span>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer shrink-0 scale-125 origin-right">
+                                <input type="checkbox" class="sr-only peer toggle-action" ${currentData.configuracoes.loja_aberta ? 'checked' : ''} data-cat="loja">
+                                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // 2. PRODUTOS E COMBOS
+            const categorias = [
+                { id: 'combos', label: 'Combos Especiais', icone: 'fa-star text-yellow-500' },
+                { id: 'pratos', label: 'Pratos Principais', icone: 'fa-utensils text-orange-500' },
+                { id: 'adicionais', label: 'Adicionais Extras', icone: 'fa-plus text-blue-500' },
+                { id: 'bebidas', label: 'Bebidas', icone: 'fa-glass-water text-cyan-500' }
+            ];
+
+            categorias.forEach(cat => {
+                if (currentData[cat.id] && currentData[cat.id].length > 0) {
+                    html += `
+                        <div class="mb-8">
+                            <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas ${cat.icone} opacity-80"></i> ${cat.label}</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    `;
+                    
+                    currentData[cat.id].forEach((item, index) => {
+                        const nome = item.nome || item.titulo || item.display || 'Item sem nome';
+                        const preco = item.preco_por ? item.preco_por : (item.preco || 0);
+                        const precoFormatado = `R$ ${preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                        
+                        html += criarToggleCard(nome, item.disponivel, cat.id, index, cat.icone.split(' ')[0], precoFormatado);
+                    });
+                    
+                    html += `</div></div>`;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ---------------------------------------------------------
+        // ESCUTADOR DE EVENTOS DOS TOGGLES (BOTÕES)
+        // ---------------------------------------------------------
+        document.getElementById('visual-content').addEventListener('change', (e) => {
+            if (e.target.matches('.toggle-action')) {
+                const cat = e.target.getAttribute('data-cat');
+                const isChecked = e.target.checked;
+
+                if (cat === 'loja') {
+                    currentData.configuracoes.loja_aberta = isChecked;
+                    renderizarPainelVisual(); // Re-renderiza para mudar as cores do card da loja
+                } else {
+                    const idx = e.target.getAttribute('data-idx');
+                    currentData[cat][idx].disponivel = isChecked;
+                }
+                
+                // Mantém o textarea do Editor sincronizado no fundo
+                editor.value = JSON.stringify(currentData, null, 4);
+                editor.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // ---------------------------------------------------------
+        // COMUNICAÇÃO COM SUPABASE
+        // ---------------------------------------------------------
         async function carregarJSON() {
             try {
-                editor.value = "Carregando dados do banco...";
+                mostrarStatus('<i class="fas fa-sync fa-spin"></i> Carregando dados...', 'sucesso');
+                
                 const response = await fetch(`${SUPABASE_URL}&select=dados`, {
                     headers: { 'apikey': API_KEY, 'Authorization': `Bearer ${API_KEY}` }
                 });
                 
-                if (!response.ok) throw new Error("Falha ao buscar dados.");
+                if (!response.ok) throw new Error("Falha de comunicação com o banco.");
                 
                 const resultado = await response.json();
-                const jsonFormatado = JSON.stringify(resultado[0].dados, null, 4);
+                currentData = resultado[0].dados;
                 
-                editor.value = jsonFormatado;
-                editor.dispatchEvent(new Event('input')); // dispara o contador
-                mostrarStatus("✅ Dados carregados com sucesso!", "sucesso");
+                // Preenche o editor JSON
+                editor.value = JSON.stringify(currentData, null, 4);
+                editor.dispatchEvent(new Event('input'));
+                
+                // Constroi a interface visual
+                renderizarPainelVisual();
+                
+                statusBar.classList.add('hidden'); // Oculta aviso de carregando rapidamente
             } catch (erro) {
-                editor.value = "";
                 mostrarStatus(`❌ Erro ao carregar: ${erro.message}`, "erro");
             }
         }
@@ -91,16 +297,18 @@
                 btnSalvar.disabled = true;
                 btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
-                // 1. Valida se o texto no editor é um JSON válido antes de enviar
-                let jsonValidado;
+                // Garante que a versão mais atual do editor seja transformada em objeto
+                // Isso protege caso o usuário tenha clicado em "Salvar" estando na aba do Editor
+                let jsonParaSalvar;
                 try {
-                    jsonValidado = JSON.parse(editor.value);
+                    jsonParaSalvar = JSON.parse(editor.value);
+                    currentData = jsonParaSalvar; // Atualiza globalmente
                 } catch (e) {
-                    throw new Error("JSON inválido! Verifique se esqueceu uma vírgula, aspas ou chaves.");
+                    throw new Error("O código JSON possui erros de formatação. Verifique a Aba Editor Avançado.");
                 }
 
-                // 2. Prepara e envia o PATCH para o Supabase
-                const payload = { dados: jsonValidado };
+                // Envia para o Supabase
+                const payload = { dados: jsonParaSalvar };
                 
                 const response = await fetch(SUPABASE_URL, {
                     method: 'PATCH',
@@ -113,18 +321,23 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) throw new Error("Acesso negado no Supabase. Verifique a política de UPDATE.");
+                if (!response.ok) throw new Error("Acesso negado no Supabase. O banco bloqueou a gravação.");
 
-                mostrarStatus("🚀 Cardápio atualizado com sucesso e no ar!", "sucesso");
+                // Se o usuário clicou em salvar estando na aba editor, re-renderizamos o visual para manter sync
+                if (!document.getElementById('view-json').classList.contains('hidden')) {
+                    renderizarPainelVisual(); 
+                }
+
+                mostrarStatus('<i class="fas fa-check-circle"></i> Cardápio salvo e publicado no ar!', "sucesso");
             } catch (erro) {
                 mostrarStatus(`❌ Erro: ${erro.message}`, "erro");
             } finally {
                 btnSalvar.disabled = false;
-                btnSalvar.innerHTML = '<i class="fas fa-save"></i> Salvar no Banco';
+                btnSalvar.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
             }
         }
 
-        // Carrega ao iniciar
+        // Inicia carregando os dados na aba visual
         window.addEventListener('DOMContentLoaded', carregarJSON);
     </script>
 </body>
