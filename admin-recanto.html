@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Recanto do Strogonoff</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Scrollbar customizada para o editor */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 h-screen flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700 p-4 flex justify-between items-center shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-red-900 rounded flex items-center justify-center text-red-200">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <h1 class="font-bold text-lg tracking-wide">Editor de Cardápio</h1>
+        </div>
+        <div class="flex gap-3">
+            <button onclick="carregarJSON()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded font-medium transition text-sm flex items-center gap-2">
+                <i class="fas fa-sync-alt"></i> Recarregar Original
+            </button>
+            <button onclick="salvarJSON()" id="btn-salvar" class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded font-bold transition text-sm flex items-center gap-2 shadow-lg">
+                <i class="fas fa-save"></i> Salvar no Banco
+            </button>
+        </div>
+    </header>
+
+    <!-- Área de Notificação -->
+    <div id="status-bar" class="hidden px-4 py-2 text-sm font-medium text-center shrink-0 transition-colors"></div>
+
+    <!-- Editor de Código -->
+    <main class="flex-1 p-4 flex flex-col relative">
+        <label for="json-editor" class="text-xs text-gray-400 uppercase tracking-widest mb-2 font-bold flex justify-between">
+            <span>Dados em formato JSON</span>
+            <span id="char-count" class="text-gray-500">0 caracteres</span>
+        </label>
+        <textarea id="json-editor" spellcheck="false" class="w-full flex-1 bg-gray-800 border border-gray-700 rounded-lg p-4 text-green-400 font-mono text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 resize-none"></textarea>
+    </main>
+
+    <script>
+        const SUPABASE_URL = "https://vyurqamjuzsichkoapdw.supabase.co/rest/v1/config?id=eq.1";
+        const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM";
+        
+        const editor = document.getElementById('json-editor');
+        const statusBar = document.getElementById('status-bar');
+        const btnSalvar = document.getElementById('btn-salvar');
+
+        // Atualiza contador de caracteres
+        editor.addEventListener('input', () => {
+            document.getElementById('char-count').innerText = `${editor.value.length} caracteres`;
+        });
+
+        function mostrarStatus(mensagem, tipo) {
+            statusBar.innerText = mensagem;
+            statusBar.className = `px-4 py-2 text-sm font-bold text-center shrink-0 transition-colors ${tipo === 'erro' ? 'bg-red-900 text-red-100' : 'bg-green-900 text-green-100'}`;
+            setTimeout(() => { statusBar.classList.add('hidden'); }, 5000);
+        }
+
+        async function carregarJSON() {
+            try {
+                editor.value = "Carregando dados do banco...";
+                const response = await fetch(`${SUPABASE_URL}&select=dados`, {
+                    headers: { 'apikey': API_KEY, 'Authorization': `Bearer ${API_KEY}` }
+                });
+                
+                if (!response.ok) throw new Error("Falha ao buscar dados.");
+                
+                const resultado = await response.json();
+                const jsonFormatado = JSON.stringify(resultado[0].dados, null, 4);
+                
+                editor.value = jsonFormatado;
+                editor.dispatchEvent(new Event('input')); // dispara o contador
+                mostrarStatus("✅ Dados carregados com sucesso!", "sucesso");
+            } catch (erro) {
+                editor.value = "";
+                mostrarStatus(`❌ Erro ao carregar: ${erro.message}`, "erro");
+            }
+        }
+
+        async function salvarJSON() {
+            try {
+                btnSalvar.disabled = true;
+                btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+
+                // 1. Valida se o texto no editor é um JSON válido antes de enviar
+                let jsonValidado;
+                try {
+                    jsonValidado = JSON.parse(editor.value);
+                } catch (e) {
+                    throw new Error("JSON inválido! Verifique se esqueceu uma vírgula, aspas ou chaves.");
+                }
+
+                // 2. Prepara e envia o PATCH para o Supabase
+                const payload = { dados: jsonValidado };
+                
+                const response = await fetch(SUPABASE_URL, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': API_KEY,
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("Acesso negado no Supabase. Verifique a política de UPDATE.");
+
+                mostrarStatus("🚀 Cardápio atualizado com sucesso e no ar!", "sucesso");
+            } catch (erro) {
+                mostrarStatus(`❌ Erro: ${erro.message}`, "erro");
+            } finally {
+                btnSalvar.disabled = false;
+                btnSalvar.innerHTML = '<i class="fas fa-save"></i> Salvar no Banco';
+            }
+        }
+
+        // Carrega ao iniciar
+        window.addEventListener('DOMContentLoaded', carregarJSON);
+    </script>
+</body>
+</html>
