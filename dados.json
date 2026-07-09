@@ -1,6 +1,6 @@
 {
   "configuracoes": {
-    "loja_aberta": 1,
+    "loja_aberta": 0,
     "mensagem_aberto": "Aberto agora",
     "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴",
     "tempo_entrega": "Entrega 45-60 min",
@@ -72,7 +72,7 @@
       "preco_de": 90.0,
       "preco_por": 70.0,
       "imagens": ["image/cl1.webp", "image/cl2.webp", "image/cl3.webp"],
-      "disponivel": 1,
+      "disponivel": 0,
       "regras": {
         "qtd_pratos": 2,
         "qtd_adicionais": 2,
@@ -96,7 +96,7 @@
       "descricao": "Lasanha recheada com Strogonoff + mussarela, presunto e molho branco. Acompanha salada e batata palha crocante da casa.",
       "preco": 35.0,
       "imagens": ["image/lasanha1.webp", "image/lasanha2.webp"],
-      "disponivel": 1,
+      "disponivel": 0,
       "tipo": "main"
     }
   ],
@@ -106,7 +106,7 @@
       "nome": "Chuva de Bacon",
       "display": "Bacon Crispy",
       "subtitulo": "Chuva de Bacon",
-      "preco": 8.0,
+      "preco": 9.9,
       "imagem": "image/bacon.webp",
       "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
       "icone": "🥓",
@@ -117,7 +117,7 @@
       "nome": "Catupiry Original",
       "display": "Catupiry",
       "subtitulo": "Talagada",
-      "preco": 10.0,
+      "preco": 9.9,
       "imagem": "image/catupiry.webp",
       "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png",
       "icone": "🧀",
@@ -128,20 +128,23 @@
       "nome": "Calabresa",
       "display": "Calabresa",
       "subtitulo": "Fritinha Fritinha",
-      "preco": 8.0,
+      "preco": 9.9,
       "imagem": "image/calabresa.webp",
       "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
       "icone": "🍖",
-      "disponivel": 1,
+      "disponivel": 0,
       "tipo": "extra"
     }
   ],
 
   "bebidas": [
     { "nome": "Coca-Cola Lata", "preco": 6.0, "imagem": "image/coca.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Coca-Cola Zero Lata", "preco": 6.0, "imagem": "image/cocazero.webp", "disponivel": 0, "tipo": "drink" },
-    { "nome": "Guaraná Lata", "preco": 6.0, "imagem": "image/guarana.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Água com Gás", "preco": 4.0, "imagem": "image/aguagas.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Água sem Gás", "preco": 4.0, "imagem": "image/agua.webp", "disponivel": 1, "tipo": "drink" }
+    { "nome": "Coca-Cola Zero Lata", "preco": 6.0, "imagem": "image/cocazero.webp", "disponivel": 1, "tipo": "drink" },
+    { "nome": "Guaraná Lata", "preco": 6.0, "imagem": "image/guarana.webp", "disponivel": 0, "tipo": "drink" },
+    { "nome": "Sprite Lata", "preco": 6.0, "imagem": "image/sprite.webp", "disponivel": 1, "tipo": "drink" },
+    { "nome": "Sprite Zero Lata", "preco": 6.0, "imagem": "image/spritezero.webp", "disponivel": 1, "tipo": "drink" },
+    { "nome": "Del Valle Pessego", "preco": 6.0, "imagem": "image/delvallepessego.webp", "disponivel": 1, "tipo": "drink" },
+    { "nome": "Del Valle Uva", "preco": 6.0, "imagem": "image/delvalleuva.webp", "disponivel": 1, "tipo": "drink" },
+    { "nome": "Água sem Gás", "preco": 4.0, "imagem": "image/agua.webp", "disponivel": 0, "tipo": "drink" }
   ]
 }
