@@ -161,16 +161,18 @@
         // ---------------------------------------------------------
         // CONSTRUTOR DO PAINEL VISUAL
         // ---------------------------------------------------------
-        function criarToggleCard(label, isChecked, cat, idx, icone, subtitulo = "") {
+        function criarToggleCard(label, isChecked, cat, idx, icone, subtitulo = "", imagem = "") {
+            const mediaHtml = imagem 
+                ? `<img src="${imagem}" alt="" loading="lazy" class="w-12 h-12 rounded-full object-cover shadow-sm border border-gray-100 shrink-0">`
+                : `<div class="w-12 h-12 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 shrink-0"><i class="fas ${icone}"></i></div>`;
+
             return `
-            <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition duration-200">
-                <div class="flex items-center gap-4 overflow-hidden pr-4">
-                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 shrink-0">
-                        <i class="fas ${icone}"></i>
-                    </div>
-                    <div class="flex flex-col truncate">
-                        <span class="font-bold text-gray-800 text-sm truncate">${label}</span>
-                        ${subtitulo ? `<span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold truncate">${subtitulo}</span>` : ''}
+            <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition duration-200 gap-3">
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    ${mediaHtml}
+                    <div class="flex flex-col min-w-0">
+                        <span class="font-bold text-gray-800 text-sm leading-tight break-words">${label}</span>
+                        ${subtitulo ? `<span class="text-[11px] text-gray-500 font-semibold mt-0.5">${subtitulo}</span>` : ''}
                     </div>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer shrink-0">
@@ -186,25 +188,40 @@
 
             let html = '';
 
-            // 1. STATUS GERAL DA LOJA
+            // 1. STATUS GERAL DA LOJA E TEMPO DE ENTREGA
             html += `
                 <div class="mb-8">
                     <h2 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-door-open"></i> Funcionamento</h2>
                     <div class="p-1 bg-white rounded-3xl shadow-sm border border-gray-200">
-                        <div class="flex items-center justify-between p-4 md:p-6 rounded-2xl ${currentData.configuracoes.loja_aberta ? 'bg-green-50 border border-green-100' : 'bg-red-50 border border-red-100'} transition-colors duration-300">
+                        <div id="loja-card" class="flex items-center justify-between p-4 md:p-6 rounded-t-2xl rounded-b-lg ${currentData.configuracoes.loja_aberta ? 'bg-green-50' : 'bg-red-50'} transition-colors duration-300">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl text-white shadow-md ${currentData.configuracoes.loja_aberta ? 'bg-green-500' : 'bg-red-500'} transition-colors duration-300">
-                                    <i class="fas ${currentData.configuracoes.loja_aberta ? 'fa-store' : 'fa-store-slash'}"></i>
+                                <div id="loja-icon-wrapper" class="w-12 h-12 rounded-full flex items-center justify-center text-xl text-white shadow-md ${currentData.configuracoes.loja_aberta ? 'bg-green-500' : 'bg-red-500'} transition-colors duration-300">
+                                    <i id="loja-icon" class="fas ${currentData.configuracoes.loja_aberta ? 'fa-store' : 'fa-store-slash'}"></i>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="font-bold text-lg ${currentData.configuracoes.loja_aberta ? 'text-green-800' : 'text-red-800'}">Loja ${currentData.configuracoes.loja_aberta ? 'Aberta' : 'Fechada'}</span>
-                                    <span class="text-xs ${currentData.configuracoes.loja_aberta ? 'text-green-600' : 'text-red-600'} opacity-80">${currentData.configuracoes.loja_aberta ? 'Recebendo pedidos normalmente' : 'Clientes não podem finalizar pedido'}</span>
+                                    <span id="loja-title" class="font-bold text-lg ${currentData.configuracoes.loja_aberta ? 'text-green-800' : 'text-red-800'}">Loja ${currentData.configuracoes.loja_aberta ? 'Aberta' : 'Fechada'}</span>
+                                    <span id="loja-desc" class="text-xs ${currentData.configuracoes.loja_aberta ? 'text-green-600' : 'text-red-600'} opacity-80">${currentData.configuracoes.loja_aberta ? 'Recebendo pedidos normalmente' : 'Clientes não podem finalizar pedido'}</span>
                                 </div>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer shrink-0 scale-125 origin-right">
                                 <input type="checkbox" class="sr-only peer toggle-action" ${currentData.configuracoes.loja_aberta ? 'checked' : ''} data-cat="loja">
                                 <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
                             </label>
+                        </div>
+
+                        <hr class="border-gray-100 mx-4">
+
+                        <div class="flex items-center justify-between p-4 md:p-6 bg-white rounded-b-2xl rounded-t-lg gap-4">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-gray-800 text-sm">Tempo de Entrega</span>
+                                <span class="text-xs text-gray-500 font-medium">Atualiza ao sair do campo</span>
+                            </div>
+                            <div class="relative shrink-0">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="far fa-clock text-gray-400"></i>
+                                </div>
+                                <input type="text" id="tempo-entrega-input" value="${currentData.configuracoes.tempo_entrega || ''}" class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block w-32 pl-9 p-2.5 font-bold shadow-inner transition-colors" placeholder="Ex: 45 min">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -230,8 +247,9 @@
                         const nome = item.nome || item.titulo || item.display || 'Item sem nome';
                         const preco = item.preco_por ? item.preco_por : (item.preco || 0);
                         const precoFormatado = `R$ ${preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                        const imagem = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : (item.imagem || '');
                         
-                        html += criarToggleCard(nome, item.disponivel, cat.id, index, cat.icone.split(' ')[0], precoFormatado);
+                        html += criarToggleCard(nome, item.disponivel, cat.id, index, cat.icone.split(' ')[0], precoFormatado, imagem);
                     });
                     
                     html += `</div></div>`;
@@ -242,24 +260,62 @@
         }
 
         // ---------------------------------------------------------
-        // ESCUTADOR DE EVENTOS DOS TOGGLES (BOTÕES)
+        // ESCUTADOR DE EVENTOS DOS TOGGLES (BOTÕES) E AUTO-SAVE
         // ---------------------------------------------------------
         document.getElementById('visual-content').addEventListener('change', (e) => {
+            let hasChanges = false;
+
             if (e.target.matches('.toggle-action')) {
                 const cat = e.target.getAttribute('data-cat');
                 const isChecked = e.target.checked;
 
                 if (cat === 'loja') {
                     currentData.configuracoes.loja_aberta = isChecked;
-                    renderizarPainelVisual(); // Re-renderiza para mudar as cores do card da loja
+                    
+                    // Atualiza visualmente sem re-renderizar tudo para não fazer a tela pular
+                    const lojaCard = document.getElementById('loja-card');
+                    const lojaIconWrapper = document.getElementById('loja-icon-wrapper');
+                    const lojaIcon = document.getElementById('loja-icon');
+                    const lojaTitle = document.getElementById('loja-title');
+                    const lojaDesc = document.getElementById('loja-desc');
+
+                    if (isChecked) {
+                        lojaCard.classList.replace('bg-red-50', 'bg-green-50');
+                        lojaIconWrapper.classList.replace('bg-red-500', 'bg-green-500');
+                        lojaIcon.classList.replace('fa-store-slash', 'fa-store');
+                        lojaTitle.classList.replace('text-red-800', 'text-green-800');
+                        lojaTitle.innerText = "Loja Aberta";
+                        lojaDesc.classList.replace('text-red-600', 'text-green-600');
+                        lojaDesc.innerText = "Recebendo pedidos normalmente";
+                    } else {
+                        lojaCard.classList.replace('bg-green-50', 'bg-red-50');
+                        lojaIconWrapper.classList.replace('bg-green-500', 'bg-red-500');
+                        lojaIcon.classList.replace('fa-store', 'fa-store-slash');
+                        lojaTitle.classList.replace('text-green-800', 'text-red-800');
+                        lojaTitle.innerText = "Loja Fechada";
+                        lojaDesc.classList.replace('text-green-600', 'text-red-600');
+                        lojaDesc.innerText = "Clientes não podem finalizar pedido";
+                    }
                 } else {
                     const idx = e.target.getAttribute('data-idx');
                     currentData[cat][idx].disponivel = isChecked;
                 }
                 
+                hasChanges = true;
+            }
+
+            if (e.target.id === 'tempo-entrega-input') {
+                currentData.configuracoes.tempo_entrega = e.target.value;
+                hasChanges = true;
+            }
+
+            if (hasChanges) {
                 // Mantém o textarea do Editor sincronizado no fundo
                 editor.value = JSON.stringify(currentData, null, 4);
                 editor.dispatchEvent(new Event('input'));
+                
+                // Dispara o salvamento direto no banco de dados
+                salvarJSON();
             }
         });
 
