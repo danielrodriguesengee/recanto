@@ -566,7 +566,8 @@
 
         async function carregarDadosDoBanco() {
             try {
-                const response = await fetch(`${DATA_URL}&t=${new Date().getTime()}`, {
+                //const response = await fetch(`${DATA_URL}&t=${new Date().getTime()}`, {
+                const response = await fetch(DATA_URL, {
                     headers: {
                         'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM',
                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM'
