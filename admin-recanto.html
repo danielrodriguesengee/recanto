@@ -11,8 +11,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Admin Recanto">
     <link rel="apple-touch-icon" href="image/logo.webp">
-    <!-- Manifesto Blindado: Escopo absoluto, ID absoluto e WEBP Icon para garantir aprovação do PWA -->
-    <link rel="manifest" href='data:application/manifest+json,%7B%22name%22%3A%22Painel%20Admin%20-%20Recanto%22%2C%22short_name%22%3A%22Admin%22%2C%22id%22%3A%22%2Fadmin-app%22%2C%22start_url%22%3A%22%2Fadmin-recanto.html%22%2C%22scope%22%3A%22%2Fadmin-recanto.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fdfbf7%22%2C%22theme_color%22%3A%22%2363121a%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22image%2Flogo.webp%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fwebp%22%7D%5D%7D'>
+    
+    <!-- APONTAMENTO PARA O MANIFESTO FÍSICO DO ADMIN -->
+    <link rel="manifest" href="./manifest-admin.json">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -132,8 +133,6 @@
     </div>
 
     <script>
-        // Bloco de Service Worker removido propositalmente (Resolvendo a Hipótese 1)
-
         const SUPABASE_URL = "https://vyurqamjuzsichkoapdw.supabase.co";
         const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM";
         
