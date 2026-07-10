@@ -12,12 +12,9 @@
     <meta name="apple-mobile-web-app-title" content="Admin Recanto">
     <link rel="apple-touch-icon" href="image/logo.webp">
     
-    <!-- Link do manifesto limpo de variáveis para o servidor WebAPK do Android não falhar -->
     <link rel="manifest" href="manifest-admin.json">
 
     <script>
-        // Esse script assassina silenciosamente o Service Worker do Cardápio caso ele tente controlar o Painel.
-        // É a única forma de forçar o Android a desvincular os dois aplicativos.
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(function(registrations) {
                 for(let registration of registrations) {
