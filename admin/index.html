@@ -12,19 +12,26 @@
     <meta name="apple-mobile-web-app-title" content="Admin Recanto">
     <link rel="apple-touch-icon" href="/image/logo.webp">
     
-    <link rel="manifest" href="/admin/manifest.json">
+    <link rel="manifest" href="./manifest.json">
 
+    <!-- NOVO REGISTRO DO SERVICE WORKER BLINDADO COM RELOAD AUTOMÁTICO -->
     <script>
-        // CRÍTICO: Força o Trailing Slash para evitar que o SW da Raiz roube o contexto desta página.
-        if (!window.location.pathname.endsWith('/')) {
-            window.history.replaceState(null, '', window.location.pathname + '/');
-        }
-
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/admin/sw.js', { scope: '/admin/' })
-                    .then(reg => console.log('✅ Admin SW registrado com sucesso. Escopo blindado:', reg.scope))
-                    .catch(err => console.error('❌ Erro no SW Admin:', err));
+                navigator.serviceWorker.register('./sw.js', { scope: '/admin/' })
+                    .then(reg => console.log('Admin SW registrado. Escopo:', reg.scope))
+                    .catch(err => console.error('Erro ao registrar Admin SW:', err));
+
+                // A MÁGICA ACONTECE AQUI:
+                // Se a página carregou sem controlador, forçamos um reload rápido 
+                // assim que o SW assumir. Isso garante que o Android libere o botão "Instalar".
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        refreshing = true;
+                        window.location.reload();
+                    }
+                });
             });
         }
     </script>
