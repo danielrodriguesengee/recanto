@@ -14,13 +14,17 @@
     
     <link rel="manifest" href="/admin/manifest.json">
 
-    <!-- NOVO REGISTRO DO SERVICE WORKER BLINDADO -->
     <script>
+        // CRÍTICO: Força o Trailing Slash para evitar que o SW da Raiz roube o contexto desta página.
+        if (!window.location.pathname.endsWith('/')) {
+            window.history.replaceState(null, '', window.location.pathname + '/');
+        }
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/admin/sw.js', { scope: '/admin/' })
-                    .then(reg => console.log('Admin SW registrado. Escopo:', reg.scope))
-                    .catch(err => console.error('Erro ao registrar Admin SW:', err));
+                    .then(reg => console.log('✅ Admin SW registrado com sucesso. Escopo blindado:', reg.scope))
+                    .catch(err => console.error('❌ Erro no SW Admin:', err));
             });
         }
     </script>
@@ -39,14 +43,8 @@
         .toggle-checkbox { right: 0; z-index: 1; border-color: #e5e7eb; transition: all 0.3s; }
         .toggle-label { background-color: #e5e7eb; transition: all 0.3s; }
         
-        input[type="text"], input[type="email"], input[type="password"], textarea {
-            font-size: 16px !important;
-        }
-        
-        body {
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
+        input[type="text"], input[type="email"], input[type="password"], textarea { font-size: 16px !important; }
+        body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-[100dvh] flex flex-col font-sans selection:bg-red-200">
@@ -79,7 +77,6 @@
     </div>
 
     <div id="app-content" class="hidden flex-1 flex-col w-full min-h-[100dvh] relative">
-        
         <header class="bg-[#fdfbf7] border-b border-[#e5e0d8] px-4 py-3 shadow-sm z-50 sticky top-0 w-full flex justify-between items-center h-[72px]">
             <div class="flex items-center gap-3 min-w-0 h-full">
                 <img src="/image/logo.webp" alt="Logo" class="h-12 w-auto object-contain drop-shadow-md" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
@@ -116,7 +113,6 @@
         </div>
 
         <main class="flex-1 w-full max-w-5xl mx-auto p-4 sm:p-6 pb-20">
-            
             <div id="view-visual" class="block">
                 <div class="space-y-8" id="visual-content">
                     <div class="text-center py-20 text-gray-400">
@@ -128,9 +124,7 @@
 
             <div id="view-json" class="hidden flex-col h-[calc(100dvh-200px)] min-h-[500px]">
                 <div class="flex justify-between items-center mb-3">
-                    <label for="json-editor" class="text-xs text-gray-500 uppercase tracking-widest font-bold">
-                        Código Fonte (JSON)
-                    </label>
+                    <label for="json-editor" class="text-xs text-gray-500 uppercase tracking-widest font-bold">Código Fonte (JSON)</label>
                     <span id="char-count" class="text-xs text-gray-500 font-bold bg-gray-200 px-2 py-1 rounded-md">0 caracteres</span>
                 </div>
                 <textarea id="json-editor" spellcheck="false" class="w-full flex-1 bg-gray-900 border border-gray-700 rounded-xl p-4 text-green-400 font-mono text-sm focus:outline-none focus:border-[#63121a] focus:ring-2 focus:ring-[#63121a]/50 resize-none shadow-inner"></textarea>
@@ -138,7 +132,6 @@
                     <i class="fas fa-save"></i> Salvar JSON Manualmente
                 </button>
             </div>
-            
         </main>
     </div>
 
@@ -180,18 +173,12 @@
 
                 const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
                     method: 'POST',
-                    headers: {
-                        'apikey': API_KEY,
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'apikey': API_KEY, 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email, password: senha })
                 });
 
                 const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error_description || "E-mail ou senha incorretos.");
-                }
+                if (!response.ok) throw new Error(data.error_description || "E-mail ou senha incorretos.");
 
                 localStorage.setItem('supabaseToken', data.access_token);
                 verificarSessao();
@@ -249,10 +236,7 @@
                 document.getElementById('visual-content').innerHTML = '<div class="text-center py-20 text-gray-400"><i class="fas fa-spinner fa-spin text-3xl mb-3"></i><p>Carregando painel...</p></div>';
                 
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1&select=dados`, {
-                    headers: { 
-                        'apikey': API_KEY, 
-                        'Authorization': `Bearer ${token}` 
-                    }
+                    headers: { 'apikey': API_KEY, 'Authorization': `Bearer ${token}` }
                 });
                 
                 if (response.status === 401) throw new Error("Sessão expirada");
@@ -275,17 +259,13 @@
         async function salvarDadosBanco(dadosParaSalvar, mensagemSucesso) {
             const token = localStorage.getItem('supabaseToken');
             try {
-                const payload = { dados: dadosParaSalvar };
-                
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/config?id=eq.1`, {
                     method: 'PATCH',
                     headers: {
-                        'apikey': API_KEY,
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
+                        'apikey': API_KEY, 'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json', 'Prefer': 'return=minimal'
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({ dados: dadosParaSalvar })
                 });
 
                 if (response.status === 401) throw new Error("Sessão expirada");
@@ -306,11 +286,8 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
                 let jsonValidado;
-                try {
-                    jsonValidado = JSON.parse(editor.value);
-                } catch (e) {
-                    throw new Error("JSON inválido! Verifique a sintaxe.");
-                }
+                try { jsonValidado = JSON.parse(editor.value); } 
+                catch (e) { throw new Error("JSON inválido! Verifique a sintaxe."); }
 
                 currentData = jsonValidado; 
                 await salvarDadosBanco(jsonValidado, "Código JSON salvo com sucesso!");
@@ -324,7 +301,7 @@
 
         function criarToggleCard(label, isChecked, cat, idx, icone, subtitulo = "", imagem = "") {
             const mediaHtml = imagem 
-                ? `<img src="${imagem}" alt="" loading="lazy" class="w-12 h-12 rounded-xl object-cover shadow-sm border border-gray-200 shrink-0 bg-white">`
+                ? `<img src="${imagem.startsWith('/') || imagem.startsWith('http') ? imagem : '/' + imagem}" alt="" loading="lazy" class="w-12 h-12 rounded-xl object-cover shadow-sm border border-gray-200 shrink-0 bg-white">`
                 : `<div class="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400 shrink-0"><i class="fas ${icone} text-lg"></i></div>`;
 
             return `
@@ -348,12 +325,10 @@
             if (!currentData) return;
 
             let html = '';
-
             html += `
                 <div>
                     <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2 pl-1"><i class="fas fa-door-open"></i> Loja & Entrega</h2>
                     <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
-                        
                         <div id="loja-card" class="flex items-center justify-between p-5 border-b border-gray-100 ${currentData.configuracoes.loja_aberta ? 'bg-green-50/50' : 'bg-red-50/50'} transition-colors duration-300 gap-3">
                             <div class="flex items-center gap-4 min-w-0">
                                 <div id="loja-icon-wrapper" class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl text-white shadow-md shrink-0 ${currentData.configuracoes.loja_aberta ? 'bg-green-500' : 'bg-red-500'} transition-colors duration-300">
@@ -369,7 +344,6 @@
                                 <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
                             </label>
                         </div>
-
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 gap-4">
                             <div class="flex flex-col">
                                 <span class="font-bold text-gray-800 text-sm">Tempo de Entrega</span>
@@ -389,8 +363,7 @@
             if (currentData.combos && currentData.combos.length > 0) {
                 html += `<div><h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2 pl-1"><i class="fas fa-star text-yellow-500"></i> Destaques / Combos</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-3">`;
                 currentData.combos.forEach((item, idx) => {
-                    let img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
-                    if (img && !img.startsWith('http') && !img.startsWith('/')) img = '/' + img;
+                    const img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
                     html += criarToggleCard(item.nome || item.titulo, item.disponivel, 'combos', idx, 'fa-star', `R$ ${item.preco_por.toFixed(2).replace('.',',')}`, img);
                 });
                 html += `</div></div>`;
@@ -399,8 +372,7 @@
             if (currentData.pratos && currentData.pratos.length > 0) {
                 html += `<div><h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2 pl-1"><i class="fas fa-concierge-bell text-red-800"></i> Pratos</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-3">`;
                 currentData.pratos.forEach((item, idx) => {
-                    let img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
-                    if (img && !img.startsWith('http') && !img.startsWith('/')) img = '/' + img;
+                    const img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
                     html += criarToggleCard(item.nome, item.disponivel, 'pratos', idx, 'fa-utensils', `R$ ${item.preco.toFixed(2).replace('.',',')}`, img);
                 });
                 html += `</div></div>`;
@@ -409,8 +381,7 @@
             if (currentData.adicionais && currentData.adicionais.length > 0) {
                 html += `<div><h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2 pl-1"><i class="fas fa-plus-circle text-orange-500"></i> Adicionais</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-3">`;
                 currentData.adicionais.forEach((item, idx) => {
-                    let img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
-                    if (img && !img.startsWith('http') && !img.startsWith('/')) img = '/' + img;
+                    const img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
                     html += criarToggleCard(item.display, item.disponivel, 'adicionais', idx, 'fa-bacon', `R$ ${item.preco.toFixed(2).replace('.',',')}`, img);
                 });
                 html += `</div></div>`;
@@ -419,8 +390,7 @@
             if (currentData.bebidas && currentData.bebidas.length > 0) {
                 html += `<div><h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2 pl-1"><i class="fas fa-glass-cheers text-blue-500"></i> Bebidas</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-3">`;
                 currentData.bebidas.forEach((item, idx) => {
-                    let img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
-                    if (img && !img.startsWith('http') && !img.startsWith('/')) img = '/' + img;
+                    const img = (item.imagens && item.imagens.length > 0) ? item.imagens[0] : item.imagem;
                     html += criarToggleCard(item.nome, item.disponivel, 'bebidas', idx, 'fa-bottle-water', `R$ ${item.preco.toFixed(2).replace('.',',')}`, img);
                 });
                 html += `</div></div>`;
