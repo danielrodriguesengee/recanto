@@ -1,21 +1,14 @@
 {
-  "id": "/admin",
-  "name": "Painel Admin - Recanto",
-  "short_name": "Admin",
-  "start_url": "/admin/",
-  "scope": "/admin/",
-  "display": "standalone",
-  "background_color": "#111827",
   "theme_color": "#63121a",
   "icons": [
     {
-      "src": "../image/logo-192.webp",
+      "src": "/image/logo-192.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "any maskable"
     },
     {
-      "src": "../image/logo-512.webp",
+      "src": "/image/logo-512.webp",
       "sizes": "512x512",
       "type": "image/webp"
     }

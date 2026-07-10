@@ -1,8 +1,8 @@
 const CACHE_NAME = 'admin-cache-v1';
 const urlsToCache = [
-    './',
-    './index.html',
-    './manifest.json'
+    '/admin/',
+    '/admin/index.html',
+    '/admin/manifest.json'
 ];
 
 // Instala o Service Worker e guarda arquivos básicos em cache
