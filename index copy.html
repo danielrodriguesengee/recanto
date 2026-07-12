@@ -551,7 +551,7 @@
         let globalStoreStatus = true;
         let globalData = null; 
         
-        const DATA_URL = `https://api.npoint.io/0e8b64598bcee98f80ff`; 
+        const DATA_URL = `https://vyurqamjuzsichkoapdw.supabase.co/rest/v1/config?id=eq.1&select=dados`; 
         let lastDataHash = "";
         let globalCarouselInterval = null;
         let globalPeekTimeout = null;
@@ -566,8 +566,15 @@
 
         async function carregarDadosDoBanco() {
             try {
-                const response = await fetch(`${DATA_URL}?t=${new Date().getTime()}`);
-                const data = await response.json();
+                //const response = await fetch(`${DATA_URL}&t=${new Date().getTime()}`, {
+                const response = await fetch(DATA_URL, {
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5dXJxYW1qdXpzaWNoa29hcGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MzEyODgsImV4cCI6MjA5OTIwNzI4OH0._bStNhH33lQzgz25LGQENpskHc-W0aIgYfh25vqdiBM'
+                    }
+                });
+                const resultado = await response.json();
+                const data = resultado[0].dados;
                 const currentDataHash = JSON.stringify(data);
                 if (currentDataHash !== lastDataHash) {
                     globalData = data;
