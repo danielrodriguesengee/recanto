@@ -1,150 +1,226 @@
 {
-  "configuracoes": {
-    "loja_aberta": 0,
-    "mensagem_aberto": "Aberto agora",
-    "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴",
-    "tempo_entrega": "Entrega 45-60 min",
-    "localizacao": "Arcos, MG",
-    "titulos": {
-      "pratos": "PRATOS",
-      "adicionais": "TURBINE SEU STROGONOFF",
-      "bebidas": "BEBIDAS"
-    },
-    "pagamento_modal": [
-      { "icone": "fab fa-pix text-teal-500", "texto": "PIX Online" },
-      { "icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Crédito" },
-      { "icone": "fas fa-credit-card text-blue-500", "texto": "Cartão de Débito" },
-      { "icone": "fas fa-money-bill-wave text-green-500", "texto": "Dinheiro" }
+    "combos": [
+        {
+            "id": "combo_super",
+            "nome": "Super Combo",
+            "badge": "O Mais Vendido 🏆",
+            "ordem": 1,
+            "regras": {
+                "qtd_pratos": 1,
+                "qtd_bebidas": 1,
+                "qtd_adicionais": 1
+            },
+            "titulo": "Super Combo: Strogonoff ou Lasanha + 1 Adicional + 1 Bebida Grátis",
+            "imagens": [
+                "image/combo6.webp",
+                "image/combo7.webp"
+            ],
+            "preco_de": 46,
+            "descricao": "Escolha qualquer prato + 1 adicional + 1 bebida grátis. Acompanha salada e batata palha crocante da casa.",
+            "preco_por": 39.9,
+            "disponivel": 1
+        },
+        {
+            "id": "combo_casal_strogonoff",
+            "badge": "Ideal para casal ❤️",
+            "ordem": 2,
+            "regras": {
+                "qtd_pratos": 2,
+                "qtd_bebidas": 0,
+                "filtro_pratos": [
+                    "Strogonoff De Frango Cremoso + Acompanhamentos"
+                ],
+                "qtd_adicionais": 2
+            },
+            "titulo": "Combo Casal: 2 Strogonoffs + 2 Adicionais Grátis",
+            "imagens": [
+                "image/cc1.webp",
+                "image/cc2.webp"
+            ],
+            "preco_de": 80,
+            "descricao": "O combo perfeito! Leve 2 Strogonoffs Tradicionais de Frango (com todos os acompanhamentos) e escolha 2 adicionais de brinde por nossa conta 😉.",
+            "preco_por": 60,
+            "disponivel": true
+        },
+        {
+            "id": "combo_lasanha",
+            "badge": "Especial Lasanha 💥",
+            "ordem": 3,
+            "regras": {
+                "qtd_pratos": 2,
+                "qtd_bebidas": 0,
+                "filtro_pratos": [
+                    "Lasanha De Strogonoff + Acompanhamentos"
+                ],
+                "qtd_adicionais": 2
+            },
+            "titulo": "Combo Duplo: 2 Lasanhas de Strogonoff + 2 Adicionais Grátis",
+            "imagens": [
+                "image/cl1.webp",
+                "image/cl2.webp",
+                "image/cl3.webp"
+            ],
+            "preco_de": 90,
+            "descricao": "Exclusivo para os fãs de lasanhas! Leve 2 Lasanhas de Strogonoff e escolha 2 adicionais no 0800 💁‍♂️.",
+            "preco_por": 70,
+            "disponivel": 0
+        }
     ],
-    "taxas_modal": [
-      "Área Urbana: Sem taxas, Chuchu 😉",
-      "Retirada: Em 30min"
+    "pratos": [
+        {
+            "nome": "Strogonoff De Frango Cremoso + Acompanhamentos",
+            "tipo": "main",
+            "preco": 30,
+            "imagens": [
+                "image/strogonoff1.webp",
+                "image/strogonoff2.webp"
+            ],
+            "descricao": "Zero Amido! Peito de frango e molho cremoso de verdade. Acompanham arroz soltinho, salada e batata palha crocante da casa.",
+            "disponivel": 1
+        },
+        {
+            "nome": "Lasanha De Strogonoff + Acompanhamentos",
+            "tipo": "main",
+            "preco": 35,
+            "imagens": [
+                "image/lasanha1.webp",
+                "image/lasanha2.webp"
+            ],
+            "descricao": "Lasanha recheada com Strogonoff + mussarela, presunto e molho branco. Acompanha salada e batata palha crocante da casa.",
+            "disponivel": 0
+        }
     ],
-    "horarios_modal": [
-  "Seg, Ter, Qui, Sex, Sáb e Dom",
-  "10:20 – 14:00\n18:00 – 23:30",
-  "Qua",
-  "10:20 – 14:00"
-]
-  },
-
-  "combos": [
-    {
-      "id": "combo_super",
-      "ordem": 1,
-      "nome": "Super Combo",
-      "badge": "O Mais Vendido 🏆",
-      "titulo": "Super Combo: Strogonoff ou Lasanha + 1 Adicional + 1 Bebida Grátis",
-      "descricao": "Escolha qualquer prato + 1 adicional + 1 bebida grátis. Acompanha salada e batata palha crocante da casa.",
-      "preco_de": 46.0,
-      "preco_por": 39.9,
-      "imagens": ["image/combo6.webp", "image/combo7.webp"],
-      "disponivel": 1,
-      "regras": {
-        "qtd_pratos": 1,
-        "qtd_adicionais": 1,
-        "qtd_bebidas": 1
-      }
-    },
-    {
-      "id": "combo_casal_strogonoff",
-      "ordem": 2,
-      "badge": "Ideal para casal ❤️",
-      "titulo": "Combo Casal: 2 Strogonoffs + 2 Adicionais Grátis",
-      "descricao": "O combo perfeito! Leve 2 Strogonoffs Tradicionais de Frango (com todos os acompanhamentos) e escolha 2 adicionais de brinde por nossa conta 😉.",
-      "preco_de": 80.0,
-      "preco_por": 60.0,
-      "imagens": ["image/cc1.webp", "image/cc2.webp"],
-      "disponivel": 1,
-      "regras": {
-        "qtd_pratos": 2,
-        "qtd_adicionais": 2,
-        "qtd_bebidas": 0,
-        "filtro_pratos": ["Strogonoff De Frango Cremoso + Acompanhamentos"]
-      }
-    },
-    {
-      "id": "combo_lasanha",
-      "ordem": 3,
-      "badge": "Especial Lasanha 💥",
-      "titulo": "Combo Duplo: 2 Lasanhas de Strogonoff + 2 Adicionais Grátis",
-      "descricao": "Exclusivo para os fãs de lasanhas! Leve 2 Lasanhas de Strogonoff e escolha 2 adicionais no 0800 💁‍♂️.",
-      "preco_de": 90.0,
-      "preco_por": 70.0,
-      "imagens": ["image/cl1.webp", "image/cl2.webp", "image/cl3.webp"],
-      "disponivel": 0,
-      "regras": {
-        "qtd_pratos": 2,
-        "qtd_adicionais": 2,
-        "qtd_bebidas": 0,
-        "filtro_pratos": ["Lasanha De Strogonoff + Acompanhamentos"]
-      }
+    "bebidas": [
+        {
+            "nome": "Coca-Cola Lata",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/coca.webp",
+            "disponivel": 1
+        },
+        {
+            "nome": "Coca-Cola Zero Lata",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/cocazero.webp",
+            "disponivel": 1
+        },
+        {
+            "nome": "Guaraná Lata",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/guarana.webp",
+            "disponivel": 0
+        },
+        {
+            "nome": "Sprite Lata",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/sprite.webp",
+            "disponivel": 1
+        },
+        {
+            "nome": "Sprite Zero Lata",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/spritezero.webp",
+            "disponivel": 1
+        },
+        {
+            "nome": "Del Valle Pessego",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/delvallepessego.webp",
+            "disponivel": 1
+        },
+        {
+            "nome": "Del Valle Uva",
+            "tipo": "drink",
+            "preco": 6,
+            "imagem": "image/delvalleuva.webp",
+            "disponivel": 1
+        },
+        {
+            "nome": "Água sem Gás",
+            "tipo": "drink",
+            "preco": 4,
+            "imagem": "image/agua.webp",
+            "disponivel": false
+        }
+    ],
+    "adicionais": [
+        {
+            "nome": "Chuva de Bacon",
+            "tipo": "extra",
+            "icone": "🥓",
+            "preco": 9.9,
+            "imagem": "image/bacon.webp",
+            "display": "Bacon Crispy",
+            "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
+            "subtitulo": "Chuva de Bacon",
+            "disponivel": 1
+        },
+        {
+            "nome": "Catupiry Original",
+            "tipo": "extra",
+            "icone": "🧀",
+            "preco": 9.9,
+            "imagem": "image/catupiry.webp",
+            "display": "Catupiry",
+            "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png",
+            "subtitulo": "Talagada",
+            "disponivel": 1
+        },
+        {
+            "nome": "Calabresa",
+            "tipo": "extra",
+            "icone": "🍖",
+            "preco": 9.9,
+            "imagem": "image/calabresa.webp",
+            "display": "Calabresa",
+            "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
+            "subtitulo": "Fritinha Fritinha",
+            "disponivel": 0
+        }
+    ],
+    "configuracoes": {
+        "titulos": {
+            "pratos": "PRATOS",
+            "bebidas": "BEBIDAS",
+            "adicionais": "TURBINE SEU STROGONOFF"
+        },
+        "localizacao": "Arcos, MG",
+        "loja_aberta": 1,
+        "taxas_modal": [
+            "Área Urbana: Sem taxas, Chuchu 😉",
+            "Retirada: Em 30min"
+        ],
+        "tempo_entrega": "Entrega 45-65 min",
+        "horarios_modal": [
+            "Seg, Ter, Qui, Sex, Sáb e Dom",
+            "10:20 – 14:00\n18:00 – 23:30",
+            "Qua",
+            "10:20 – 14:00"
+        ],
+        "mensagem_aberto": "Aberto agora",
+        "pagamento_modal": [
+            {
+                "icone": "fab fa-pix text-teal-500",
+                "texto": "PIX Online"
+            },
+            {
+                "icone": "fas fa-credit-card text-blue-500",
+                "texto": "Cartão de Crédito"
+            },
+            {
+                "icone": "fas fa-credit-card text-blue-500",
+                "texto": "Cartão de Débito"
+            },
+            {
+                "icone": "fas fa-money-bill-wave text-green-500",
+                "texto": "Dinheiro"
+            }
+        ],
+        "mensagem_fechado": "Fechado no momento. Descansar, né? Que o cara não é de ferro 😴"
     }
-  ],
-
-  "pratos": [
-    {
-      "nome": "Strogonoff De Frango Cremoso + Acompanhamentos",
-      "descricao": "Zero Amido! Peito de frango e molho cremoso de verdade. Acompanham arroz soltinho, salada e batata palha crocante da casa.",
-      "preco": 30.0,
-      "imagens": ["image/strogonoff1.webp", "image/strogonoff2.webp"],
-      "disponivel": 1,
-      "tipo": "main"
-    },
-    {
-      "nome": "Lasanha De Strogonoff + Acompanhamentos",
-      "descricao": "Lasanha recheada com Strogonoff + mussarela, presunto e molho branco. Acompanha salada e batata palha crocante da casa.",
-      "preco": 35.0,
-      "imagens": ["image/lasanha1.webp", "image/lasanha2.webp"],
-      "disponivel": 0,
-      "tipo": "main"
-    }
-  ],
-
-  "adicionais": [
-    {
-      "nome": "Chuva de Bacon",
-      "display": "Bacon Crispy",
-      "subtitulo": "Chuva de Bacon",
-      "preco": 9.9,
-      "imagem": "image/bacon.webp",
-      "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
-      "icone": "🥓",
-      "disponivel": 1,
-      "tipo": "extra"
-    },
-    {
-      "nome": "Catupiry Original",
-      "display": "Catupiry",
-      "subtitulo": "Talagada",
-      "preco": 9.9,
-      "imagem": "image/catupiry.webp",
-      "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png",
-      "icone": "🧀",
-      "disponivel": 1,
-      "tipo": "extra"
-    },
-    {
-      "nome": "Calabresa",
-      "display": "Calabresa",
-      "subtitulo": "Fritinha Fritinha",
-      "preco": 9.9,
-      "imagem": "image/calabresa.webp",
-      "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
-      "icone": "🍖",
-      "disponivel": 0,
-      "tipo": "extra"
-    }
-  ],
-
-  "bebidas": [
-    { "nome": "Coca-Cola Lata", "preco": 6.0, "imagem": "image/coca.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Coca-Cola Zero Lata", "preco": 6.0, "imagem": "image/cocazero.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Guaraná Lata", "preco": 6.0, "imagem": "image/guarana.webp", "disponivel": 0, "tipo": "drink" },
-    { "nome": "Sprite Lata", "preco": 6.0, "imagem": "image/sprite.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Sprite Zero Lata", "preco": 6.0, "imagem": "image/spritezero.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Del Valle Pessego", "preco": 6.0, "imagem": "image/delvallepessego.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Del Valle Uva", "preco": 6.0, "imagem": "image/delvalleuva.webp", "disponivel": 1, "tipo": "drink" },
-    { "nome": "Água sem Gás", "preco": 4.0, "imagem": "image/agua.webp", "disponivel": 0, "tipo": "drink" }
-  ]
 }
