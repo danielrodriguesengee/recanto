@@ -10,7 +10,6 @@
     <!-- ======================================================= -->
     <meta name="description" content="Ver cardápio e pedir o meu.">
     <meta name="author" content="Recanto do Strogonoff">
-
     <!-- Schema.org JSON-LD para Restaurantes (Rich Snippets no Google) -->
     <script type="application/ld+json">
     {
@@ -31,7 +30,6 @@
       "priceRange": "$$"
     }
     </script>
-
     <!-- OPEN GRAPH / PREVIEW -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://recantodostrogonoff.netlify.app/">
@@ -50,11 +48,11 @@
     
     <!-- OTIMIZAÇÕES DE PERFORMANCE -->
     <link rel="preload" as="image" href="image/capa.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="image/logo.webp" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://api.npoint.io" crossorigin>
-
+    <link rel="preconnect" href="https://vyurqamjuzsichkoapdw.supabase.co" crossorigin>
     <!-- CONFIGURAÇÃO PWA -->
     <meta name="theme-color" content="#fdfbf7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)">
@@ -63,7 +61,6 @@
     <link rel="icon" href="image/logo1.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <!-- CONFIGURAÇÃO ONESIGNAL -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -81,159 +78,26 @@
         }
       });
     </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
     
-    <style>
-        /* VARIÁVEIS DE TEMA */
-        :root {
-            --bg-body: #fdfbf7;
-            --bg-card: #ffffff;
-            --bg-nav: rgba(253, 251, 247, 0.95);
-            --bg-header-section: #f9fafb;
-            --border-color: #e5e0d8;
-            --text-primary: #1a1a1a;
-            --text-secondary: #4a4a4a;
-            --brand-red: #63121a;
-            --brand-cream: #f2ead5;
-            --input-bg: #f4f4f5;
-            --input-border: #d4d4d8;
-            --shadow-color: rgba(99, 18, 26, 0.08);
-            --price-color: #63121a;
-            --btn-add-text: #63121a;
-            --btn-add-border: #63121a;
-            --btn-add-bg-hover: #63121a;
-            --btn-add-text-hover: #ffffff;
-        }
-
-        body.dark-mode {
-            --bg-body: #0f0f0f;
-            --bg-card: #161616;
-            --bg-nav: rgba(15, 15, 15, 0.95);
-            --bg-header-section: #222222;
-            --border-color: #2a2a2a;
-            --text-primary: #f2ead5;
-            --text-secondary: rgba(255, 255, 255, 0.75); 
-            --brand-red: #63121a;
-            --input-bg: #1c1c1c;
-            --input-border: #333;
-            --shadow-color: rgba(0, 0, 0, 0.5);
-            --price-color: #f2ead5;
-            --btn-add-text: #f2ead5;
-            --btn-add-border: #f2ead5;
-            --btn-add-bg-hover: #f2ead5;
-            --btn-add-text-hover: #63121a;
-        }
-
-        body { 
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-            -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .theme-bg-body { background-color: var(--bg-body); }
-        .theme-bg-card { background-color: var(--bg-card); }
-        .theme-bg-nav { background-color: var(--bg-nav); }
-        .theme-border { border-color: var(--border-color); }
-        .theme-text-primary { color: var(--text-primary); }
-        .theme-text-secondary { color: var(--text-secondary); }
-        .theme-brand-red { color: var(--brand-red); }
-        .theme-bg-red { background-color: var(--brand-red); }
-        .theme-border-red { border-color: var(--brand-red); }
-        .theme-bg-header { background-color: var(--bg-header-section); }
-        .theme-price { color: var(--price-color); }
-
-        .btn-add-theme {
-            color: var(--btn-add-text);
-            border: 1px solid var(--btn-add-border);
-            transition: all 0.2s;
-        }
-        .btn-add-theme:hover {
-            background-color: var(--btn-add-bg-hover);
-            color: var(--btn-add-text-hover);
-        }
-
-        .min-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 10px var(--shadow-color);
-        }
-        .min-card:active { transform: scale(0.98); }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .input-min {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--text-primary);
-            width: 100%;
-            transition: border-color 0.3s;
-        }
-        .input-min:focus {
-            outline: none;
-            border-color: var(--brand-red);
-        }
-
-        .zebra-row:nth-child(even) { background-color: var(--bg-body); }
-        .zebra-row:nth-child(odd) { background-color: var(--bg-card); }
-        
-        .modal-overlay {
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(4px);
-        }
-
-        .theme-toggle {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .theme-toggle:active { transform: scale(0.9); }
-
-        .nav-link.active {
-            background-color: var(--brand-red);
-            color: #ffffff;
-            font-weight: 600;
-            box-shadow: 0 4px 20px var(--shadow-color);
-            border-color: transparent;
-        }
-        
-        .nav-link.inactive {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        .nav-link.inactive:hover { opacity: 0.8; }
-
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pop-in {
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-    </style>
+    <style>:root{--bg-body:#fdfbf7;--bg-card:#ffffff;--bg-nav:rgba(253,251,247,0.95);--bg-header-section:#f9fafb;--border-color:#e5e0d8;--text-primary:#1a1a1a;--text-secondary:#4a4a4a;--brand-red:#63121a;--brand-cream:#f2ead5;--input-bg:#f4f4f5;--input-border:#d4d4d8;--shadow-color:rgba(99,18,26,0.08);--price-color:#63121a;--btn-add-text:#63121a;--btn-add-border:#63121a;--btn-add-bg-hover:#63121a;--btn-add-text-hover:#ffffff;--badge-star-bg:#8a6d1f;--badge-star-text:#fff8e6}body.dark-mode{--bg-body:#0f0f0f;--bg-card:#161616;--bg-nav:rgba(15,15,15,0.95);--bg-header-section:#222222;--border-color:#2a2a2a;--text-primary:#f2ead5;--text-secondary:rgba(255,255,255,0.75);--brand-red:#63121a;--input-bg:#1c1c1c;--input-border:#333;--shadow-color:rgba(0,0,0,0.5);--price-color:#f2ead5;--btn-add-text:#f2ead5;--btn-add-border:#f2ead5;--btn-add-bg-hover:#f2ead5;--btn-add-text-hover:#63121a;--badge-star-bg:#c9a53b;--badge-star-text:#1a1200}body{background-color:var(--bg-body);color:var(--text-primary);-webkit-tap-highlight-color:transparent;transition:background-color 0.3s ease,color 0.3s ease}.theme-bg-body{background-color:var(--bg-body)}.theme-bg-card{background-color:var(--bg-card)}.theme-bg-nav{background-color:var(--bg-nav)}.theme-border{border-color:var(--border-color)}.theme-text-primary{color:var(--text-primary)}.theme-text-secondary{color:var(--text-secondary)}.theme-brand-red{color:var(--brand-red)}.theme-bg-red{background-color:var(--brand-red)}.theme-border-red{border-color:var(--brand-red)}.theme-bg-header{background-color:var(--bg-header-section)}.theme-price{color:var(--price-color)}.price-wrap { display:inline-flex; align-items:baseline; line-height:1 }
+.price-currency { font-size:0.4em; align-self:flex-start; margin-top:1.3em; margin-right:3px }
+.price-cents { font-weight:700; font-size:0.5em; align-self:flex-start; margin-top:-0.32em; margin-left:1px }.btn-add-theme{color:var(--btn-add-text);border:1px solid var(--btn-add-border);transition:all 0.2s}.btn-add-theme:hover{background-color:var(--btn-add-bg-hover);color:var(--btn-add-text-hover)}.min-card{background-color:var(--bg-card);border:1px solid var(--border-color);transition:all 0.2s ease;box-shadow:0 2px 10px var(--shadow-color)}.min-card:active{transform:scale(0.98)}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}.input-min{background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:12px;color:var(--text-primary);width:100%;transition:border-color 0.3s}.input-min:focus{outline:none;border-color:var(--brand-red)}.zebra-row:nth-child(even){background-color:var(--bg-body)}.zebra-row:nth-child(odd){background-color:var(--bg-card)}.modal-overlay{background:rgba(0,0,0,0.85);backdrop-filter:blur(4px)}.theme-toggle{cursor:pointer;transition:transform 0.3s ease}.theme-toggle:active{transform:scale(0.9)}.nav-link.active{background-color:var(--brand-red);color:#ffffff;font-weight:600;box-shadow:0 4px 20px var(--shadow-color);border-color:transparent}.nav-link.inactive{background-color:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);font-weight:500}.nav-link.inactive:hover{opacity:0.8}.badge-star{background-color:var(--badge-star-bg)!important;color:var(--badge-star-text)!important;box-shadow:0 2px 12px rgba(138,109,31,0.4)!important}@keyframes popIn{0%{transform:scale(0.8);opacity:0}100%{transform:scale(1);opacity:1}}.animate-pop-in{animation:popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards}</style>
 </head>
 <body> 
     <!-- H1 Oculto estruturalmente para acessibilidade e SEO Semântico -->
     <h1 class="sr-only">Recanto do Strogonoff - Pedido Online em Arcos, MG</h1>
-
     <button onclick="toggleTheme()" class="fixed top-4 right-4 z-50 bg-black/10 backdrop-blur-md border border-black/10 text-brand-red w-10 h-10 rounded-full flex items-center justify-center shadow-lg theme-toggle hover:bg-white transition-colors" aria-label="Alternar tema claro e escuro">
         <i id="theme-icon" class="fas fa-moon"></i>
     </button>
-
     <header class="relative h-56 md:h-72 overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-body)] via-transparent to-black/20 transition-colors duration-300 z-10"></div>
         <div class="absolute inset-0 bg-[url('image/capa.webp')] bg-cover bg-center opacity-10"></div>
         
         <div class="relative z-20 flex flex-col items-center justify-center h-full text-center px-6 pt-2">
-            <img src="image/logo.webp" alt="Logo do Recanto do Strogonoff" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
+            <img src="image/logo.webp" alt="Logo do Recanto do Strogonoff" width="192" height="192" fetchpriority="high" decoding="async" class="h-32 md:h-48 object-contain -mt-6 mb-1 drop-shadow-xl animate-bounce-in">
             <p class="theme-text-secondary text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#63121a] mb-2">Premium Delivery</p>
             
             <div id="store-status-container" class="flex items-center gap-2 text-xs theme-text-primary bg-white/40 px-3 py-1 rounded-full backdrop-blur-sm border theme-border shadow-sm transition-opacity duration-300">
@@ -242,7 +106,6 @@
             </div>
         </div>
     </header>
-
     <nav class="sticky top-0 z-30 theme-bg-nav backdrop-blur-sm border-b theme-border py-3 transition-colors duration-300 shadow-sm" aria-label="Navegação de Categorias">
         <div class="flex justify-start md:justify-center overflow-x-auto no-scrollbar gap-2 px-4 whitespace-nowrap" id="nav-container">
             <a href="#destaque" onclick="setActiveNav(this)" class="nav-link active px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Destaques</a>
@@ -251,7 +114,6 @@
             <a href="#bebidas" onclick="setActiveNav(this)" class="nav-link inactive px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Bebidas</a>
         </div>
     </nav>
-
     <main class="max-w-3xl mx-auto px-4 py-6 space-y-10">
         <section id="destaque" class="scroll-mt-24 section-spy"></section>
         
@@ -262,7 +124,6 @@
             </h2>
             <div id="lista-pratos" class="space-y-4"></div>
         </section>
-
         <section id="adicionais" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
@@ -270,7 +131,6 @@
             </h2>
             <div id="lista-adicionais" class="grid grid-cols-2 gap-3"></div>
         </section>
-
         <section id="bebidas" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
@@ -284,7 +144,6 @@
             </div>
         </section>
     </main>
-
     <!-- BARRA DE INFORMAÇÕES (RODAPÉ) -->
     <footer class="w-full theme-bg-card border-t theme-border py-6 mt-4 transition-colors duration-300">
         <div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 text-xs">
@@ -302,7 +161,6 @@
             </button>
         </div>
     </footer>
-
     <!-- COPYRIGHT & CONTATOS -->
     <div class="w-full theme-bg-body border-t theme-border pt-8 pb-4 text-center text-[10px] sm:text-xs theme-text-secondary opacity-80">
         <div class="max-w-3xl mx-auto px-4 flex flex-col gap-2">
@@ -319,7 +177,6 @@
             </p>
         </div>
     </div>
-
     <!-- BARRA DE SACOLA -->
     <div id="cart-bar" class="fixed bottom-0 left-0 right-0 theme-bg-card border-t theme-border p-4 z-50 transform translate-y-full transition-transform duration-300 shadow-[0_-5px_20px_rgba(0,0,0,0.1)]">
         <div class="max-w-3xl mx-auto flex items-center justify-between">
@@ -336,7 +193,6 @@
             </button>
         </div>
     </div>
-
     <!-- DRAWER DO CARRINHO -->
     <div id="cart-drawer" class="fixed inset-y-0 right-0 w-full md:w-[400px] theme-bg-body border-l theme-border shadow-2xl z-[60] flex flex-col transition-transform duration-300 ease-in-out translate-x-full" role="dialog" aria-modal="true" aria-labelledby="cart-title">
         <div class="p-5 border-b theme-border flex justify-between items-center theme-bg-card">
@@ -357,9 +213,7 @@
             </button>
         </div>
     </div>
-
     <div id="overlay" onclick="closeCartDrawer()" class="fixed inset-0 bg-black/80 z-[55] hidden modal-overlay transition-opacity"></div>
-
     <!-- MODAL SUPER COMBO -->
     <div id="combo-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboModal()"></div>
@@ -401,7 +255,6 @@
             </button>
         </div>
     </div>
-
     <!-- MODAL COMBO CASAL / MULTIPLO -->
     <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
@@ -443,7 +296,6 @@
             </button>
         </div>
     </div>
-
     <!-- MODAL CHECKOUT - FORMULÁRIOS SEMÂNTICOS -->
     <div id="checkout-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
@@ -492,7 +344,6 @@
                         </label>
                     </div>
                 </fieldset>
-
                 <div id="change-input-group" class="hidden pt-2">
                     <input type="text" id="change-for" class="input-min border-b bg-green-50 dark:bg-green-900/10 text-green-800 dark:text-green-200 placeholder-green-600/50" placeholder="Troco para quanto? (Ex: 50)">
                 </div>
@@ -504,7 +355,6 @@
             </form>
         </div>
     </div>
-
     <!-- MODAL SUCESSO -->
     <div id="success-modal" class="fixed inset-0 z-[90] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-sm"></div>
@@ -517,7 +367,6 @@
             <button onclick="closeSuccessModal()" class="w-full theme-bg-red text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transition">Entendi</button>
         </div>
     </div>
-
     <!-- MODAL DE INFORMAÇÕES EXTRAS -->
     <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeInfoModal()"></div>
@@ -536,7 +385,6 @@
             </div>
         </div>
     </div>
-
     <!-- TOAST -->
     <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[90] translate-y-[-200%] transition-transform duration-300" role="alert" aria-live="assertive">
         <div class="theme-bg-red text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2">
@@ -544,7 +392,6 @@
             <span id="toast-msg">Adicionado!</span>
         </div>
     </div>
-
     <script>
         // --- CONFIGURAÇÕES GERAIS ---
         const MIN_ORDER_VALUE = 25.00;
@@ -556,14 +403,11 @@
         let globalCarouselInterval = null;
         let globalPeekTimeout = null;
         let isPeeking = false;
-
         document.getElementById('current-year').textContent = new Date().getFullYear();
-
         let activeComboData = null; 
         let scState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
         let ccState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
         let cart = [];
-
         async function carregarDadosDoBanco() {
             try {
                 //const response = await fetch(`${DATA_URL}&t=${new Date().getTime()}`, {
@@ -583,14 +427,22 @@
                 }
             } catch (e) { console.error('Erro ao buscar dados:', e); }
         }
-
+        // --- HELPER DE EXIBIÇÃO DE PREÇO (cifrão e centavos reduzidos) ---
+        function priceHTML(value) {
+            const parts = formatPrice(value).split(',');
+            const inteiro = parts[0];
+            const centavos = parts[1];
+            let html = `<span class="price-wrap"><span class="price-currency">R$</span><span>${inteiro}</span>`;
+            if (centavos !== undefined) html += `<span class="price-cents">,${centavos}</span>`;
+            html += `</span>`;
+            return html;
+        }
         // --- RENDERIZAÇÃO ---
         function renderizarInterface(data) {
             globalStoreStatus = data.configuracoes.loja_aberta;
             const statusContainer = document.getElementById('store-status-container');
             const statusIcon = document.getElementById('status-icon');
             const statusText = document.getElementById('status-text');
-
             if (globalStoreStatus) {
                 statusText.innerText = `${data.configuracoes.mensagem_aberto || 'Aberto agora'} • ${data.configuracoes.tempo_entrega || '30-45 min'}`;
                 statusIcon.className = 'relative flex h-2.5 w-2.5';
@@ -599,35 +451,32 @@
             } else {
                 statusText.innerText = data.configuracoes.mensagem_fechado || 'Fechado no momento';
                 statusIcon.className = 'relative flex h-2.5 w-2.5';
-                statusIcon.innerHTML = '<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 opacity-80"></span>';
+                statusIcon.innerHTML = '<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 opacity-100"></span>';
                 statusContainer.classList.add('opacity-70');
             }
-
             if (data.configuracoes && data.configuracoes.titulos) {
                 if (data.configuracoes.titulos.pratos) document.getElementById('titulo-pratos').innerText = data.configuracoes.titulos.pratos;
                 if (data.configuracoes.titulos.adicionais) document.getElementById('titulo-adicionais').innerText = data.configuracoes.titulos.adicionais;
                 if (data.configuracoes.titulos.bebidas) document.getElementById('titulo-bebidas').innerHTML = `${data.configuracoes.titulos.bebidas}<span class="sr-only">, </span>`;
             }
-
             const destaqueSection = document.getElementById('destaque');
             let destaquesHTML = '';
             const combosDisponiveis = data.combos ? data.combos.filter(c => c.disponivel) : [];
-
             combosDisponiveis.forEach(comboItem => {
                 const isMultiplo = comboItem.id.includes('casal') || (comboItem.regras && comboItem.regras.qtd_pratos > 1);
                 const badgeText = comboItem.badge || (isMultiplo ? 'Ideal para Dois' : 'Mais Pedido');
+                const isStarItem = comboItem.id === 'combo_casal_strogonoff';
+                const badgeClass = isStarItem ? 'badge-star' : 'theme-bg-red text-white';
                 const icon = isMultiplo ? 'fa-heart' : 'fa-plus';
                 const onClickFunction = isMultiplo ? `openComboCasalModal('${comboItem.id}')` : `openComboModal('${comboItem.id}')`;
-
                 const imagensHTML = comboItem.imagens && comboItem.imagens.length > 0 
                     ? comboItem.imagens.map((img, i) => 
-                        `<img src="${img}" alt="Foto de destaque do ${comboItem.titulo || comboItem.nome}" loading="lazy" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
+                        `<img src="${img}" alt="Foto de destaque do ${comboItem.titulo || comboItem.nome}" loading="lazy" decoding="async" class="carousel-img w-full h-full object-cover absolute inset-0 transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`
                       ).join('')
                     : `<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400" aria-hidden="true"><i class="fas fa-image text-4xl"></i></div>`;
-
                 destaquesHTML += `
                     <div class="flex-none w-[85vw] sm:w-[320px] snap-center theme-bg-card rounded-2xl overflow-hidden border theme-border shadow-soft relative group transition-colors duration-300 flex flex-col">
-                        <div class="absolute top-3 left-3 theme-bg-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">${badgeText}</div>
+                        <div class="absolute top-3 left-3 ${badgeClass} text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-md">${badgeText}</div>
                         <div onclick="${onClickFunction}" class="cursor-pointer flex flex-col h-full" role="button" aria-label="Montar ${comboItem.titulo || comboItem.nome}">
                             <div class="h-48 overflow-hidden relative bg-gray-100 carousel-container">${imagensHTML}</div>
                             <div class="p-5 relative z-20 flex flex-col flex-1">
@@ -635,8 +484,8 @@
                                 <p class="theme-text-secondary text-xs leading-relaxed mb-4 flex-1">${comboItem.descricao}</p>
                                 <div class="flex justify-between items-end pt-4 border-t theme-border border-dashed">
                                     <div class="flex flex-col">
-                                        ${comboItem.preco_de ? `<span class="text-xs text-red-500 line-through opacity-80"><span class="text-[10px]">R$</span> ${formatPrice(comboItem.preco_de)}</span>` : ''}
-                                        <span class="text-xl font-bold theme-price flex items-baseline gap-1"><span class="text-xs font-bold">R$</span> ${formatPrice(comboItem.preco_por)}</span>
+                                        ${comboItem.preco_de ? `<span class="text-xs text-red-500 line-through opacity-80">${priceHTML(comboItem.preco_de)}</span>` : ''}
+                                        <span class="text-xl font-bold theme-price flex items-baseline gap-1">${priceHTML(comboItem.preco_por)}</span>
                                     </div>
                                     <button class="btn-add-theme text-[10px] font-bold uppercase px-3 py-2 rounded transition flex items-center gap-1" aria-hidden="true">
                                         <i class="fas ${icon} text-[8px]"></i> Montar
@@ -646,7 +495,6 @@
                         </div>
                     </div>`;
             });
-
             if (destaquesHTML !== '') {
                 destaqueSection.innerHTML = `<div class="relative group"><div id="combos-carousel" class="flex overflow-x-auto gap-4 pb-4 pt-1 -mx-4 px-4 snap-x snap-mandatory no-scrollbar items-stretch" ontouchstart="cancelPeek()" onmousedown="cancelPeek()">${destaquesHTML}</div></div>`;
                 if (combosDisponiveis.length > 1) {
@@ -656,16 +504,16 @@
             } else {
                 destaqueSection.innerHTML = '';
             }
-
             const listaPratos = document.getElementById('lista-pratos');
             listaPratos.innerHTML = data.pratos.map(prato => {
                 const disponivelAttr = prato.disponivel ? `onclick="addToCart('${prato.nome}', ${prato.preco}, '', '${prato.tipo}')" role="button" aria-label="Adicionar ${prato.nome}"` : '';
                 const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
                 
                 const imagensPratoHTML = prato.imagens && prato.imagens.length > 0
-                    ? prato.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${prato.nome}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
-                    : `<img src="${prato.imagem || ''}" alt="Foto de ${prato.nome}" loading="lazy" class="w-full h-full object-cover absolute inset-0">`;
-
+                    ? prato.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${prato.nome}" loading="lazy" decoding="async" class="carousel-img absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}">`).join('')
+                    : `<img src="${prato.imagem || ''}" alt="Foto de ${prato.nome}" loading="lazy" decoding="async" class="w-full h-full object-cover absolute inset-0">`;
+                const isStrogonoffAvulso = prato.nome === 'Strogonoff De Frango Cremoso + Acompanhamentos';
+                const anchorLink = (isStrogonoffAvulso && prato.disponivel) ? `<a href="#destaque" onclick="event.stopPropagation()" class="text-[10px] theme-brand-red underline opacity-70 hover:opacity-100 transition block mt-1">Peça em dose dupla no Combo Casal →</a>` : '';
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex gap-4 group ${indisponivelClass} relative overflow-hidden">
                     ${!prato.disponivel ? '<div class="absolute inset-0 bg-white/40 backdrop-blur-[1px] z-10 flex items-center justify-center"><span class="bg-black/80 text-white text-xs font-bold px-3 py-1 rounded shadow-lg uppercase tracking-wider">Esgotado</span></div>' : ''}
@@ -679,24 +527,23 @@
                         </div>
                         <div class="flex justify-between items-end mt-2">
                             <div class="flex flex-col">
-                                ${prato.preco_de ? `<span class="text-[10px] text-red-500 line-through opacity-80 h-3 leading-none block">R$ ${formatPrice(prato.preco_de)}</span>` : ''}
-                                <span class="font-bold theme-price text-lg flex items-baseline gap-1 leading-none ${prato.preco_de ? 'mt-1' : ''}"><span class="text-xs font-bold">R$</span> ${formatPrice(prato.preco)}</span>
+                                ${prato.preco_de ? `<span class="text-[10px] text-red-500 line-through opacity-80 h-3 leading-none block">${priceHTML(prato.preco_de)}</span>` : ''}
+                                <span class="font-bold theme-price text-lg flex items-baseline gap-1 leading-none ${prato.preco_de ? 'mt-1' : ''}">${priceHTML(prato.preco)}</span>
+                                ${anchorLink}
                             </div>
                             ${prato.disponivel ? '<span class="btn-add-theme text-xs font-bold uppercase px-2 py-1 rounded transition" aria-hidden="true">+</span>' : ''}
                         </div>
                     </div>
                 </div>`;
             }).join('');
-
             const listaAdicionais = document.getElementById('lista-adicionais');
             listaAdicionais.innerHTML = data.adicionais.map(adc => {
                 const disponivelAttr = adc.disponivel ? `onclick="addToCart('${adc.nome}', ${adc.preco}, '', '${adc.tipo}')" role="button" aria-label="Adicionar ${adc.display}"` : '';
                 const indisponivelClass = !adc.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/50 cursor-pointer";
                 
                 const imagensAdcHTML = adc.imagens && adc.imagens.length > 0
-                    ? adc.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${adc.display}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
-                    : `<img src="${adc.imagem || ''}" alt="Foto de ${adc.display}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
-
+                    ? adc.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${adc.display}" loading="lazy" decoding="async" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${adc.fallback || ''}'">`).join('')
+                    : `<img src="${adc.imagem || ''}" alt="Foto de ${adc.display}" loading="lazy" decoding="async" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${adc.fallback || ''}'">`;
                 return `
                 <div ${disponivelAttr} class="min-card p-3 rounded-xl flex items-center gap-3 transition ${indisponivelClass} relative">
                     ${!adc.disponivel ? '<div class="absolute right-2 top-2"><span class="bg-red-600/10 text-red-600 border border-red-600/20 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Esgotado</span></div>' : ''}
@@ -705,22 +552,19 @@
                         <h3 class="font-bold text-xs theme-text-primary">${adc.display}</h3>
                         <span class="text-[10px] theme-text-secondary block">${adc.subtitulo}</span>
                         <div class="flex flex-col mt-1">
-                            ${adc.preco_de ? `<span class="text-[9px] text-red-500 line-through opacity-80 leading-none block">R$ ${formatPrice(adc.preco_de)}</span>` : ''}
-                            <span class="font-bold theme-price text-sm flex items-baseline gap-1 leading-none ${adc.preco_de ? 'mt-0.5' : ''}"><span class="text-[10px]">R$</span> ${formatPrice(adc.preco)}</span>
+                            ${adc.preco_de ? `<span class="text-[9px] text-red-500 line-through opacity-80 leading-none block">${priceHTML(adc.preco_de)}</span>` : ''}
+                            <span class="font-bold theme-price text-sm flex items-baseline gap-1 leading-none ${adc.preco_de ? 'mt-0.5' : ''}">${priceHTML(adc.preco)}</span>
                         </div>
                     </div>
                 </div>`;
             }).join('');
-
             const listaBebidas = document.getElementById('lista-bebidas');
             listaBebidas.innerHTML = data.bebidas.map(bebida => {
                 const disponivelAttr = bebida.disponivel ? `onclick="addToCart('${bebida.nome}', ${bebida.preco}, '', '${bebida.tipo}')" role="button" aria-label="Adicionar ${bebida.nome}"` : '';
                 const indisponivelClass = !bebida.disponivel ? "opacity-50 pointer-events-none" : "hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer";
-
                 const imagensBebidaHTML = bebida.imagens && bebida.imagens.length > 0
-                    ? bebida.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${bebida.nome}" loading="lazy" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
-                    : `<img src="${bebida.imagem || ''}" alt="Foto de ${bebida.nome}" loading="lazy" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
-
+                    ? bebida.imagens.map((img, i) => `<img src="${img}" alt="Foto de ${bebida.nome}" loading="lazy" decoding="async" class="carousel-img absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out ${i === 0 ? 'opacity-100' : 'opacity-0'}" onerror="this.src='${bebida.fallback || ''}'">`).join('')
+                    : `<img src="${bebida.imagem || ''}" alt="Foto de ${bebida.nome}" loading="lazy" decoding="async" class="w-full h-full object-contain absolute inset-0" onerror="this.src='${bebida.fallback || ''}'">`;
                 return `
                 <div ${disponivelAttr} class="flex items-center justify-between p-4 transition ${indisponivelClass}">
                     <div class="flex items-center gap-4">
@@ -732,24 +576,21 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="flex flex-col items-end">
-                            ${bebida.preco_de ? `<span class="text-[9px] text-red-500 line-through opacity-80 leading-none mb-0.5">R$ ${formatPrice(bebida.preco_de)}</span>` : ''}
-                            <span class="theme-price font-bold text-sm flex items-baseline gap-1 leading-none"><span class="text-[10px]">R$</span> ${formatPrice(bebida.preco)}</span>
+                            ${bebida.preco_de ? `<span class="text-[9px] text-red-500 line-through opacity-80 leading-none mb-0.5">${priceHTML(bebida.preco_de)}</span>` : ''}
+                            <span class="theme-price font-bold text-sm flex items-baseline gap-1 leading-none">${priceHTML(bebida.preco)}</span>
                         </div>
                         ${bebida.disponivel ? '<i class="fas fa-plus-circle theme-brand-red text-lg" aria-hidden="true"></i>' : ''}
                     </div>
                 </div>`;
             }).join('');
-
             startGlobalCarousels();
         }
-
         // --- SISTEMAS DE PEAK / CARROUSEL ---
         function easeInOutCubic(t, b, c, d) {
             t /= d/2;
             if (t < 1) return c/2*t*t*t + b;
             t -= 2; return c/2*(t*t*t + 2) + b;
         }
-
         function customSmoothScroll(element, change, duration, isReturn = false) {
             if (!isPeeking) return;
             const start = element.scrollLeft; const startTime = performance.now();
@@ -768,7 +609,6 @@
             }
             requestAnimationFrame(animateScroll);
         }
-
         function peekCarousel() {
             const carousel = document.getElementById('combos-carousel');
             if (!carousel || carousel.scrollWidth <= carousel.clientWidth) return;
@@ -778,13 +618,11 @@
         function cancelPeek() {
             if (isPeeking) { isPeeking = false; const c = document.getElementById('combos-carousel'); if (c) c.classList.add('snap-x', 'snap-mandatory'); }
         }
-
         function getThumb(item) {
             if (item.imagens && item.imagens.length > 0) return item.imagens[0];
             if (item.imagem) return item.imagem;
             return item.fallback || 'https://via.placeholder.com/150?text=Sem+Foto';
         }
-
         function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0, isAvailable = true) {
             const limitClass = (limitReached && count === 0) ? 'opacity-30 cursor-not-allowed' : '';
             const priceStyle = priceText.includes('Grátis') || priceText.includes('Incluso') ? 'text-green-600' : 'theme-price';
@@ -799,12 +637,11 @@
                 else if (category === 'extras') { clickFnMinus = `updateCcExtra('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcExtra('${nome}', ${precoItem}, 1)`; } 
                 else if (category === 'drinks') { clickFnMinus = `updateCcDrink('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcDrink('${nome}', ${precoItem}, 1)`; }
             }
-
             return `
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 flex-shrink-0 relative flex items-center justify-center bg-transparent">
-                        <img src="${thumbUrl}" alt="Miniatura de ${nome}" loading="lazy" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
+                        <img src="${thumbUrl}" alt="Miniatura de ${nome}" loading="lazy" decoding="async" class="max-w-full max-h-full object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=Sem+Foto'">
                     </div>
                     <div>
                         <span class="text-sm font-bold theme-text-primary block">${nome}</span>
@@ -818,7 +655,6 @@
                 </div>
             </div>`;
         }
-
         // --- SUPER COMBO ---
         function openComboModal(comboId) {
             if (!globalData || !globalData.combos) return;
@@ -826,7 +662,7 @@
             if (!activeComboData) return;
             
             document.getElementById('sc-modal-title').innerText = activeComboData.titulo || activeComboData.nome;
-            document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(activeComboData.preco_por)}`;
+            document.getElementById('modal-combo-preco').innerHTML = priceHTML(activeComboData.preco_por);
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
@@ -835,31 +671,25 @@
             if(maxE > 0) subtitleText += ` + ${maxE} Adicional(is)`;
             if(maxD > 0) subtitleText += ` + ${maxD} Bebida(s)`;
             document.getElementById('sc-modal-subtitle').innerText = subtitleText;
-
             scState = { basePrice: activeComboData.preco_por, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
-
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length === 1) {
                 const singleDishName = activeComboData.regras.filtro_pratos[0];
                 const dishData = globalData.pratos.find(p => p.nome === singleDishName);
                 if (dishData && dishData.disponivel) { scState.pratos[singleDishName] = maxP; scState.pratosCount = maxP; }
             }
-
             renderSuperComboLists(); updateScTotal();
             const modal = document.getElementById('combo-modal');
             modal.classList.remove('hidden'); modal.classList.add('flex');
         }
-
         function closeComboModal() {
             document.getElementById('combo-modal').classList.add('hidden'); document.getElementById('combo-modal').classList.remove('flex');
         }
-
         function updateScItem(category, nome, delta, precoItem = 0) {
             const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
             const max = category === 'pratos' ? maxPratos : (category === 'extras' ? maxExtras : maxDrinks);
             const countProp = category + 'Count';
-
             if (max > 0) {
                 let current = scState[category][nome] || 0;
                 if (delta > 0 && scState[countProp] >= max) return showToast(`Você só pode escolher ${max} item(ns) nesta categoria!`, true);
@@ -874,7 +704,6 @@
             }
             renderSuperComboLists();
         }
-
         function updateScTotal() {
             let extraCost = 0; let drinksCost = 0;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
@@ -883,22 +712,18 @@
             if (maxE === 0) { for (let key in scState.extras) extraCost += scState.extras[key].count * scState.extras[key].price; }
             if (maxD === 0) { for (let key in scState.drinks) drinksCost += scState.drinks[key].count * scState.drinks[key].price; }
             
-            document.getElementById('modal-combo-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(scState.basePrice + extraCost + drinksCost)}`;
+            document.getElementById('modal-combo-preco').innerHTML = priceHTML(scState.basePrice + extraCost + drinksCost);
         }
-
         function renderSuperComboLists() {
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
-
             const cP = document.getElementById('sc-pratos-counter'); 
             cP.innerText = `${scState.pratosCount}/${maxP} Escolhido${maxP > 1 ? 's' : ''}`;
             cP.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${scState.pratosCount === maxP && maxP > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
-
             let pratosPermitidos = globalData.pratos;
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
             document.getElementById('modal-combo-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('sc', 'pratos', p.nome, scState.pratos[p.nome]||0, scState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
-
             const labelE = document.querySelector('#sc-extras-counter').previousElementSibling;
             const cE = document.getElementById('sc-extras-counter'); 
             if (maxE > 0) {
@@ -911,7 +736,6 @@
                 if (maxE > 0) return buildCounterRow('sc', 'extras', a.display, scState.extras[a.display]||0, scState.extrasCount>=maxE, 'Incluso', getThumb(a), a.preco, a.disponivel);
                 else return buildCounterRow('sc', 'extras', a.display, (scState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
             }).join('');
-
             const labelD = document.getElementById('sc-drinks-label'); 
             const cD = document.getElementById('sc-drinks-counter');
             if (maxD > 0) {
@@ -925,24 +749,19 @@
                 else return buildCounterRow('sc', 'drinks', b.nome, (scState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
             }).join('');
         }
-
         function confirmCombo() {
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 1;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 1;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 1;
-
             if (scState.pratosCount !== maxP) return showToast('Por favor, selecione seu prato!', true);
             if (maxE > 0 && scState.extrasCount !== maxE) return showToast('Por favor, selecione seu adicional incluso!', true);
             if (maxD > 0 && scState.drinksCount !== maxD) return showToast('Por favor, selecione sua bebida inclusa!', true);
-
             let pratosArr = []; for (let key in scState.pratos) { if(scState.pratos[key] > 0) pratosArr.push(`${scState.pratos[key]}x ${key}`); }
             let extraArr = []; if (maxE > 0) { for (let key in scState.extras) { if(scState.extras[key] > 0) extraArr.push(`${scState.extras[key]}x ${key}`); } }
             let drinksArr = []; if (maxD > 0) { for (let key in scState.drinks) { if(scState.drinks[key] > 0) drinksArr.push(`${scState.drinks[key]}x ${key}`); } }
-
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
             if(extraArr.length > 0) detailsCombo += ` | Adicionais: ${extraArr.join(' + ')}`;
             if(drinksArr.length > 0) detailsCombo += ` | Bebidas: ${drinksArr.join(' + ')}`;
-
             addToCart(activeComboData.titulo || activeComboData.nome, scState.basePrice, detailsCombo, 'main');
             
             if (maxE === 0) {
@@ -953,7 +772,6 @@
             }
             closeComboModal();
         }
-
         // --- COMBO CASAL / MULTIPLO ---
         function openComboCasalModal(comboId) {
             if (!globalData || !globalData.combos) return;
@@ -969,23 +787,18 @@
             if (maxE > 0) subtitleText += ` + ${maxE} Adicionais Grátis`;
             if (maxD > 0) subtitleText += ` + ${maxD} Bebida(s) Inclusa(s)`;
             document.getElementById('cc-modal-subtitle').innerText = subtitleText;
-
             ccState.basePrice = activeComboData.preco_por;
             ccState = { basePrice: activeComboData.preco_por, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
-
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length === 1) {
                 const singleDishName = activeComboData.regras.filtro_pratos[0];
                 const dishData = globalData.pratos.find(p => p.nome === singleDishName);
                 if (dishData && dishData.disponivel) { ccState.pratos[singleDishName] = maxP; ccState.pratosCount = maxP; }
             }
-
             renderComboCasalLists(); updateComboCasalTotal();
             const modal = document.getElementById('combo-casal-modal');
             modal.classList.remove('hidden'); modal.classList.add('flex');
         }
-
         function closeComboCasalModal() { document.getElementById('combo-casal-modal').classList.add('hidden'); document.getElementById('combo-casal-modal').classList.remove('flex'); }
-
         function updateCcPrato(nome, delta) {
             const maxPratos = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
             let current = ccState.pratos[nome] || 0;
@@ -994,7 +807,6 @@
             ccState.pratos[nome] = current + delta; ccState.pratosCount += delta;
             renderComboCasalLists();
         }
-
         function updateCcExtra(nome, preco, delta) {
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             if (maxExtras > 0) {
@@ -1011,7 +823,6 @@
             }
             renderComboCasalLists();
         }
-
         function updateCcDrink(nome, preco, delta) {
             const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             if (maxDrinks > 0) {
@@ -1028,16 +839,13 @@
             }
             renderComboCasalLists();
         }
-
         function renderComboCasalLists() {
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
             const cP = document.getElementById('cc-pratos-counter'); cP.innerText = `${ccState.pratosCount}/${maxP} Escolhidos`;
             cP.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.pratosCount === maxP && maxP > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
-
             let pratosPermitidos = globalData.pratos;
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
             document.getElementById('modal-cc-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('cc', 'pratos', p.nome, ccState.pratos[p.nome]||0, ccState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
-
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             const labelE = document.querySelector('#cc-extras-counter').previousElementSibling;
             const cE = document.getElementById('cc-extras-counter'); 
@@ -1052,7 +860,6 @@
                 if (maxE > 0) return buildCounterRow('cc', 'extras', a.display, ccState.extras[a.display]||0, ccState.extrasCount>=maxE, 'Grátis', getThumb(a), a.preco, a.disponivel);
                 else return buildCounterRow('cc', 'extras', a.display, (ccState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
             }).join('');
-
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             const labelD = document.getElementById('cc-drinks-label'); const cD = document.getElementById('cc-drinks-counter');
             if (maxD > 0) {
@@ -1065,7 +872,6 @@
                 else return buildCounterRow('cc', 'drinks', b.nome, (ccState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
             }).join('');
         }
-
         function updateComboCasalTotal() {
             let extrasCost = 0; let drinksCost = 0;
             const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
@@ -1074,26 +880,21 @@
             if (maxExtras === 0) { for (let key in ccState.extras) extrasCost += ccState.extras[key].count * ccState.extras[key].price; }
             if (maxDrinks === 0) { for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price; }
             
-            document.getElementById('modal-cc-preco').innerHTML = `<span class="text-xs font-bold">R$</span> ${formatPrice(ccState.basePrice + extrasCost + drinksCost)}`;
+            document.getElementById('modal-cc-preco').innerHTML = priceHTML(ccState.basePrice + extrasCost + drinksCost);
         }
-
         function confirmComboCasal() {
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
             const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
-
             if (ccState.pratosCount !== maxP) return showToast(`Você precisa escolher seus ${maxP} pratos!`, true);
             if (maxE > 0 && ccState.extrasCount !== maxE) return showToast(`Você precisa escolher os seus ${maxE} adicionais!`, true);
             if (maxD > 0 && ccState.drinksCount !== maxD) return showToast(`Você precisa escolher sua(s) ${maxD} bebida(s)!`, true);
-
             let pratosArr = []; for (let key in ccState.pratos) { if (ccState.pratos[key] > 0) pratosArr.push(`${ccState.pratos[key]}x ${key}`); }
             let extraArr = []; if (maxE > 0) { for (let key in ccState.extras) { if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`); } }
             let drinksArr = []; if (maxD > 0) { for (let key in ccState.drinks) { if (ccState.drinks[key] > 0) drinksArr.push(`${ccState.drinks[key]}x ${key}`); } }
-
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
             if(extraArr.length > 0) detailsCombo += ` | Adicionais: ${extraArr.join(' + ')}`;
             if(drinksArr.length > 0) detailsCombo += ` | Bebidas: ${drinksArr.join(' + ')}`;
-
             addToCart(activeComboData.titulo || activeComboData.nome, ccState.basePrice, detailsCombo, 'main');
             
             if (maxE === 0) {
@@ -1104,7 +905,6 @@
             }
             closeComboCasalModal();
         }
-
         // --- LÓGICA DE FORMULÁRIO SEMÂNTICO DE RADIO BUTTONS ---
         function selectCutlery(value) {
             document.querySelectorAll('.cutlery-lbl').forEach(lbl => {
@@ -1125,7 +925,6 @@
                 if(activeIcon) { activeIcon.classList.remove('text-gray-400'); activeIcon.classList.add('text-white'); }
             }
         }
-
         function selectPayment(value) {
             document.querySelectorAll('.payment-lbl').forEach(lbl => {
                 lbl.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
@@ -1155,12 +954,10 @@
             }
             toggleChangeInput();
         }
-
         function toggleChangeInput() {
             const paymentInput = document.querySelector('input[name="payment-method"]:checked');
             document.getElementById('change-input-group').classList.toggle('hidden', !(paymentInput && paymentInput.value === 'Dinheiro'));
         }
-
         // --- SISTEMA DE INFORMAÇÕES EXTRAS ---
         function openInfoModal(type) {
             const conf = (globalData && globalData.configuracoes) ? globalData.configuracoes : {};
@@ -1168,7 +965,6 @@
             const subtitleEl = document.getElementById('info-modal-subtitle');
             const listEl = document.getElementById('info-modal-list');
             let html = '';
-
             if (type === 'pagamento') {
                 titleEl.innerText = 'Formas de pagamento'; subtitleEl.innerText = 'As seguintes formas de pagamento são aceitas:';
                 const itens = conf.pagamento_modal || [
@@ -1188,30 +984,24 @@
             listEl.innerHTML = html;
             document.getElementById('info-modal').classList.remove('hidden'); document.getElementById('info-modal').classList.add('flex');
         }
-
         function closeInfoModal() { document.getElementById('info-modal').classList.add('hidden'); document.getElementById('info-modal').classList.remove('flex'); }
-
         document.addEventListener('DOMContentLoaded', () => { carregarDadosDoBanco(); setInterval(carregarDadosDoBanco, 30000); });
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js')); }
-
         function toggleTheme() {
             const body = document.body; const icon = document.getElementById('theme-icon');
             body.classList.toggle('dark-mode'); 
             icon.className = body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
         }
-
         function setActiveNav(element) {
             document.querySelectorAll('.nav-link').forEach(el => { el.classList.remove('active'); el.classList.add('inactive'); });
             element.classList.add('active'); element.classList.remove('inactive');
         }
-
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('section'); const navLinks = document.querySelectorAll('.nav-link');
             let current = '';
             sections.forEach(s => { if (pageYOffset >= (s.offsetTop - 150)) current = s.getAttribute('id'); });
             navLinks.forEach(l => { l.classList.remove('active'); l.classList.add('inactive'); if (l.getAttribute('href').includes(current)) { l.classList.add('active'); l.classList.remove('inactive'); } });
         });
-
         function startGlobalCarousels() {
             if (globalCarouselInterval) clearInterval(globalCarouselInterval);
             globalCarouselInterval = setInterval(() => {
@@ -1223,59 +1013,48 @@
                 });
             }, 3000); 
         }
-
         function formatPrice(value) { return value % 1 === 0 ? value.toString() : value.toLocaleString('pt-BR', { minimumFractionDigits: 2 }); }
-
         function addToCart(name, price, details = '', type = 'other') {
             if (type === 'extra' && !cart.some(i => i.type === 'main')) return showToast('Ops! Adicione um prato antes do adicional 🥓', true);
             cart.push({ name, price, details, type }); updateCartUI(); showToast(`${name} adicionado`); if (navigator.vibrate) navigator.vibrate(30);
         }
-
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
-
         function updateCartUI() {
             const bar = document.getElementById('cart-bar'); const container = document.getElementById('cart-items-container');
             if (cart.length > 0) bar.classList.remove('translate-y-full'); else { bar.classList.add('translate-y-full'); closeCartDrawer(); }
             const total = cart.reduce((acc, item) => acc + item.price, 0); const ft = formatPrice(total);
-            document.getElementById('cart-total').innerHTML = `<span class="text-sm font-bold">R$</span> ${ft}`;
-            document.getElementById('cart-bar-total').innerHTML = `<span class="text-xs font-bold">R$</span> ${ft}`;
+            document.getElementById('cart-total').innerHTML = priceHTML(total);
+            document.getElementById('cart-bar-total').innerHTML = priceHTML(total);
             document.getElementById('cart-bar-count').textContent = `${cart.length} item${cart.length !== 1 ? 's' : ''}`;
-
             container.innerHTML = cart.length === 0 ? `<div class="text-center theme-text-secondary py-10 opacity-50">Sacola vazia</div>` : 
                 cart.map((item, index) => `
                     <div class="flex justify-between items-start py-2 border-b theme-border border-opacity-10 last:border-0">
-                        <div><div class="theme-text-primary font-medium text-sm">${item.name}</div>${item.details ? `<div class="text-[10px] theme-text-secondary mt-1 leading-tight">${item.details}</div>` : ''}<div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1"><span class="text-[10px] font-bold">R$</span> ${formatPrice(item.price)}</div></div>
+                        <div><div class="theme-text-primary font-medium text-sm">${item.name}</div>${item.details ? `<div class="text-[10px] theme-text-secondary mt-1 leading-tight">${item.details}</div>` : ''}<div class="theme-price font-bold text-sm mt-1 flex items-baseline gap-1">${priceHTML(item.price)}</div></div>
                         <button onclick="removeFromCart(${index})" aria-label="Remover item da sacola" class="theme-text-secondary hover:text-red-500 p-2"><i class="fas fa-trash-alt"></i></button>
                     </div>`).join('');
         }
-
         function openCartDrawer() { document.getElementById('cart-drawer').classList.remove('translate-x-full'); document.getElementById('overlay').classList.remove('hidden'); }
         function closeCartDrawer() { document.getElementById('cart-drawer').classList.add('translate-x-full'); document.getElementById('overlay').classList.add('hidden'); }
-
         function openCheckoutModal() {
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
             closeCartDrawer(); const modal = document.getElementById('checkout-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
         }
         function closeCheckoutModal() { const modal = document.getElementById('checkout-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
-
         function formatPhoneNumber(phone) {
             const cleaned = ('' + phone).replace(/\D/g, ''); const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/) || cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
             return match ? `(${match[1]}) ${match[2]}-${match[3]}` : phone;
         }
-
         function finalizeOrder() {
             const form = document.getElementById('checkout-form');
             // Validação Nativa Semântica 
             if (!form.reportValidity()) return; 
-
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             const name = document.getElementById('client-name').value, phone = document.getElementById('client-phone').value, 
                   address = document.getElementById('client-address').value, obs = document.getElementById('client-obs').value, 
                   cutlery = document.querySelector('input[name="client-cutlery"]:checked')?.value,
                   payment = document.querySelector('input[name="payment-method"]:checked')?.value, 
                   change = document.getElementById('change-for').value;
-
             // --- LÓGICA DE PREVISÃO DE ENTREGA INTELIGENTE VIA REGEX ---
             // Captura o tempo de entrega do JSON, usando fallback caso não encontre
             let tempoString = globalData?.configuracoes?.tempo_entrega || "45-60";
@@ -1285,7 +1064,6 @@
             
             let minMinutos = 45;
             let maxMinutos = 60;
-
             if (numerosExtraidos && numerosExtraidos.length > 0) {
                 // Converte pra inteiros e ordena do menor pro maior (para evitar erros se o cliente digitar "60-45")
                 let parsedNums = numerosExtraidos.map(n => parseInt(n, 10)).sort((a,b) => a - b);
@@ -1294,11 +1072,9 @@
                 // Se ele encontrar 2 ou mais números, o limite final é o maior deles. Se achar só 1, o limite final é igual ao inicial.
                 maxMinutos = parsedNums.length > 1 ? parsedNums[parsedNums.length - 1] : parsedNums[0];
             }
-
             const agora = new Date();
             const minTime = new Date(agora.getTime() + minMinutos * 60000);
             const formatTime = (date) => date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
             let previsaoStr = "";
             if (minMinutos === maxMinutos) {
                 // Se só tiver um número exato (Ex: "60min")
@@ -1308,7 +1084,6 @@
                 const maxTime = new Date(agora.getTime() + maxMinutos * 60000);
                 previsaoStr = `Entre ${formatTime(minTime)} e ${formatTime(maxTime)}`;
             }
-
             let text = `------------------------------------------\n⭐ *PEDIDO RECANTO* 🍽️\n------------------------------------------\n\n*DADOS DO CLIENTE:*\n👤 *${name}*\n📱 *${formatPhoneNumber(phone)}*\n\n*DADOS DE ENTREGA:*\n📍 ${address}\n\n`;
             
             text += `*PREVISÃO DE ENTREGA:*\n⏱️ ${previsaoStr}\n\n`;
@@ -1319,14 +1094,12 @@
             if(obs) text += `📝 *OBSERVAÇÕES:*\n${obs}\n\n`;
             text += `🍴 *TALHERES:* ${cutlery}\n\n`;
             text += `💰 *TOTAL: R$ ${cart.reduce((acc, i) => acc + i.price, 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n💳 *PAGAMENTO:* ${payment}${change ? ` (Troco p/ ${change})` : ''}`;
-
             window.open(`https://api.whatsapp.com/send?phone=5537984243487&text=${encodeURIComponent(text)}`, '_blank');
             cart = []; updateCartUI(); closeCheckoutModal();
             document.getElementById('success-modal').classList.remove('hidden'); document.getElementById('success-modal').classList.add('flex');
         }
         
         function closeSuccessModal() { document.getElementById('success-modal').classList.add('hidden'); document.getElementById('success-modal').classList.remove('flex'); }
-
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
             toast.querySelector('div').className = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 ${isError ? 'bg-red-600' : 'theme-bg-red'}`;
