@@ -382,6 +382,18 @@
             </div>
         </div>
     </div>
+    <!-- MODAL CONFIRMAÇÃO DINHEIRO -->
+    <div id="cash-confirm-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="theme-bg-card w-full max-w-sm rounded-2xl p-6 relative z-10 border theme-border animate-pop-in text-center shadow-2xl">
+            <h3 class="text-lg font-serif font-bold theme-text-primary mb-2">Atenção</h3>
+            <p class="theme-text-secondary text-sm mb-6">Seu troco só poderá ser feito via PIX pelo entregador.</p>
+            <div class="flex gap-3">
+                <button onclick="cashConfirmNo()" class="flex-1 border theme-border theme-text-primary font-bold py-3 rounded-xl hover:opacity-80 transition">Não</button>
+                <button onclick="cashConfirmYes()" class="flex-1 theme-bg-red text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transition">De acordo</button>
+            </div>
+        </div>
+    </div>
     <!-- TOAST -->
     <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[90] translate-y-[-200%] transition-transform duration-300" role="alert" aria-live="assertive">
         <div class="theme-bg-red text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2">
@@ -924,6 +936,12 @@
             }
         }
         function selectPayment(value) {
+            if (value === 'Dinheiro' && !window.__cashConfirmed) {
+                document.getElementById('cash-confirm-modal').classList.remove('hidden');
+                document.getElementById('cash-confirm-modal').classList.add('flex');
+                return;
+            }
+            window.__cashConfirmed = false;
             document.querySelectorAll('.payment-lbl').forEach(lbl => {
                 lbl.classList.remove('theme-border-red', 'theme-bg-red', 'text-white');
                 lbl.classList.add('theme-border', 'theme-text-primary');
@@ -951,6 +969,26 @@
                 }
             }
             toggleChangeInput();
+        }
+        //function toggleChangeInput() {
+        function cashConfirmYes() {
+            document.getElementById('cash-confirm-modal').classList.add('hidden');
+            document.getElementById('cash-confirm-modal').classList.remove('flex');
+            window.__cashConfirmed = true;
+            selectPayment('Dinheiro');
+        }
+        function cashConfirmNo() {
+            document.getElementById('cash-confirm-modal').classList.add('hidden');
+            document.getElementById('cash-confirm-modal').classList.remove('flex');
+            const radio = document.querySelector('input[name="payment-method"][value="Dinheiro"]');
+            if (radio) radio.checked = false;
+            showToastWarning('Escolha outra forma de pagamento.');
+        }
+        function showToastWarning(msg) {
+            const toast = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
+            toast.querySelector('div').className = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 bg-amber-500`;
+            toast.querySelector('i').className = `text-white fas fa-exclamation-triangle`;
+            toast.classList.remove('translate-y-[-200%]'); setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
         }
         function toggleChangeInput() {
             const paymentInput = document.querySelector('input[name="payment-method"]:checked');
