@@ -107,6 +107,7 @@
         <div class="flex justify-start md:justify-center overflow-x-auto no-scrollbar gap-2 px-4 whitespace-nowrap" id="nav-container">
             <a href="#destaque" onclick="setActiveNav(this)" class="nav-link active px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Destaques</a>
             <a href="#pratos" onclick="setActiveNav(this)" class="nav-link inactive px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Pratos</a>
+            <a href="#adicionais" onclick="setActiveNav(this)" class="nav-link inactive px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Adicionais</a>
             <a href="#bebidas" onclick="setActiveNav(this)" class="nav-link inactive px-4 py-2 rounded-lg text-xs uppercase tracking-wide transition">Bebidas</a>
         </div>
     </nav>
@@ -120,7 +121,7 @@
             </h2>
             <div id="lista-pratos" class="space-y-4"></div>
         </section>
-        <section id="adicionais" class="scroll-mt-24 section-spy hidden">
+        <section id="adicionais" class="scroll-mt-24 section-spy">
             <h2 class="text-lg font-serif font-bold theme-text-primary mb-4 flex items-center gap-3">
                 <span class="w-1 h-6 theme-bg-red block rounded-full"></span>
                 <span id="titulo-adicionais" class="uppercase">TURBINE SEU STROGONOFF</span>
@@ -251,34 +252,6 @@
             </button>
         </div>
     </div>
-    <!-- MODAL PRATO INDIVIDUAL (MOTOR DE UPSELL) -->
-    <div id="prato-modal" class="fixed inset-0 z-[72] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closePratoModal()"></div>
-        <div class="theme-bg-card w-full max-w-lg md:rounded-2xl rounded-2xl p-6 relative z-10 border theme-border animate-slide-up shadow-2xl transition-colors flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
-                <div>
-                    <h3 class="text-xl font-serif font-bold theme-text-primary" id="pm-modal-title">Prato</h3>
-                    <p class="theme-text-secondary text-xs mt-1" id="pm-modal-subtitle">Personalize seu pedido</p>
-                </div>
-                <div class="text-right">
-                    <span id="modal-pm-preco" class="block theme-price font-bold text-lg"><span class="text-xs font-bold">R$</span> 0,00</span>
-                </div>
-            </div>
-            <div class="space-y-6 overflow-y-auto custom-scrollbar flex-1 pr-2 pb-2">
-                <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-3">Turbine seu prato (Opcional)</label>
-                    <div id="modal-pm-extras" class="space-y-2"></div>
-                </div>
-                <div>
-                    <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-3">Vai uma bebida gelada? (Opcional)</label>
-                    <div id="modal-pm-bebidas" class="space-y-2"></div>
-                </div>
-            </div>
-            <button onclick="confirmPrato()" class="w-full theme-bg-red text-white font-bold py-4 rounded-xl mt-4 hover:opacity-90 transition uppercase tracking-wide shadow-lg flex-shrink-0">
-                Adicionar à Sacola
-            </button>
-        </div>
-    </div>
     <!-- MODAL COMBO CASAL / MULTIPLO -->
     <div id="combo-casal-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4" role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeComboCasalModal()"></div>
@@ -286,7 +259,7 @@
             <div class="flex justify-between items-start mb-4 border-b theme-border pb-4 flex-shrink-0">
                 <div>
                     <h3 class="text-xl font-serif font-bold theme-text-primary" id="cc-modal-title">Combo Casal</h3>
-                    <p class="theme-text-secondary text-xs mt-1" id="cc-modal-subtitle">2 Pratos + 2 Bebidas Inclusas</p>
+                    <p class="theme-text-secondary text-xs mt-1" id="cc-modal-subtitle">2 Pratos + 2 Adicionais Grátis</p>
                 </div>
                 <div class="text-right">
                     <span id="modal-cc-preco" class="block theme-price font-bold text-xl"><span class="text-xs font-bold">R$</span> 0,00</span>
@@ -302,14 +275,14 @@
                 </div>
                 <div>
                     <div class="flex justify-between items-end mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0" id="cc-extras-label">2. Escolha suas Bebidas (Obrigatório)</label>
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0">2. Adicionais Inclusos</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm" id="cc-extras-counter">0/2 Escolhidos</span>
                     </div>
                     <div id="modal-cc-extras" class="space-y-2"></div>
                 </div>
                 <div class="pt-2">
                     <div class="flex justify-between items-end mb-3">
-                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0" id="cc-drinks-label">3. Turbine sua experiência (Opcional)</label>
+                        <label class="text-xs font-bold theme-text-secondary uppercase tracking-widest block opacity-60 mb-0" id="cc-drinks-label">3. Turbinar Pedido (Opcional)</label>
                         <span class="text-[10px] font-bold theme-bg-red text-white px-2 py-0.5 rounded-full shadow-sm hidden" id="cc-drinks-counter">0/1 Escolhida</span>
                     </div>
                     <div id="modal-cc-drinks" class="space-y-2"></div>
@@ -443,8 +416,6 @@
         let activeComboData = null; 
         let scState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
         let ccState = { basePrice: 0, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
-        let activePratoData = null;
-        let pmState = { basePrice: 0, nome: '', tipo: '', extras: {}, drinks: {} };
         let cart = [];
         async function carregarDadosDoBanco() {
             try {
@@ -545,7 +516,7 @@
             }
             const listaPratos = document.getElementById('lista-pratos');
             listaPratos.innerHTML = data.pratos.map(prato => {
-                const disponivelAttr = prato.disponivel ? `onclick="openPratoModal('${prato.nome}')" role="button" aria-label="Adicionar ${prato.nome}"` : '';
+                const disponivelAttr = prato.disponivel ? `onclick="addToCart('${prato.nome}', ${prato.preco}, '', '${prato.tipo}')" role="button" aria-label="Adicionar ${prato.nome}"` : '';
                 const indisponivelClass = !prato.disponivel ? "opacity-50 pointer-events-none" : "hover:border-[#63121a]/30 cursor-pointer";
                 
                 const imagensPratoHTML = prato.imagens && prato.imagens.length > 0
@@ -664,7 +635,7 @@
         }
         function buildCounterRow(comboType, category, nome, count, limitReached, priceText, thumbUrl, precoItem = 0, isAvailable = true) {
             const limitClass = (limitReached && count === 0) ? 'opacity-30 cursor-not-allowed' : '';
-            const priceStyle = priceText.includes('INCLUSO') ? 'text-green-600' : 'theme-price';
+            const priceStyle = priceText.includes('Grátis') || priceText.includes('Incluso') ? 'text-green-600' : 'theme-price';
             const disabledClass = !isAvailable ? 'opacity-50 grayscale pointer-events-none' : '';
             const displayPrice = !isAvailable ? '<span class="text-red-500">Esgotado</span>' : priceText;
             
@@ -675,8 +646,6 @@
                 if (category === 'pratos') { clickFnMinus = `updateCcPrato('${nome}', -1)`; clickFnPlus = `updateCcPrato('${nome}', 1)`; } 
                 else if (category === 'extras') { clickFnMinus = `updateCcExtra('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcExtra('${nome}', ${precoItem}, 1)`; } 
                 else if (category === 'drinks') { clickFnMinus = `updateCcDrink('${nome}', ${precoItem}, -1)`; clickFnPlus = `updateCcDrink('${nome}', ${precoItem}, 1)`; }
-            } else if (comboType === 'pm') {
-                clickFnMinus = `updatePmItem('${category}', '${nome}', ${precoItem}, -1)`; clickFnPlus = `updatePmItem('${category}', '${nome}', ${precoItem}, 1)`;
             }
             return `
             <div class="flex items-center justify-between p-2 rounded-lg border theme-border hover:bg-black/5 transition bg-white/50 dark:bg-transparent ${disabledClass}">
@@ -764,7 +733,7 @@
             cP.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${scState.pratosCount === maxP && maxP > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
             let pratosPermitidos = globalData.pratos;
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
-            document.getElementById('modal-combo-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('sc', 'pratos', p.nome, scState.pratos[p.nome]||0, scState.pratosCount>=maxP, 'INCLUSO', getThumb(p), 0, p.disponivel)).join('');
+            document.getElementById('modal-combo-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('sc', 'pratos', p.nome, scState.pratos[p.nome]||0, scState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
             const labelE = document.querySelector('#sc-extras-counter').previousElementSibling;
             const cE = document.getElementById('sc-extras-counter'); 
             if (maxE > 0) {
@@ -774,7 +743,7 @@
                 labelE.innerText = "2. Turbinar Pedido (Opcional)"; cE.style.display = 'none';
             }
             document.getElementById('modal-combo-extras').innerHTML = globalData.adicionais.map(a => {
-                if (maxE > 0) return buildCounterRow('sc', 'extras', a.display, scState.extras[a.display]||0, scState.extrasCount>=maxE, 'INCLUSO', getThumb(a), a.preco, a.disponivel);
+                if (maxE > 0) return buildCounterRow('sc', 'extras', a.display, scState.extras[a.display]||0, scState.extrasCount>=maxE, 'Incluso', getThumb(a), a.preco, a.disponivel);
                 else return buildCounterRow('sc', 'extras', a.display, (scState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
             }).join('');
             const labelD = document.getElementById('sc-drinks-label'); 
@@ -786,7 +755,7 @@
                 labelD.innerText = "3. Sugestão de Bebidas (Opcional)"; cD.style.display = 'none';
             }
             document.getElementById('modal-combo-bebidas').innerHTML = globalData.bebidas.map(b => {
-                if (maxD > 0) return buildCounterRow('sc', 'drinks', b.nome, scState.drinks[b.nome]||0, scState.drinksCount>=maxD, 'INCLUSO', getThumb(b), b.preco, b.disponivel);
+                if (maxD > 0) return buildCounterRow('sc', 'drinks', b.nome, scState.drinks[b.nome]||0, scState.drinksCount>=maxD, 'Incluso', getThumb(b), b.preco, b.disponivel);
                 else return buildCounterRow('sc', 'drinks', b.nome, (scState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
             }).join('');
         }
@@ -813,49 +782,6 @@
             }
             closeComboModal();
         }
-        // --- PRATO INDIVIDUAL (MOTOR DE UPSELL) ---
-        function openPratoModal(nomePrato) {
-            if (!globalData || !globalData.pratos) return;
-            activePratoData = globalData.pratos.find(p => p.nome === nomePrato);
-            if (!activePratoData) return;
-            document.getElementById('pm-modal-title').innerText = activePratoData.nome;
-            document.getElementById('pm-modal-subtitle').innerText = 'Personalize seu pedido';
-            pmState = { basePrice: activePratoData.preco, nome: activePratoData.nome, tipo: activePratoData.tipo, extras: {}, drinks: {} };
-            renderPratoModalLists(); updatePmTotal();
-            const modal = document.getElementById('prato-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-        }
-        function closePratoModal() {
-            document.getElementById('prato-modal').classList.add('hidden'); document.getElementById('prato-modal').classList.remove('flex');
-        }
-        function updatePmItem(category, nome, precoItem, delta) {
-            let current = pmState[category][nome] || { count: 0, price: precoItem };
-            if (delta < 0 && current.count <= 0) return;
-            current.count += delta;
-            if (current.count === 0) delete pmState[category][nome]; else pmState[category][nome] = current;
-            updatePmTotal();
-            renderPratoModalLists();
-        }
-        function updatePmTotal() {
-            let extrasCost = 0; let drinksCost = 0;
-            for (let key in pmState.extras) extrasCost += pmState.extras[key].count * pmState.extras[key].price;
-            for (let key in pmState.drinks) drinksCost += pmState.drinks[key].count * pmState.drinks[key].price;
-            document.getElementById('modal-pm-preco').innerHTML = priceHTML(pmState.basePrice + extrasCost + drinksCost);
-        }
-        function renderPratoModalLists() {
-            document.getElementById('modal-pm-extras').innerHTML = globalData.adicionais.map(a =>
-                buildCounterRow('pm', 'extras', a.display, (pmState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel)
-            ).join('');
-            document.getElementById('modal-pm-bebidas').innerHTML = globalData.bebidas.map(b =>
-                buildCounterRow('pm', 'drinks', b.nome, (pmState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel)
-            ).join('');
-        }
-        function confirmPrato() {
-            addToCart(pmState.nome, pmState.basePrice, '', 'main');
-            for (let key in pmState.extras) { let e = pmState.extras[key]; if (e.count > 0) { for(let i=0; i<e.count; i++) addToCart(key, e.price, `Add via ${pmState.nome}`, 'extra'); } }
-            for (let key in pmState.drinks) { let d = pmState.drinks[key]; if (d.count > 0) { for(let i=0; i<d.count; i++) addToCart(key, d.price, `Add via ${pmState.nome}`, 'drink'); } }
-            closePratoModal();
-        }
         // --- COMBO CASAL / MULTIPLO ---
         function openComboCasalModal(comboId) {
             if (!globalData || !globalData.combos) return;
@@ -868,7 +794,8 @@
             const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             
             let subtitleText = `${maxP} Pratos`;
-            if (maxE > 0) subtitleText += ` + ${maxE} Bebida(s) Inclusa(s)`;
+            if (maxE > 0) subtitleText += ` + ${maxE} Adicionais Grátis`;
+            if (maxD > 0) subtitleText += ` + ${maxD} Bebida(s) Inclusa(s)`;
             document.getElementById('cc-modal-subtitle').innerText = subtitleText;
             ccState.basePrice = activeComboData.preco_por;
             ccState = { basePrice: activeComboData.preco_por, pratos: {}, pratosCount: 0, extras: {}, extrasCount: 0, drinks: {}, drinksCount: 0 };
@@ -891,10 +818,10 @@
             renderComboCasalLists();
         }
         function updateCcExtra(nome, preco, delta) {
-            const maxExtras = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 2;
+            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
             if (maxExtras > 0) {
                 let current = ccState.extras[nome] || 0;
-                if (delta > 0 && ccState.extrasCount >= maxExtras) return showToast(`Você já escolheu suas ${maxExtras} bebidas inclusas!`, true);
+                if (delta > 0 && ccState.extrasCount >= maxExtras) return showToast(`Você já escolheu seus ${maxExtras} adicionais grátis!`, true);
                 if (delta < 0 && current <= 0) return;
                 ccState.extras[nome] = current + delta; ccState.extrasCount += delta;
             } else {
@@ -907,10 +834,10 @@
             renderComboCasalLists();
         }
         function updateCcDrink(nome, preco, delta) {
-            const maxDrinks = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 0;
+            const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             if (maxDrinks > 0) {
                 let current = ccState.drinks[nome] || 0;
-                if (delta > 0 && ccState.drinksCount >= maxDrinks) return showToast(`Você já escolheu seus ${maxDrinks} adicionais inclusos!`, true);
+                if (delta > 0 && ccState.drinksCount >= maxDrinks) return showToast(`Você já escolheu sua(s) ${maxDrinks} bebida(s) inclusa(s)!`, true);
                 if (delta < 0 && current <= 0) return;
                 ccState.drinks[nome] = current + delta; ccState.drinksCount += delta;
             } else {
@@ -928,37 +855,37 @@
             cP.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.pratosCount === maxP && maxP > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
             let pratosPermitidos = globalData.pratos;
             if (activeComboData.regras?.filtro_pratos && activeComboData.regras.filtro_pratos.length > 0) { pratosPermitidos = globalData.pratos.filter(p => activeComboData.regras.filtro_pratos.includes(p.nome)); }
-            document.getElementById('modal-cc-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('cc', 'pratos', p.nome, ccState.pratos[p.nome]||0, ccState.pratosCount>=maxP, 'INCLUSO', getThumb(p), 0, p.disponivel)).join('');
-            const maxE = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 2;
-            const labelE = document.getElementById('cc-extras-label');
+            document.getElementById('modal-cc-pratos').innerHTML = pratosPermitidos.map(p => buildCounterRow('cc', 'pratos', p.nome, ccState.pratos[p.nome]||0, ccState.pratosCount>=maxP, 'Incluso', getThumb(p), 0, p.disponivel)).join('');
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
+            const labelE = document.querySelector('#cc-extras-counter').previousElementSibling;
             const cE = document.getElementById('cc-extras-counter'); 
             if (maxE > 0) {
-                labelE.innerText = "2. Escolha suas Bebidas (Obrigatório)"; cE.style.display = 'block'; cE.innerText = `${ccState.extrasCount}/${maxE} Escolhidos`;
+                labelE.innerText = "2. Adicionais Inclusos"; cE.style.display = 'block'; cE.innerText = `${ccState.extrasCount}/${maxE} Escolhidos`;
                 cE.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.extrasCount === maxE && maxE > 0 ? 'bg-green-600' : 'theme-bg-red'}`;
             } else {
-                labelE.innerText = "2. Turbine sua experiência (Opcional)"; cE.style.display = 'none';
+                labelE.innerText = "2. Turbinar Pedido (Opcional)"; cE.style.display = 'none';
             }
             
-            document.getElementById('modal-cc-extras').innerHTML = globalData.bebidas.map(b => {
-                if (maxE > 0) return buildCounterRow('cc', 'extras', b.nome, ccState.extras[b.nome]||0, ccState.extrasCount>=maxE, 'INCLUSO', getThumb(b), b.preco, b.disponivel);
-                else return buildCounterRow('cc', 'extras', b.nome, (ccState.extras[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
+            document.getElementById('modal-cc-extras').innerHTML = globalData.adicionais.map(a => {
+                if (maxE > 0) return buildCounterRow('cc', 'extras', a.display, ccState.extras[a.display]||0, ccState.extrasCount>=maxE, 'Grátis', getThumb(a), a.preco, a.disponivel);
+                else return buildCounterRow('cc', 'extras', a.display, (ccState.extras[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
             }).join('');
-            const maxD = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 0;
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             const labelD = document.getElementById('cc-drinks-label'); const cD = document.getElementById('cc-drinks-counter');
             if (maxD > 0) {
-                labelD.innerText = "3. Adicionais Inclusos"; cD.style.display = 'block'; cD.innerText = `${ccState.drinksCount}/${maxD} Escolhida(s)`;
+                labelD.innerText = "3. Bebidas Inclusas"; cD.style.display = 'block'; cD.innerText = `${ccState.drinksCount}/${maxD} Escolhida(s)`;
                 cD.className = `text-[10px] font-bold text-white px-2 py-0.5 rounded-full shadow-sm ${ccState.drinksCount === maxD ? 'bg-green-600' : 'theme-bg-red'}`;
-            } else { labelD.innerText = "3. Turbine sua experiência (Opcional)"; cD.style.display = 'none'; }
+            } else { labelD.innerText = "3. Turbinar Pedido (Opcional)"; cD.style.display = 'none'; }
             
-            document.getElementById('modal-cc-drinks').innerHTML = globalData.adicionais.map(a => {
-                if (maxD > 0) return buildCounterRow('cc', 'drinks', a.display, ccState.drinks[a.display]||0, ccState.drinksCount>=maxD, 'INCLUSO', getThumb(a), a.preco, a.disponivel);
-                else return buildCounterRow('cc', 'drinks', a.display, (ccState.drinks[a.display]||{count:0}).count, false, `+ R$ ${formatPrice(a.preco)}`, getThumb(a), a.preco, a.disponivel);
+            document.getElementById('modal-cc-drinks').innerHTML = globalData.bebidas.map(b => {
+                if (maxD > 0) return buildCounterRow('cc', 'drinks', b.nome, ccState.drinks[b.nome]||0, ccState.drinksCount>=maxD, 'Incluso', getThumb(b), b.preco, b.disponivel);
+                else return buildCounterRow('cc', 'drinks', b.nome, (ccState.drinks[b.nome]||{count:0}).count, false, `+ R$ ${formatPrice(b.preco)}`, getThumb(b), b.preco, b.disponivel);
             }).join('');
         }
         function updateComboCasalTotal() {
             let extrasCost = 0; let drinksCost = 0;
-            const maxExtras = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 2;
-            const maxDrinks = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 0;
+            const maxExtras = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
+            const maxDrinks = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             
             if (maxExtras === 0) { for (let key in ccState.extras) extrasCost += ccState.extras[key].count * ccState.extras[key].price; }
             if (maxDrinks === 0) { for (let key in ccState.drinks) drinksCost += ccState.drinks[key].count * ccState.drinks[key].price; }
@@ -967,24 +894,24 @@
         }
         function confirmComboCasal() {
             const maxP = activeComboData.regras?.qtd_pratos !== undefined ? activeComboData.regras.qtd_pratos : 2;
-            const maxE = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 2;
-            const maxD = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 0;
+            const maxE = activeComboData.regras?.qtd_adicionais !== undefined ? activeComboData.regras.qtd_adicionais : 2;
+            const maxD = activeComboData.regras?.qtd_bebidas !== undefined ? activeComboData.regras.qtd_bebidas : 0;
             if (ccState.pratosCount !== maxP) return showToast(`Você precisa escolher seus ${maxP} pratos!`, true);
-            if (maxE > 0 && ccState.extrasCount !== maxE) return showToast(`Você precisa escolher sua(s) ${maxE} bebida(s)!`, true);
-            if (maxD > 0 && ccState.drinksCount !== maxD) return showToast(`Você precisa escolher os seus ${maxD} adicionais!`, true);
+            if (maxE > 0 && ccState.extrasCount !== maxE) return showToast(`Você precisa escolher os seus ${maxE} adicionais!`, true);
+            if (maxD > 0 && ccState.drinksCount !== maxD) return showToast(`Você precisa escolher sua(s) ${maxD} bebida(s)!`, true);
             let pratosArr = []; for (let key in ccState.pratos) { if (ccState.pratos[key] > 0) pratosArr.push(`${ccState.pratos[key]}x ${key}`); }
             let extraArr = []; if (maxE > 0) { for (let key in ccState.extras) { if (ccState.extras[key] > 0) extraArr.push(`${ccState.extras[key]}x ${key}`); } }
             let drinksArr = []; if (maxD > 0) { for (let key in ccState.drinks) { if (ccState.drinks[key] > 0) drinksArr.push(`${ccState.drinks[key]}x ${key}`); } }
             let detailsCombo = `Pratos: ${pratosArr.join(' + ')}`;
-            if(extraArr.length > 0) detailsCombo += ` | Bebidas: ${extraArr.join(' + ')}`;
-            if(drinksArr.length > 0) detailsCombo += ` | Adicionais: ${drinksArr.join(' + ')}`;
+            if(extraArr.length > 0) detailsCombo += ` | Adicionais: ${extraArr.join(' + ')}`;
+            if(drinksArr.length > 0) detailsCombo += ` | Bebidas: ${drinksArr.join(' + ')}`;
             addToCart(activeComboData.titulo || activeComboData.nome, ccState.basePrice, detailsCombo, 'main');
             
             if (maxE === 0) {
-                for (let key in ccState.extras) { let e = ccState.extras[key]; if (e.count > 0) { for(let i=0; i<e.count; i++) addToCart(key, e.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink'); } }
+                for (let key in ccState.extras) { let e = ccState.extras[key]; if (e.count > 0) { for(let i=0; i<e.count; i++) addToCart(key, e.price, `Add via ${activeComboData.nome || 'Combo'}`, 'extra'); } }
             }
             if (maxD === 0) {
-                for (let key in ccState.drinks) { let d = ccState.drinks[key]; if (d.count > 0) { for(let i=0; i<d.count; i++) addToCart(key, d.price, `Add via ${activeComboData.nome || 'Combo'}`, 'extra'); } }
+                for (let key in ccState.drinks) { let d = ccState.drinks[key]; if (d.count > 0) { for(let i=0; i<d.count; i++) addToCart(key, d.price, `Add via ${activeComboData.nome || 'Combo'}`, 'drink'); } }
             }
             closeComboCasalModal();
         }
