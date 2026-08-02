@@ -1,45 +1,46 @@
 {
     "combos": [
         {
-            "id": "combo_casal_strogonoff",
-            "badge": "Favorito dos Casais ❤️",
-            "ordem": 1,
-            "regras": {
-                "qtd_pratos": 2,
-                "qtd_bebidas": 2,
-                "filtro_pratos": [
-                    "Strogonoff De Frango Cremoso + Acompanhamentos"
-                ],
-                "qtd_adicionais": 0
-            },
-            "titulo": "COMBO CASAL: 2 STROGONOFFS + 2 BEBIDAS",
-            "imagens": [
-                "image/cc1.webp",
-                "image/cc2.webp"
-            ],
-            "preco_de": 71.8,
-            "descricao": "2 Strogonoffs de frango cremosos (zero amido), mais arroz braco, salada com lemon papper e nossa batata palha crocante da casa + 2 refri lata.",
-            "preco_por": 65.9,
-            "disponivel": 1
-        },
-        {
             "id": "combo_super",
+            "nome": "Super Combo",
             "badge": "O Mais Vendido 🏆",
-            "ordem": 2,
+            "ordem": 1,
             "regras": {
                 "qtd_pratos": 1,
                 "qtd_bebidas": 1,
                 "qtd_adicionais": 1
             },
-            "titulo": "SUPER COMBO: STROGONOFF + ADICIONAL + BEBIDA",
+            "titulo": "Super Combo: Strogonoff ou Lasanha + 1 Adicional + 1 Bebida Grátis",
             "imagens": [
                 "image/combo6.webp",
                 "image/combo7.webp"
             ],
-            "preco_de": 45.9,
-            "descricao": "O nosso Tradicional Strogonoff de Frango Cremoso (zero amido) + 1 Adicional + 1 Refri. Acompanha arroz, salada com lemon papper e nossa batata palha crocante da casa.",
+            "preco_de": 46,
+            "descricao": "Escolha qualquer prato + 1 adicional + 1 bebida grátis. Acompanha salada e batata palha crocante da casa.",
             "preco_por": 39.9,
             "disponivel": 1
+        },
+        {
+            "id": "combo_casal_strogonoff",
+            "badge": "Ideal para casal ❤️",
+            "ordem": 2,
+            "regras": {
+                "qtd_pratos": 2,
+                "qtd_bebidas": 0,
+                "filtro_pratos": [
+                    "Strogonoff De Frango Cremoso + Acompanhamentos"
+                ],
+                "qtd_adicionais": 2
+            },
+            "titulo": "Combo Casal: 2 Strogonoffs + 2 Adicionais Grátis",
+            "imagens": [
+                "image/cc1.webp",
+                "image/cc2.webp"
+            ],
+            "preco_de": 80,
+            "descricao": "O combo perfeito! Leve 2 Strogonoffs Tradicionais de Frango (com todos os acompanhamentos) e escolha 2 adicionais de brinde por nossa conta 😉.",
+            "preco_por": 60,
+            "disponivel": true
         },
         {
             "id": "combo_lasanha",
@@ -47,21 +48,21 @@
             "ordem": 3,
             "regras": {
                 "qtd_pratos": 2,
-                "qtd_bebidas": 2,
+                "qtd_bebidas": 0,
                 "filtro_pratos": [
                     "Lasanha De Strogonoff + Acompanhamentos"
                 ],
-                "qtd_adicionais": 0
+                "qtd_adicionais": 2
             },
-            "titulo": "COMBO DUPLO: 2 LASANHAS + 2 BEBIDAS",
+            "titulo": "Combo Duplo: 2 Lasanhas de Strogonoff + 2 Adicionais Grátis",
             "imagens": [
                 "image/cl1.webp",
                 "image/cl2.webp",
                 "image/cl3.webp"
             ],
             "preco_de": 90,
-            "descricao": "2 Lasanhas de Strogonoff fartas + 2 bebidas inclusas.",
-            "preco_por": 69.9,
+            "descricao": "Exclusivo para os fãs de lasanhas! Leve 2 Lasanhas de Strogonoff e escolha 2 adicionais no 0800 💁‍♂️.",
+            "preco_por": 70,
             "disponivel": 0
         }
     ],
@@ -69,23 +70,23 @@
         {
             "nome": "Strogonoff De Frango Cremoso + Acompanhamentos",
             "tipo": "main",
-            "preco": 29.9,
+            "preco": 30,
             "imagens": [
                 "image/strogonoff1.webp",
                 "image/strogonoff2.webp"
             ],
-            "descricao": "Nosso clássico. Strogonoff com molho cremoso de verdade (zero amido), frango macio, arroz soltinho, salada e batata crocante da casa.",
+            "descricao": "Zero Amido! Peito de frango e molho cremoso de verdade. Acompanham arroz soltinho, salada e batata palha crocante da casa.",
             "disponivel": 1
         },
         {
             "nome": "Lasanha De Strogonoff + Acompanhamentos",
             "tipo": "main",
-            "preco": 34.9,
+            "preco": 35,
             "imagens": [
                 "image/lasanha1.webp",
                 "image/lasanha2.webp"
             ],
-            "descricao": "Massa recheada de Strogonoff, mussarela, presunto e molho branco. Com salada e batata palha crocante.",
+            "descricao": "Lasanha recheada com Strogonoff + mussarela, presunto e molho branco. Acompanha salada e batata palha crocante da casa.",
             "disponivel": 0
         }
     ],
@@ -102,7 +103,7 @@
             "tipo": "drink",
             "preco": 6,
             "imagem": "image/cocazero.webp",
-            "disponivel": 0
+            "disponivel": 1
         },
         {
             "nome": "Guaraná Lata",
@@ -123,7 +124,7 @@
             "tipo": "drink",
             "preco": 6,
             "imagem": "image/spritezero.webp",
-            "disponivel": 0
+            "disponivel": 1
         },
         {
             "nome": "Del Valle Pessego",
@@ -144,7 +145,7 @@
             "tipo": "drink",
             "preco": 4,
             "imagem": "image/agua.webp",
-            "disponivel": 0
+            "disponivel": false
         }
     ],
     "adicionais": [
@@ -156,7 +157,7 @@
             "imagem": "image/bacon.webp",
             "display": "Bacon Crispy",
             "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
-            "subtitulo": "+ Bacon crocante (bem servido)",
+            "subtitulo": "Chuva de Bacon",
             "disponivel": 1
         },
         {
@@ -167,7 +168,7 @@
             "imagem": "image/catupiry.webp",
             "display": "Catupiry",
             "fallback": "https://cdn-icons-png.flaticon.com/512/11548/11548232.png",
-            "subtitulo": "+ Catupiry na medida certa",
+            "subtitulo": "Talagada",
             "disponivel": 1
         },
         {
@@ -178,15 +179,15 @@
             "imagem": "image/calabresa.webp",
             "display": "Calabresa",
             "fallback": "https://cdn-icons-png.flaticon.com/512/7293/7293557.png",
-            "subtitulo": "+ Fritinha Fritinha",
+            "subtitulo": "Fritinha Fritinha",
             "disponivel": 0
         }
     ],
     "configuracoes": {
         "titulos": {
-            "pratos": "PRATOS PRINCIPAIS",
-            "bebidas": "BEBIDAS GELADAS",
-            "adicionais": "TURBINE SEU PRATO"
+            "pratos": "PRATOS",
+            "bebidas": "BEBIDAS",
+            "adicionais": "TURBINE SEU STROGONOFF"
         },
         "localizacao": "Arcos, MG",
         "loja_aberta": 1,
