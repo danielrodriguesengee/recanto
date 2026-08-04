@@ -1211,7 +1211,7 @@
         function closeSuccessModal() { document.getElementById('success-modal').classList.add('hidden'); document.getElementById('success-modal').classList.remove('flex'); }
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg;
-            toast.querySelector('div').className = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 ${isError ? 'bg-red-600' : 'theme-bg-red'}`;
+            toast.querySelector('div').clasasName = `text-white px-6 py-3 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 ${isError ? 'bg-red-600' : 'theme-bg-red'}`;
             toast.querySelector('i').className = `text-white fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}`;
             toast.classList.remove('translate-y-[-200%]'); setTimeout(() => toast.classList.add('translate-y-[-200%]'), 4000);
         }
