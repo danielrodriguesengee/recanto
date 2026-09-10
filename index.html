@@ -482,10 +482,15 @@
             const statusContainer = document.getElementById('store-status-container');
             const statusIcon = document.getElementById('status-icon');
             const statusText = document.getElementById('status-text');
-            if (globalStoreStatus) {
+            if (globalStoreStatus == 1) {
                 statusText.innerText = `${data.configuracoes.mensagem_aberto || 'Aberto agora'} • ${data.configuracoes.tempo_entrega || '30-45 min'}`;
                 statusIcon.className = 'relative flex h-2.5 w-2.5';
                 statusIcon.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>';
+                statusContainer.classList.remove('opacity-70');
+            } else if (globalStoreStatus == 2) {
+                statusText.innerText = data.configuracoes.mensagem_pausado || 'Alta demanda! Pedidos suspensos temporariamente';
+                statusIcon.className = 'relative flex h-2.5 w-2.5';
+                statusIcon.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>';
                 statusContainer.classList.remove('opacity-70');
             } else {
                 statusText.innerText = data.configuracoes.mensagem_fechado || 'Fechado no momento';
@@ -1145,6 +1150,7 @@
         function openCartDrawer() { document.getElementById('cart-drawer').classList.remove('translate-x-full'); document.getElementById('overlay').classList.remove('hidden'); }
         function closeCartDrawer() { document.getElementById('cart-drawer').classList.add('translate-x-full'); document.getElementById('overlay').classList.add('hidden'); }
         function openCheckoutModal() {
+            if (globalStoreStatus == 2) return showToast("Estamos em alta demanda! Pedidos suspensos temporariamente ⏸️", true);
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
             closeCartDrawer(); const modal = document.getElementById('checkout-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -1158,6 +1164,7 @@
             const form = document.getElementById('checkout-form');
             // Validação Nativa Semântica 
             if (!form.reportValidity()) return; 
+            if (globalStoreStatus == 2) return showToast("Estamos em alta demanda! Pedidos suspensos temporariamente ⏸️", true);
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             const name = document.getElementById('client-name').value, phone = document.getElementById('client-phone').value, 
                   address = document.getElementById('client-address').value, obs = document.getElementById('client-obs').value, 
