@@ -476,6 +476,30 @@
             html += `</span>`;
             return html;
         }
+        // --- DETECÇÃO AUTOMÁTICA DE ALTA DEMANDA (fechamento manual dentro do horário de funcionamento) ---
+        const DIAS_SEMANA_MAP = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+        function estaDentroDoHorarioFuncionamento(horariosModal) {
+            if (!horariosModal || !Array.isArray(horariosModal)) return false;
+            const agora = new Date();
+            const diaAtual = DIAS_SEMANA_MAP[agora.getDay()];
+            const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+            for (let i = 0; i < horariosModal.length; i += 2) {
+                const diasStr = horariosModal[i];
+                const horariosStr = horariosModal[i + 1];
+                if (!diasStr || !horariosStr) continue;
+                const diaEncontrado = diasStr.split(/,| e /).map(s => s.trim()).includes(diaAtual);
+                if (!diaEncontrado) continue;
+                const turnos = horariosStr.split('\n');
+                for (const turno of turnos) {
+                    const match = turno.match(/(\d{1,2}):(\d{2})\s*[-–—]\s*(\d{1,2}):(\d{2})/);
+                    if (!match) continue;
+                    const inicioMin = parseInt(match[1], 10) * 60 + parseInt(match[2], 10);
+                    const fimMin = parseInt(match[3], 10) * 60 + parseInt(match[4], 10);
+                    if (minutosAgora >= inicioMin && minutosAgora <= fimMin) return true;
+                }
+            }
+            return false;
+        }
         // --- RENDERIZAÇÃO ---
         function renderizarInterface(data) {
             globalStoreStatus = data.configuracoes.loja_aberta;
@@ -487,7 +511,7 @@
                 statusIcon.className = 'relative flex h-2.5 w-2.5';
                 statusIcon.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>';
                 statusContainer.classList.remove('opacity-70');
-            } else if (globalStoreStatus == 2) {
+            } else if (estaDentroDoHorarioFuncionamento(data.configuracoes.horarios_modal)) {
                 statusText.innerText = data.configuracoes.mensagem_pausado || 'Alta demanda! Pedidos suspensos temporariamente';
                 statusIcon.className = 'relative flex h-2.5 w-2.5';
                 statusIcon.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>';
@@ -1150,7 +1174,7 @@
         function openCartDrawer() { document.getElementById('cart-drawer').classList.remove('translate-x-full'); document.getElementById('overlay').classList.remove('hidden'); }
         function closeCartDrawer() { document.getElementById('cart-drawer').classList.add('translate-x-full'); document.getElementById('overlay').classList.add('hidden'); }
         function openCheckoutModal() {
-            if (globalStoreStatus == 2) return showToast("Estamos em alta demanda! Pedidos suspensos temporariamente ⏸️", true);
+            if (!globalStoreStatus && globalData && estaDentroDoHorarioFuncionamento(globalData.configuracoes.horarios_modal)) return showToast("Estamos em alta demanda! Pedidos suspensos temporariamente ⏸️", true);
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             if (cart.reduce((acc, i) => acc + i.price, 0) < MIN_ORDER_VALUE) return showToast(`Ops! O pedido mínimo é R$ ${formatPrice(MIN_ORDER_VALUE)}. Que tal adicionar uma bebida? 🥤`, true);
             closeCartDrawer(); const modal = document.getElementById('checkout-modal'); modal.classList.remove('hidden'); modal.classList.add('flex');
@@ -1164,7 +1188,7 @@
             const form = document.getElementById('checkout-form');
             // Validação Nativa Semântica 
             if (!form.reportValidity()) return; 
-            if (globalStoreStatus == 2) return showToast("Estamos em alta demanda! Pedidos suspensos temporariamente ⏸️", true);
+            if (!globalStoreStatus && globalData && estaDentroDoHorarioFuncionamento(globalData.configuracoes.horarios_modal)) return showToast("Estamos em alta demanda! Pedidos suspensos temporariamente ⏸️", true);
             if (!globalStoreStatus) return showToast("Estamos fechados no momento! 🌙", true);
             const name = document.getElementById('client-name').value, phone = document.getElementById('client-phone').value, 
                   address = document.getElementById('client-address').value, obs = document.getElementById('client-obs').value, 
